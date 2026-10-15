@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react"
 import type { ServiceId, InterestId, PlaceId } from "./lib/ba-config"
-import { useLang, Header, Hero, Passion, HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
+import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
+import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 
 export default function App() {
