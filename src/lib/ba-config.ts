@@ -1,10 +1,10 @@
 /**
  * Configuración central de BA en Ruta
- * - WhatsApp: dejar vacío hasta tener el número real (solo dígitos, sin + ni espacios)
+ * - WhatsApp: solo dígitos, sin + ni espacios
  * - Precios: no publicar tarifas inventadas
  */
 
-export const WHATSAPP_NUMBER = "" // Ej: "54911XXXXXXXX" — completar cuando esté disponible
+export const WHATSAPP_NUMBER = "5491151448632"
 
 export type ServiceId = "airport" | "private" | "tours" | "general"
 
