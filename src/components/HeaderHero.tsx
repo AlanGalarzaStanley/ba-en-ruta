@@ -1,9 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { MessageCircle, ChevronDown, Menu, X } from "lucide-react"
+import { HERO_IMAGE } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
-
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1589903308904-1010c2294adc?auto=format&fit=crop&w=1920&q=80"
 
 export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLangState] = useState<Lang>(() => {
@@ -93,7 +91,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
   return (
     <section id="inicio" className="relative min-h-[85vh] flex items-end">
       <div className="absolute inset-0">
-        <img src={HERO_IMAGE} alt="" className="w-full h-full object-cover" fetchPriority="high" />
+        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires" className="w-full h-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/50 to-navy/30" />
       </div>
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-32">
