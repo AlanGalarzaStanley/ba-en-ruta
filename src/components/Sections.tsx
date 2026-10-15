@@ -1,5 +1,5 @@
-import { Plane, Car, Map } from "lucide-react"
-import { PLACES, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
+import { Plane, Car, Map, Play } from "lucide-react"
+import { PLACES, EXP_IMAGES, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 
 export function HowItWorks({ lang }: { lang: Lang }) {
@@ -84,9 +84,9 @@ export function Prices({ lang, onEnquire }: { lang: Lang; onEnquire: () => void 
 
 export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interest: InterestId) => void }) {
   const cards: { interest: InterestId; label: CopyKey; title: CopyKey; desc: CopyKey; chips?: CopyKey[]; note?: CopyKey; img: string }[] = [
-    { interest: "city", label: "expEssentialLabel", title: "expEssentialTitle", desc: "expEssentialDesc", img: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80" },
-    { interest: "football", label: "expFootballLabel", title: "expFootballTitle", desc: "expFootballDesc", chips: ["chipBombonera", "chipMonumental", "chipMuseums"], note: "expFootballNote", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80" },
-    { interest: "folklore", label: "expFolkloreLabel", title: "expFolkloreTitle", desc: "expFolkloreDesc", chips: ["chipTango", "chipPena", "chipAsado", "chipMate", "chipCampo"], img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80" },
+    { interest: "city", label: "expEssentialLabel", title: "expEssentialTitle", desc: "expEssentialDesc", img: EXP_IMAGES.city },
+    { interest: "football", label: "expFootballLabel", title: "expFootballTitle", desc: "expFootballDesc", chips: ["chipBombonera", "chipMonumental", "chipMuseums"], note: "expFootballNote", img: EXP_IMAGES.football },
+    { interest: "folklore", label: "expFolkloreLabel", title: "expFolkloreTitle", desc: "expFolkloreDesc", chips: ["chipTango", "chipPena", "chipAsado", "chipMate", "chipCampo"], img: EXP_IMAGES.folklore },
   ]
   return (
     <section id="experiencias" className="py-16 sm:py-20 bg-cream">
@@ -132,21 +132,39 @@ export function Places({ lang, onSelect }: { lang: Lang; onSelect: (placeId: Pla
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "placesTitle")}</h2>
         <p className="text-navy/60 text-sm mb-10">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PLACES.map((place) => (
-            <div key={place.id} className="bg-white rounded-xl border border-navy/5 p-4 flex flex-col">
-              <div className="aspect-video rounded-lg bg-navy/10 mb-3 flex items-center justify-center">
-                <span className="font-display text-navy/30 text-sm px-2 text-center">{t(lang, place.nameKey as CopyKey)}</span>
+          {PLACES.map((place) => {
+            const yt = place.youtube?.[lang] || place.youtube?.es
+            return (
+              <div key={place.id} className="bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+                <div className="aspect-video relative bg-navy/10">
+                  {place.image ? (
+                    <img src={place.image} alt={t(lang, place.nameKey as CopyKey)} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="font-display text-navy/30 text-sm px-2 text-center">{t(lang, place.nameKey as CopyKey)}</span>
+                    </div>
+                  )}
+                  {yt && (
+                    <a href={yt} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center bg-navy/30 hover:bg-navy/40 transition-colors" aria-label={t(lang, "placesVideo")}>
+                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gold text-navy">
+                        <Play className="w-4 h-4 fill-current" />
+                      </span>
+                    </a>
+                  )}
+                </div>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
+                  <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
+                  {place.durationKey && (
+                    <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>
+                  )}
+                  <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors text-left">
+                    {t(lang, "placesCta")} →
+                  </button>
+                </div>
               </div>
-              <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
-              <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
-              {place.durationKey && (
-                <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>
-              )}
-              <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors text-left">
-                {t(lang, "placesCta")} →
-              </button>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
@@ -158,7 +176,7 @@ export function Gastronomy({ lang, onSelect }: { lang: Lang; onSelect: () => voi
     <section id="gastronomia" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-navy/5">
-          <img src="https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80" alt="" className="w-full h-full object-cover" loading="lazy" />
+          <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" />
         </div>
         <div>
           <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
