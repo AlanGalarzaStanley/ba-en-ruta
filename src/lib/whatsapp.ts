@@ -1,5 +1,6 @@
 import {
   WHATSAPP_NUMBER,
+  SITE_URL,
   PLACES,
   RESTAURANTS,
   ITINERARIES,
@@ -183,6 +184,20 @@ export function buildTourWhatsAppMessage(opts: {
   lines.push("Idioma preferido: español.")
   lines.push("Esto es solo una consulta, no una reserva confirmada. ¿Podrían contarme las opciones disponibles?")
   return lines.join(" ")
+}
+
+/** Mensaje precargado para el QR del conductor (pasajero guarda contacto). */
+export function buildPassengerContactMessage(): string {
+  return (
+    "¡Hola! Viajé con vos y quiero guardar tu contacto para futuros traslados. " +
+    "Te escribo desde BA en Ruta. Acá tengo tu página: " +
+    SITE_URL
+  )
+}
+
+/** URL wa.me del QR de contacto del conductor. null si el número no es válido. */
+export function getDriverQrWhatsAppUrl(): string | null {
+  return getWhatsAppUrl(buildPassengerContactMessage())
 }
 
 export function getWhatsAppUrl(message: string): string | null {
