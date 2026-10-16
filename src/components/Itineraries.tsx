@@ -7,14 +7,15 @@ type Props = {
   onCustomize: (placeIds: PlaceId[]) => void
 }
 
+/** Compact day plans — no large place photos (those live in Imperdibles). */
 export function Itineraries({ lang, onSelectItinerary, onCustomize }: Props) {
   return (
-    <section id="recorridos" className="py-16 sm:py-20 bg-cream">
+    <section id="recorridos" className="py-14 sm:py-16 bg-navy text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "itinLabel")}</p>
-        <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "itinTitle")}</h2>
-        <p className="text-navy/60 text-sm mb-10 max-w-2xl">{t(lang, "itinSubtitle")}</p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <p className="text-gold text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "itinLabel")}</p>
+        <h2 className="font-display text-3xl sm:text-4xl mb-2">{t(lang, "itinTitle")}</h2>
+        <p className="text-white/60 text-sm mb-8 max-w-2xl">{t(lang, "itinSubtitle")}</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {ITINERARIES.map((itin) => {
             const stops = itin.placeIds
               .map((id) => PLACES.find((p) => p.id === id))
@@ -23,42 +24,27 @@ export function Itineraries({ lang, onSelectItinerary, onCustomize }: Props) {
               .map((id) => RESTAURANTS.find((r) => r.id === id))
               .filter(Boolean)
             return (
-              <article key={itin.id} className="ba-card bg-white rounded-2xl border border-navy/5 overflow-hidden flex flex-col">
-                <div className="aspect-[16/10] bg-navy/5 overflow-hidden">
-                  <img src={itin.image} alt="" className="w-full h-full object-cover" loading="lazy" width={640} height={400} />
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="font-display text-xl text-navy mb-2">{t(lang, itin.nameKey as CopyKey)}</h3>
-                  <p className="text-sm text-navy/60 leading-relaxed mb-3 flex-1">{t(lang, itin.descKey as CopyKey)}</p>
-                  <p className="text-[10px] text-navy/40 mb-2">{t(lang, itin.durationKey as CopyKey)}</p>
-                  <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, "itinStops")}</p>
-                  <ol className="text-xs text-navy/70 space-y-0.5 mb-3 list-decimal list-inside">
-                    {stops.map((p) => (
-                      <li key={p!.id}>{t(lang, p!.nameKey as CopyKey)}</li>
-                    ))}
-                  </ol>
-                  {foods.length > 0 && (
-                    <>
-                      <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, "itinFood")}</p>
-                      <p className="text-xs text-navy/60 mb-3">{foods.map((r) => r!.name).join(" · ")}</p>
-                    </>
-                  )}
-                  <div className="flex flex-wrap gap-3 mt-auto">
-                    <button
-                      type="button"
-                      onClick={() => onSelectItinerary(itin.id, itin.placeIds, itin.restaurantIds ?? [])}
-                      className="text-sm font-medium text-navy hover:text-gold min-h-11"
-                    >
-                      {t(lang, "itinCta")} →
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onCustomize(itin.placeIds)}
-                      className="text-sm text-navy/50 hover:text-navy min-h-11"
-                    >
-                      {t(lang, "itinCustomize")}
-                    </button>
-                  </div>
+              <article key={itin.id} className="rounded-xl border border-white/10 bg-white/5 p-4 flex flex-col">
+                <h3 className="font-display text-lg text-white mb-1">{t(lang, itin.nameKey as CopyKey)}</h3>
+                <p className="text-xs text-white/55 leading-relaxed mb-2 flex-1">{t(lang, itin.descKey as CopyKey)}</p>
+                <p className="text-[10px] text-white/35 mb-2">{t(lang, itin.durationKey as CopyKey)}</p>
+                <p className="text-[10px] text-white/45 mb-1">
+                  {stops.map((p) => t(lang, p!.nameKey as CopyKey)).join(" · ")}
+                </p>
+                {foods.length > 0 && (
+                  <p className="text-[10px] text-gold/70 mb-3">{foods.map((r) => r!.name).join(" · ")}</p>
+                )}
+                <div className="flex flex-wrap gap-3 mt-auto">
+                  <button
+                    type="button"
+                    onClick={() => onSelectItinerary(itin.id, itin.placeIds, itin.restaurantIds ?? [])}
+                    className="text-sm font-medium text-gold hover:text-gold-light min-h-10"
+                  >
+                    {t(lang, "itinCta")} →
+                  </button>
+                  <button type="button" onClick={() => onCustomize(itin.placeIds)} className="text-sm text-white/45 hover:text-white min-h-10">
+                    {t(lang, "itinCustomize")}
+                  </button>
                 </div>
               </article>
             )
