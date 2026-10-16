@@ -111,8 +111,6 @@ export const PLACES: Place[] = [
     attribution: "Andrzej Otrębski / CC BY-SA 4.0",
     gallery: [
       { src: commons("Buenos_Aires_Caminito_4.jpg"), altKey: "placeCaminitoAlt", attribution: "Andrzej Otrębski / CC BY-SA 4.0" },
-      { src: commons("Caminito_-_La_Boca_-_Buenos_Aires.JPG"), altKey: "galCaminito2", attribution: "Wikimedia Commons" },
-      { src: commons("Entrada_Caminito_La_Boca.jpg"), altKey: "galCaminito3", attribution: "Wikimedia Commons" },
     ],
     lat: -34.6345,
     lng: -58.363,
@@ -138,7 +136,6 @@ export const PLACES: Place[] = [
     attribution: "Massimo Finizio / CC BY-SA 2.0 IT",
     gallery: [
       { src: commons("Bombonera_Boca_Juniors.JPG"), altKey: "placeBomboneraAlt", attribution: "Massimo Finizio / CC BY-SA 2.0 IT" },
-      { src: commons("La_Bombonera.jpg"), altKey: "galBombonera2", attribution: "Wikimedia Commons" },
     ],
     lat: -34.6355,
     lng: -58.3647,
@@ -164,8 +161,6 @@ export const PLACES: Place[] = [
     attribution: "Casa Rosada / CC BY 2.5 AR",
     gallery: [
       { src: commons("Casa_Rosada_2024.jpg"), altKey: "placeSanTelmoPlazaAlt", attribution: "Casa Rosada / CC BY 2.5 AR" },
-      { src: commons("Bar_en_San_Telmo,_Buenos_Aires_ARG.jpg"), altKey: "galSanTelmo2", attribution: "Wikimedia Commons" },
-      { src: commons("Balcarce_860,_San_Telmo_-_Buenos_Aires_ARG.jpg"), altKey: "galSanTelmo3", attribution: "Wikimedia Commons" },
     ],
     lat: -34.6083,
     lng: -58.3712,
@@ -191,7 +186,6 @@ export const PLACES: Place[] = [
     attribution: "Wikimedia Commons",
     gallery: [
       { src: commons("Recoleta_Cemetery,_Buenos_Aires,_Argentina.jpg"), altKey: "placeRecoletaAlt", attribution: "Wikimedia Commons" },
-      { src: commons("Recoleta_Cemetery,_Buenos_Aires,_Argentina.jpg"), altKey: "galRecoleta2", attribution: "Wikimedia Commons" },
     ],
     lat: -34.5875,
     lng: -58.393,
@@ -217,7 +211,6 @@ export const PLACES: Place[] = [
     attribution: "Wikimedia Commons",
     gallery: [
       { src: commons("El_Rosedal.jpg"), altKey: "placePalermoAlt", attribution: "Wikimedia Commons" },
-      { src: commons("Bosques_de_Palermo.jpg"), altKey: "galPalermo2", attribution: "Wikimedia Commons" },
     ],
     lat: -34.5703,
     lng: -58.4219,
@@ -243,7 +236,6 @@ export const PLACES: Place[] = [
     attribution: "Wikimedia Commons",
     gallery: [
       { src: commons("2011.10.17.151426_Puente_de_la_Mujer_Puerto_Madero_Buenos_Aires.jpg"), altKey: "placeMaderoAlt", attribution: "Wikimedia Commons" },
-      { src: commons("Puerto_Madero_Buenos_Aires.jpg"), altKey: "galMadero2", attribution: "Wikimedia Commons" },
     ],
     lat: -34.608,
     lng: -58.3615,
@@ -269,7 +261,6 @@ export const PLACES: Place[] = [
     attribution: "Wikimedia Commons",
     gallery: [
       { src: commons("Obelisco_Buenos_Aires.jpg"), altKey: "placeObeliscoColonAlt", attribution: "Wikimedia Commons" },
-      { src: commons("Avenida_9_de_Julio_Buenos_Aires.jpg"), altKey: "galObelisco2", attribution: "Wikimedia Commons" },
     ],
     lat: -34.6037,
     lng: -58.3816,
@@ -312,7 +303,7 @@ export const PLACES: Place[] = [
   },
 ]
 
-/** Establecimientos reales y públicos (datos de ubicación verificables). Sin precios ni horarios no confirmados. */
+/** Establecimientos reales y públicos. Imágenes de atmósfera (no necesariamente del local exacto). */
 export const RESTAURANTS: Restaurant[] = [
   {
     id: "tortoni",
@@ -336,6 +327,7 @@ export const RESTAURANTS: Restaurant[] = [
     placeIds: ["palermo"],
     itineraryIds: ["clasica", "gastronomica"],
     url: "https://elpreferidodepalermo.com.ar/",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: "cabrera",
@@ -347,6 +339,7 @@ export const RESTAURANTS: Restaurant[] = [
     placeIds: ["palermo"],
     itineraryIds: ["gastronomica", "clasica"],
     url: "https://www.parrillalacabrera.com.ar/",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: "puerto-frutos",
@@ -357,6 +350,7 @@ export const RESTAURANTS: Restaurant[] = [
     whyKey: "restFrutosWhy",
     placeIds: ["tigre"],
     itineraryIds: ["tigre-delta"],
+    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80",
   },
 ]
 
