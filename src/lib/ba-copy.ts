@@ -4,18 +4,19 @@
 import { copyEs } from "./copy-es"
 import { copyEn } from "./copy-en"
 import { copyPt } from "./copy-pt"
+import { guidesEs, guidesEn, guidesPt } from "./guides-copy"
 
 export type Lang = "es" | "en" | "pt"
 
 export const copy = {
-  es: copyEs,
-  en: copyEn,
-  pt: copyPt,
+  es: { ...copyEs, ...guidesEs },
+  en: { ...copyEn, ...guidesEn },
+  pt: { ...copyPt, ...guidesPt },
 } as const
 
-export type CopyKey = keyof typeof copyEs
+export type CopyKey = keyof typeof copy.es
 
 export function t(lang: Lang, key: CopyKey): string {
-  const table = copy[lang] as Record<CopyKey, string>
-  return table[key] ?? copyEs[key] ?? key
+  const table = copy[lang] as Record<string, string>
+  return table[key] ?? (copy.es as Record<string, string>)[key] ?? key
 }
