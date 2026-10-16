@@ -1,5 +1,5 @@
-import { WHATSAPP_NUMBER, type ServiceId, type InterestId, type PlaceId } from "./ba-config"
-import { t, type Lang } from "./ba-copy"
+import { WHATSAPP_NUMBER, PLACES, type ServiceId, type InterestId, type PlaceId } from "./ba-config"
+import { t, type Lang, type CopyKey } from "./ba-copy"
 
 export interface EnquiryPayload {
   name: string
@@ -35,6 +35,12 @@ function interestLabels(lang: Lang, ids: InterestId[]): string {
   return ids.map((id) => map[id] ?? id).join(", ")
 }
 
+function placeLabel(lang: Lang, id: PlaceId): string {
+  const place = PLACES.find((p) => p.id === id)
+  if (!place) return id
+  return t(lang, place.nameKey as CopyKey)
+}
+
 export function buildWhatsAppMessage(p: EnquiryPayload): string {
   const lines: string[] = []
   lines.push(p.lang === "en" ? "Hello! I'd like to enquire about BA en Ruta." : p.lang === "pt" ? "Olá! Gostaria de consultar sobre BA en Ruta." : "¡Hola! Quiero consultar sobre BA en Ruta.")
@@ -45,7 +51,7 @@ export function buildWhatsAppMessage(p: EnquiryPayload): string {
   lines.push(`${t(p.lang, "formService")}: ${serviceLabel(p.lang, p.service)}`)
   lines.push(`${t(p.lang, "formInterests")}: ${interestLabels(p.lang, p.interests)}`)
   if (p.place) {
-    lines.push(`Imperdible / Must-see: ${p.place}`)
+    lines.push(`${t(p.lang, "navPlaces")}: ${placeLabel(p.lang, p.place)}`)
   }
   if (p.message.trim()) {
     lines.push("")

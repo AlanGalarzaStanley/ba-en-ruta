@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { MessageCircle, ChevronUp, ChevronDown } from "lucide-react"
-import { CONTACT_EMAIL, YOUTUBE_CHANNEL, SERVICES, INTERESTS, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
+import { CONTACT_EMAIL, YOUTUBE_CHANNEL, SERVICES, INTERESTS, PLACES, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 import { buildWhatsAppMessage, openWhatsApp } from "../lib/whatsapp"
 
@@ -110,8 +110,16 @@ export function EnquiryForm({
             </fieldset>
             {place && (
               <p className="text-xs text-navy/50">
-                Imperdible: <strong>{place}</strong>
-                <button type="button" className="ml-2 underline" onClick={() => setPlace(null)}>×</button>
+                {t(lang, "navPlaces")}:{" "}
+                <strong>
+                  {(() => {
+                    const p = PLACES.find((x) => x.id === place)
+                    return p ? t(lang, p.nameKey as CopyKey) : place
+                  })()}
+                </strong>
+                <button type="button" className="ml-2 underline" onClick={() => setPlace(null)} aria-label="Remove">
+                  ×
+                </button>
               </p>
             )}
             <div>
