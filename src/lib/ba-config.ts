@@ -4,6 +4,9 @@
 
 export const WHATSAPP_NUMBER = "5491151448632"
 
+/** URL pública canónica (producción). */
+export const SITE_URL = "https://ba-en-ruta.vercel.app"
+
 export type ServiceId = "airport" | "private" | "tours" | "general"
 
 export const SERVICES: { id: ServiceId; key: string }[] = [
