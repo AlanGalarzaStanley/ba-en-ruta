@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react"
 import type { ServiceId, InterestId, PlaceId, RestaurantId, ItineraryId } from "./lib/ba-config"
+import type { ExperienceId } from "./lib/experiences"
+import { getExperienceForPlace } from "./lib/experiences"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
@@ -7,6 +9,7 @@ import { Itineraries } from "./components/Itineraries"
 import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 import { MiQr } from "./components/MiQr"
+import { GuidedExperiences } from "./components/ExperiencePlayer"
 
 export default function App() {
   const [lang, setLang] = useLang()
@@ -19,6 +22,7 @@ export default function App() {
     restaurantIds: [],
     itineraryId: null,
   })
+  const [activeExperience, setActiveExperience] = useState<ExperienceId | null>(null)
 
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id)
@@ -78,6 +82,21 @@ export default function App() {
     scrollTo("imperdibles")
   }
 
+  const startExperience = (id: ExperienceId) => {
+    setActiveExperience(id)
+    scrollTo("guiadas")
+  }
+
+  const startExperienceForPlace = (placeId: PlaceId) => {
+    const exp = getExperienceForPlace(placeId)
+    if (exp) {
+      setActiveExperience(exp.id)
+      scrollTo("guiadas")
+    } else {
+      selectPlace(placeId)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col pb-24">
       <Header lang={lang} setLang={setLang} onNav={scrollTo} />
@@ -88,12 +107,20 @@ export default function App() {
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
         <Experiences lang={lang} onSelect={selectInterest} />
+        <GuidedExperiences
+          lang={lang}
+          activeId={activeExperience}
+          onStart={startExperience}
+          onClose={() => setActiveExperience(null)}
+          onSelectPlace={selectPlace}
+        />
         <Places
           lang={lang}
           onSelect={selectPlace}
           onMapFocus={focusOnMap}
           selectedPlaces={tour.placeIds}
           onToggleTour={togglePlace}
+          onStartExperience={startExperienceForPlace}
         />
         <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />
         <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />

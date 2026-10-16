@@ -186,6 +186,52 @@ export function buildTourWhatsAppMessage(opts: {
   return lines.join(" ")
 }
 
+/** Contextual message when the visitor is inside a guided experience. */
+export function buildExperienceWhatsAppMessage(opts: {
+  lang: Lang
+  experienceId: string
+  experienceName: string
+  stopTitle?: string
+  date?: string
+}): string {
+  const { lang, experienceName, stopTitle, date } = opts
+
+  if (lang === "en") {
+    const lines = [
+      "Hello! I'm following a guided experience on BA en Ruta.",
+      `Experience: ${experienceName}.`,
+    ]
+    if (stopTitle) lines.push(`I was looking at the stop: ${stopTitle}.`)
+    if (date) lines.push(`Estimated date: ${date}.`)
+    lines.push("I'd like options to personalise this route or add a private transfer.")
+    lines.push("Preferred language: English.")
+    lines.push("This is an enquiry only, not a confirmed booking.")
+    return lines.join(" ")
+  }
+  if (lang === "pt") {
+    const lines = [
+      "Olá! Estou seguindo uma experiência guiada no BA en Ruta.",
+      `Experiência: ${experienceName}.`,
+    ]
+    if (stopTitle) lines.push(`Estava na parada: ${stopTitle}.`)
+    if (date) lines.push(`Data estimada: ${date}.`)
+    lines.push("Gostaria de opções para personalizar este roteiro ou somar um traslado privado.")
+    lines.push("Idioma preferido: português.")
+    lines.push("Isto é apenas uma consulta, não uma reserva confirmada.")
+    return lines.join(" ")
+  }
+  const lines = [
+    "¡Hola! Estoy siguiendo una experiencia guiada en BA en Ruta.",
+    `Experiencia: ${experienceName}.`,
+  ]
+  if (stopTitle) lines.push(`Estaba en la parada: ${stopTitle}.`)
+  if (date) lines.push(`Fecha estimada: ${date}.`)
+  lines.push("Me gustaría opciones para personalizar este recorrido o sumar un traslado privado.")
+  lines.push("Idioma preferido: español.")
+  lines.push("Esto es solo una consulta, no una reserva confirmada.")
+  return lines.join(" ")
+}
+
 /** Mensaje precargado para el QR del conductor (pasajero guarda contacto). */
 export function buildPassengerContactMessage(): string {
   return (
