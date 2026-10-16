@@ -5,13 +5,14 @@ import { copyEs } from "./copy-es"
 import { copyEn } from "./copy-en"
 import { copyPt } from "./copy-pt"
 import { guidesEs, guidesEn, guidesPt } from "./guides-copy"
+import { experienceEs, experienceEn, experiencePt } from "./experience-copy"
 
 export type Lang = "es" | "en" | "pt"
 
 export const copy = {
-  es: { ...copyEs, ...guidesEs },
-  en: { ...copyEn, ...guidesEn },
-  pt: { ...copyPt, ...guidesPt },
+  es: { ...copyEs, ...guidesEs, ...experienceEs },
+  en: { ...copyEn, ...guidesEn, ...experienceEn },
+  pt: { ...copyPt, ...guidesPt, ...experiencePt },
 } as const
 
 export type CopyKey = keyof typeof copy.es
