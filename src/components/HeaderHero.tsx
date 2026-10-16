@@ -31,6 +31,16 @@ export function useLang(): [Lang, (l: Lang) => void] {
   }, [])
   useEffect(() => {
     document.documentElement.lang = lang === "pt" ? "pt-BR" : lang
+    try {
+      document.title = t(lang, "siteTitle")
+      const desc = t(lang, "siteDescription")
+      const meta = document.querySelector('meta[name="description"]')
+      if (meta) meta.setAttribute("content", desc)
+      const ogTitle = document.querySelector('meta[property="og:title"]')
+      if (ogTitle) ogTitle.setAttribute("content", t(lang, "siteTitle"))
+      const ogDesc = document.querySelector('meta[property="og:description"]')
+      if (ogDesc) ogDesc.setAttribute("content", desc)
+    } catch { /* ignore */ }
   }, [lang])
   return [lang, setLang]
 }
@@ -44,7 +54,9 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
     { id: "experiencias", key: "navExperiences" as CopyKey },
     { id: "gastronomia", key: "navGastronomy" as CopyKey },
     { id: "imperdibles", key: "navPlaces" as CopyKey },
+    { id: "recorridos", key: "itinLabel" as CopyKey },
     { id: "mapa", key: "mapLabel" as CopyKey },
+    { id: "mi-qr", key: "navQr" as CopyKey },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -105,7 +117,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
   return (
     <section id="inicio" className="relative min-h-[85vh] flex items-end">
       <div className="absolute inset-0">
-        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires" className="w-full h-full object-cover" fetchPriority="high" />
+        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires al atardecer, Buenos Aires" className="w-full h-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/50 to-navy/30" />
       </div>
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-32">
