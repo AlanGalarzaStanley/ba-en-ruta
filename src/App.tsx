@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react"
-import type { ServiceId, InterestId, PlaceId } from "./lib/ba-config"
+import type { ServiceId, InterestId, PlaceId, RestaurantId, ItineraryId } from "./lib/ba-config"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
+import { Itineraries } from "./components/Itineraries"
+import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 
 export default function App() {
@@ -11,6 +13,11 @@ export default function App() {
   const [formInterests, setFormInterests] = useState<InterestId[]>([])
   const [formPlace, setFormPlace] = useState<PlaceId | null>(null)
   const [mapHighlight, setMapHighlight] = useState<PlaceId | null>(null)
+  const [tour, setTour] = useState<TourSelection>({
+    placeIds: [],
+    restaurantIds: [],
+    itineraryId: null,
+  })
 
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id)
@@ -38,9 +45,40 @@ export default function App() {
     setFormService("tours")
     scrollTo("reserva")
   }
+  const focusOnMap = (placeId: PlaceId) => setMapHighlight(placeId)
+
+  const togglePlace = (id: PlaceId) => {
+    setTour((prev) => ({
+      ...prev,
+      placeIds: prev.placeIds.includes(id) ? prev.placeIds.filter((x) => x !== id) : [...prev.placeIds, id],
+    }))
+  }
+  const toggleRestaurant = (id: RestaurantId) => {
+    setTour((prev) => ({
+      ...prev,
+      restaurantIds: prev.restaurantIds.includes(id)
+        ? prev.restaurantIds.filter((x) => x !== id)
+        : [...prev.restaurantIds, id],
+    }))
+  }
+  const selectItinerary = (id: ItineraryId, placeIds: PlaceId[], restaurantIds: RestaurantId[]) => {
+    setTour({
+      itineraryId: id,
+      placeIds: [...new Set(placeIds)],
+      restaurantIds: [...new Set(restaurantIds)],
+    })
+    setFormService("tours")
+  }
+  const customizeItinerary = (placeIds: PlaceId[]) => {
+    setTour((prev) => ({
+      ...prev,
+      placeIds: [...new Set([...prev.placeIds, ...placeIds])],
+    }))
+    scrollTo("imperdibles")
+  }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pb-24">
       <Header lang={lang} setLang={setLang} onNav={scrollTo} />
       <main>
         <Hero lang={lang} onNav={scrollTo} />
@@ -49,13 +87,32 @@ export default function App() {
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
         <Experiences lang={lang} onSelect={selectInterest} />
-        <Places lang={lang} onSelect={selectPlace} />
+        <Places
+          lang={lang}
+          onSelect={selectPlace}
+          onMapFocus={focusOnMap}
+          selectedPlaces={tour.placeIds}
+          onToggleTour={togglePlace}
+        />
         <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />
-        <Gastronomy lang={lang} onSelect={selectGastro} />
+        <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
+        <Gastronomy
+          lang={lang}
+          onSelect={selectGastro}
+          selectedRestaurants={tour.restaurantIds}
+          onToggleRestaurant={toggleRestaurant}
+        />
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
         <FAQ lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />
+      <TourBar
+        lang={lang}
+        selection={tour}
+        onClear={() => setTour({ placeIds: [], restaurantIds: [], itineraryId: null })}
+        onRemovePlace={(id) => setTour((p) => ({ ...p, placeIds: p.placeIds.filter((x) => x !== id) }))}
+        onRemoveRestaurant={(id) => setTour((p) => ({ ...p, restaurantIds: p.restaurantIds.filter((x) => x !== id) }))}
+      />
     </div>
   )
 }
