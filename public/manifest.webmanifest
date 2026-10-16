@@ -1,0 +1,18 @@
+{
+  "name": "BA en Ruta",
+  "short_name": "BA en Ruta",
+  "description": "Chofer privado y experiencias en Buenos Aires. Traslados, recorridos y consultas por WhatsApp.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0F172A",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
