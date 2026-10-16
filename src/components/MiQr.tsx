@@ -8,7 +8,7 @@ type Props = { lang: Lang }
 
 /**
  * «Mi QR» — minimal: title, QR, brief WhatsApp note.
- * No step-by-step instructions (product decision).
+ * No step-by-step instructions.
  */
 export function MiQr({ lang }: Props) {
   const numberOk = /^\d{10,15}$/.test(WHATSAPP_NUMBER)
@@ -51,11 +51,18 @@ export function MiQr({ lang }: Props) {
     }
   }
 
+  const brief =
+    lang === "en"
+      ? "Scan to open a WhatsApp chat with the driver."
+      : lang === "pt"
+        ? "Escaneie para abrir uma conversa no WhatsApp com o motorista."
+        : "Escaneá para abrir una conversación por WhatsApp con el conductor."
+
   return (
     <section id="mi-qr" className="py-14 sm:py-16 bg-cream-dark/20">
       <div className="max-w-lg mx-auto px-4 sm:px-6 text-center">
         <h2 className="font-display text-2xl sm:text-3xl text-navy mb-2">{t(lang, "qrTitle")}</h2>
-        <p className="text-sm text-navy/55 mb-8 max-w-sm mx-auto leading-relaxed">{t(lang, "qrSubtitleShort")}</p>
+        <p className="text-sm text-navy/55 mb-8 max-w-sm mx-auto leading-relaxed">{brief}</p>
 
         {!numberOk || !waUrl || !qrSrc ? (
           <div className="ba-card bg-white rounded-2xl border border-navy/5 p-8">

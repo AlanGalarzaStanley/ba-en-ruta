@@ -56,8 +56,8 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
     { id: "imperdibles", key: "navPlaces" as CopyKey },
     { id: "gastronomia", key: "navGastronomy" as CopyKey },
     { id: "recorridos", key: "itinLabel" as CopyKey },
-    { id: "mapa", key: "mapLabel" as CopyKey },
     { id: "mi-qr", key: "navQr" as CopyKey },
+    { id: "para-choferes", key: "navDrivers" as CopyKey },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -70,9 +70,9 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
             <span className="block text-[10px] uppercase tracking-widest text-navy/50">Buenos Aires</span>
           </span>
         </button>
-        <nav className="hidden lg:flex items-center gap-5 text-sm text-navy/80">
+        <nav className="hidden lg:flex items-center gap-4 text-sm text-navy/80">
           {nav.map((item) => (
-            <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors">{t(lang, item.key)}</button>
+            <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors whitespace-nowrap">{t(lang, item.key)}</button>
           ))}
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
