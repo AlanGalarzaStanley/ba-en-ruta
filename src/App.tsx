@@ -9,6 +9,7 @@ import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 import { MiQr } from "./components/MiQr"
 import { GuidedExperiences } from "./components/ExperiencePlayer"
+import { DriverSignup } from "./components/DriverSignup"
 
 export default function App() {
   const [lang, setLang] = useLang()
@@ -120,6 +121,7 @@ export default function App() {
         />
         <MiQr lang={lang} />
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
+        <DriverSignup lang={lang} />
         <FAQ lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />
