@@ -38,9 +38,6 @@ export default function App() {
     setFormService("tours")
     scrollTo("reserva")
   }
-  const focusOnMap = (placeId: PlaceId) => {
-    setMapHighlight(placeId)
-  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -52,7 +49,7 @@ export default function App() {
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
         <Experiences lang={lang} onSelect={selectInterest} />
-        <Places lang={lang} onSelect={selectPlace} onMapFocus={focusOnMap} />
+        <Places lang={lang} onSelect={selectPlace} />
         <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />
         <Gastronomy lang={lang} onSelect={selectGastro} />
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
