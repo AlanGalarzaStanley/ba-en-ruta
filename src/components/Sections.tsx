@@ -1,5 +1,6 @@
+import { useState } from "react"
 import { Plane, Car, Map, Play } from "lucide-react"
-import { PLACES, EXP_IMAGES, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
+import { PLACES, EXP_IMAGES, type ServiceId, type InterestId, type PlaceId, type Place } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 
 export function HowItWorks({ lang }: { lang: Lang }) {
@@ -51,7 +52,7 @@ export function Services({ lang, onEnquire }: { lang: Lang; onEnquire: (service:
               <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, item.label)}</p>
               <h3 className="font-display text-xl text-navy mb-2">{t(lang, item.title)}</h3>
               <p className="text-sm text-navy/60 leading-relaxed flex-1 mb-5">{t(lang, item.desc)}</p>
-              <button type="button" onClick={() => onEnquire(item.id)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors">
+              <button type="button" onClick={() => onEnquire(item.id)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
                 {t(lang, "serviceCta")} <span aria-hidden>→</span>
               </button>
             </div>
@@ -72,7 +73,7 @@ export function Prices({ lang, onEnquire }: { lang: Lang; onEnquire: () => void 
           <p className="text-white/70 text-sm max-w-md leading-relaxed">{t(lang, "pricesDesc")}</p>
         </div>
         <div className="text-center md:text-right">
-          <button type="button" onClick={onEnquire} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors">
+          <button type="button" onClick={onEnquire} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             {t(lang, "pricesCta")} <span aria-hidden>→</span>
           </button>
           <p className="mt-3 text-xs text-white/40 max-w-xs md:ml-auto">{t(lang, "pricesNote")}</p>
@@ -98,7 +99,7 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
           {cards.map((c) => (
             <article key={c.interest} className="bg-white rounded-2xl border border-navy/5 overflow-hidden flex flex-col">
               <div className="aspect-[16/10] overflow-hidden bg-navy/5">
-                <img src={c.img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                <img src={c.img} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={560} />
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, c.label)}</p>
@@ -112,7 +113,7 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
                   </div>
                 )}
                 {c.note && <p className="text-xs text-navy/40 mb-3">{t(lang, c.note)}</p>}
-                <button type="button" onClick={() => onSelect(c.interest)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors mt-auto">
+                <button type="button" onClick={() => onSelect(c.interest)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors mt-auto min-h-11">
                   {t(lang, "expCta")} <span aria-hidden>→</span>
                 </button>
               </div>
@@ -124,6 +125,67 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
   )
 }
 
+function PlaceCard({ place, lang, onSelect }: { place: Place; lang: Lang; onSelect: (id: PlaceId) => void }) {
+  const [imgError, setImgError] = useState(false)
+  const yt = place.youtube
+  const langs: { code: Lang; label: string; url?: string }[] = [
+    { code: "es", label: "ES", url: yt?.es },
+    { code: "en", label: "EN", url: yt?.en },
+    { code: "pt", label: "PT", url: yt?.pt },
+  ].filter((l) => l.url)
+
+  const alt = place.imageAltKey ? t(lang, place.imageAltKey as CopyKey) : t(lang, place.nameKey as CopyKey)
+
+  return (
+    <div className="bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+      <div className="aspect-video relative bg-navy/10">
+        {place.image && !imgError ? (
+          <img
+            src={place.image}
+            alt={alt}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            width={640}
+            height={360}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center px-3">
+            <span className="font-display text-navy/40 text-sm text-center">{t(lang, place.nameKey as CopyKey)}</span>
+          </div>
+        )}
+        {langs.length > 0 && (
+          <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
+            {langs.map((l) => (
+              <a
+                key={l.code}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 min-h-10 px-3 rounded-full bg-navy/85 hover:bg-navy text-white text-xs font-medium backdrop-blur-sm transition-colors"
+                aria-label={`${t(lang, "placesVideo")} (${l.label})`}
+              >
+                <Play className="w-3 h-3 fill-current" aria-hidden />
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
+        <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
+        {place.durationKey && (
+          <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>
+        )}
+        <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors text-left min-h-11">
+          {t(lang, "placesCta")} →
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export function Places({ lang, onSelect }: { lang: Lang; onSelect: (placeId: PlaceId) => void }) {
   return (
     <section id="imperdibles" className="py-16 sm:py-20 bg-cream-dark/20">
@@ -132,40 +194,13 @@ export function Places({ lang, onSelect }: { lang: Lang; onSelect: (placeId: Pla
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "placesTitle")}</h2>
         <p className="text-navy/60 text-sm mb-10">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PLACES.map((place) => {
-            const yt = place.youtube?.[lang] || place.youtube?.es
-            return (
-              <div key={place.id} className="bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
-                <div className="aspect-video relative bg-navy/10">
-                  {place.image ? (
-                    <img src={place.image} alt={t(lang, place.nameKey as CopyKey)} className="w-full h-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="font-display text-navy/30 text-sm px-2 text-center">{t(lang, place.nameKey as CopyKey)}</span>
-                    </div>
-                  )}
-                  {yt && (
-                    <a href={yt} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center bg-navy/30 hover:bg-navy/40 transition-colors" aria-label={t(lang, "placesVideo")}>
-                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gold text-navy">
-                        <Play className="w-4 h-4 fill-current" />
-                      </span>
-                    </a>
-                  )}
-                </div>
-                <div className="p-4 flex flex-col flex-1">
-                  <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
-                  <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
-                  {place.durationKey && (
-                    <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>
-                  )}
-                  <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors text-left">
-                    {t(lang, "placesCta")} →
-                  </button>
-                </div>
-              </div>
-            )
-          })}
+          {PLACES.map((place) => (
+            <PlaceCard key={place.id} place={place} lang={lang} onSelect={onSelect} />
+          ))}
         </div>
+        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">
+          {t(lang, "placesPhotoCredit")}
+        </p>
       </div>
     </section>
   )
@@ -176,7 +211,7 @@ export function Gastronomy({ lang, onSelect }: { lang: Lang; onSelect: () => voi
     <section id="gastronomia" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10 items-center">
         <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-navy/5">
-          <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" />
+          <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={675} />
         </div>
         <div>
           <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
@@ -188,7 +223,7 @@ export function Gastronomy({ lang, onSelect }: { lang: Lang; onSelect: () => voi
             <li>• {t(lang, "gastroEmpanadas")}</li>
           </ul>
           <p className="text-xs text-navy/40 mb-5">{t(lang, "gastroNote")}</p>
-          <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors">
+          <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
             {t(lang, "gastroCta")} <span aria-hidden>→</span>
           </button>
         </div>
