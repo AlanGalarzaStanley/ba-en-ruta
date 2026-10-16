@@ -3,13 +3,26 @@ import { MessageCircle, ChevronDown, Menu, X } from "lucide-react"
 import { HERO_IMAGE } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 
+function detectBrowserLang(): Lang {
+  try {
+    const list = navigator.languages?.length ? navigator.languages : [navigator.language]
+    for (const raw of list) {
+      const code = (raw || "").toLowerCase()
+      if (code.startsWith("pt")) return "pt"
+      if (code.startsWith("en")) return "en"
+      if (code.startsWith("es")) return "es"
+    }
+  } catch { /* ignore */ }
+  return "es"
+}
+
 export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLangState] = useState<Lang>(() => {
     try {
       const stored = localStorage.getItem("ba-lang") as Lang | null
       if (stored === "es" || stored === "en" || stored === "pt") return stored
     } catch { /* ignore */ }
-    return "es"
+    return detectBrowserLang()
   })
   const setLang = useCallback((l: Lang) => {
     setLangState(l)
@@ -31,6 +44,7 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
     { id: "experiencias", key: "navExperiences" as CopyKey },
     { id: "gastronomia", key: "navGastronomy" as CopyKey },
     { id: "imperdibles", key: "navPlaces" as CopyKey },
+    { id: "mapa", key: "mapLabel" as CopyKey },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -43,7 +57,7 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
             <span className="block text-[10px] uppercase tracking-widest text-navy/50">Buenos Aires</span>
           </span>
         </button>
-        <nav className="hidden lg:flex items-center gap-6 text-sm text-navy/80">
+        <nav className="hidden lg:flex items-center gap-5 text-sm text-navy/80">
           {nav.map((item) => (
             <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors">{t(lang, item.key)}</button>
           ))}
@@ -117,7 +131,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-navy/70">
           <p className="flex items-center gap-2"><MessageCircle className="w-4 h-4 text-gold shrink-0" />{t(lang, "valueDirect")}</p>
           <p className="flex items-center gap-2"><span className="text-gold">◇</span>{t(lang, "valueCustom")}</p>
-          <p className="flex items-center gap-2"><span className="text-gold">○</span>{t(lang, "valueLocal")}</p>
+          <p className="flex items-center gap-2"><span className="text-sky">○</span>{t(lang, "valueLocal")}</p>
         </div>
       </div>
     </section>
