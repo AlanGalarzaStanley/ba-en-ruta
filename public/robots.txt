@@ -1,0 +1,30 @@
+# BA en Ruta — https://ba-en-ruta.vercel.app
+# Public site: allow search indexing. Training crawlers restricted where identifiable.
+
+User-agent: *
+Allow: /
+
+# OpenAI search results bot (ChatGPT Search) — allow for possible appearance in search
+User-agent: OAI-SearchBot
+Allow: /
+
+# OpenAI model-training crawler — disallow training use of site content
+User-agent: GPTBot
+Disallow: /
+
+# Google extended / Gemini training (search still via Googlebot)
+User-agent: Google-Extended
+Disallow: /
+
+# Common Crawl (often used for training corpora)
+User-agent: CCBot
+Disallow: /
+
+# Anthropic training
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+Sitemap: https://ba-en-ruta.vercel.app/sitemap.xml
