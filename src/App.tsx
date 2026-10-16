@@ -1,6 +1,12 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import type { ServiceId, InterestId, PlaceId, RestaurantId, ItineraryId } from "./lib/ba-config"
 import type { ExperienceId } from "./lib/experiences"
+import {
+  resolveTenantFromPath,
+  setActiveTenant,
+  getActiveTenant,
+  type TenantConfig,
+} from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
@@ -13,6 +19,22 @@ import { DriverSignup } from "./components/DriverSignup"
 
 export default function App() {
   const [lang, setLang] = useLang()
+  const [tenant, setTenant] = useState<TenantConfig>(() => {
+    if (typeof window === "undefined") return getActiveTenant()
+    const t = resolveTenantFromPath(window.location.pathname)
+    setActiveTenant(t)
+    return t
+  })
+
+  useEffect(() => {
+    const t = resolveTenantFromPath(window.location.pathname)
+    setActiveTenant(t)
+    setTenant(t)
+  }, [])
+
+  const isDemo = tenant.slug !== "ba-en-ruta"
+  const f = tenant.features
+
   const [formService, setFormService] = useState<ServiceId | "">("")
   const [formInterests, setFormInterests] = useState<InterestId[]>([])
   const [formPlace, setFormPlace] = useState<PlaceId | null>(null)
@@ -35,7 +57,8 @@ export default function App() {
   }
   const selectInterest = (interest: InterestId) => {
     setFormInterests((prev) => (prev.includes(interest) ? prev : [...prev, interest]))
-    if (interest === "city" || interest === "football" || interest === "folklore" || interest === "gastronomy") setFormService("tours")
+    if (interest === "city" || interest === "football" || interest === "folklore" || interest === "gastronomy")
+      setFormService("tours")
     scrollTo("reserva")
   }
   const selectPlace = (placeId: PlaceId) => {
@@ -87,9 +110,16 @@ export default function App() {
     scrollTo("guiadas")
   }
 
+  const tenantLabel = useMemo(() => tenant.publicName, [tenant.publicName])
+
   return (
     <div className="min-h-screen flex flex-col pb-24">
-      <Header lang={lang} setLang={setLang} onNav={scrollTo} />
+      {isDemo && (
+        <div className="bg-gold text-navy text-center text-xs sm:text-sm font-medium py-2 px-4">
+          Vista de demostración: <strong>{tenantLabel}</strong> · slug <code className="font-mono">/c/{tenant.slug}</code>
+        </div>
+      )}
+      <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} />
         <Passion lang={lang} />
@@ -97,31 +127,39 @@ export default function App() {
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
         <Experiences lang={lang} onSelect={selectInterest} />
-        <GuidedExperiences
-          lang={lang}
-          activeId={activeExperience}
-          onStart={startExperience}
-          onClose={() => setActiveExperience(null)}
-          onSelectPlace={selectPlace}
-        />
-        <Places
-          lang={lang}
-          onSelect={selectPlace}
-          onMapFocus={focusOnMap}
-          selectedPlaces={tour.placeIds}
-          onToggleTour={togglePlace}
-        />
-        <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />
-        <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
-        <Gastronomy
-          lang={lang}
-          onSelect={selectGastro}
-          selectedRestaurants={tour.restaurantIds}
-          onToggleRestaurant={toggleRestaurant}
-        />
-        <MiQr lang={lang} />
+        {f.guidedExperiences && (
+          <GuidedExperiences
+            lang={lang}
+            activeId={activeExperience}
+            onStart={startExperience}
+            onClose={() => setActiveExperience(null)}
+            onSelectPlace={selectPlace}
+          />
+        )}
+        {f.places && (
+          <Places
+            lang={lang}
+            onSelect={selectPlace}
+            onMapFocus={focusOnMap}
+            selectedPlaces={tour.placeIds}
+            onToggleTour={togglePlace}
+          />
+        )}
+        {f.map && <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />}
+        {f.itineraries && (
+          <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
+        )}
+        {f.gastronomy && (
+          <Gastronomy
+            lang={lang}
+            onSelect={selectGastro}
+            selectedRestaurants={tour.restaurantIds}
+            onToggleRestaurant={toggleRestaurant}
+          />
+        )}
+        {f.miQr && <MiQr lang={lang} />}
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
-        <DriverSignup lang={lang} />
+        {f.driverSignup && <DriverSignup lang={lang} />}
         <FAQ lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />

@@ -1,18 +1,16 @@
 import { useMemo, useState } from "react"
 import { Download, Share2, QrCode } from "lucide-react"
-import { WHATSAPP_NUMBER } from "../lib/ba-config"
 import { t, type Lang } from "../lib/ba-copy"
+import { getActiveWhatsAppNumber } from "../lib/tenant"
 import { getDriverQrWhatsAppUrl, buildPassengerContactMessage } from "../lib/whatsapp"
 
 type Props = { lang: Lang }
 
-/**
- * «Mi QR» — minimal: title, QR, brief WhatsApp note.
- * No step-by-step instructions.
- */
+/** «Mi QR» — título, QR, nota breve. Sin instrucciones paso a paso. */
 export function MiQr({ lang }: Props) {
-  const numberOk = /^\d{10,15}$/.test(WHATSAPP_NUMBER)
-  const waUrl = useMemo(() => (numberOk ? getDriverQrWhatsAppUrl() : null), [numberOk])
+  const number = getActiveWhatsAppNumber()
+  const numberOk = /^\d{10,15}$/.test(number)
+  const waUrl = useMemo(() => (numberOk ? getDriverQrWhatsAppUrl() : null), [numberOk, number])
   const message = useMemo(() => buildPassengerContactMessage(), [])
   const [dlError, setDlError] = useState("")
 
