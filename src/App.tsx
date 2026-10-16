@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react"
 import type { ServiceId, InterestId, PlaceId, RestaurantId, ItineraryId } from "./lib/ba-config"
 import type { ExperienceId } from "./lib/experiences"
-import { getExperienceForPlace } from "./lib/experiences"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
@@ -87,16 +86,6 @@ export default function App() {
     scrollTo("guiadas")
   }
 
-  const startExperienceForPlace = (placeId: PlaceId) => {
-    const exp = getExperienceForPlace(placeId)
-    if (exp) {
-      setActiveExperience(exp.id)
-      scrollTo("guiadas")
-    } else {
-      selectPlace(placeId)
-    }
-  }
-
   return (
     <div className="min-h-screen flex flex-col pb-24">
       <Header lang={lang} setLang={setLang} onNav={scrollTo} />
@@ -120,7 +109,6 @@ export default function App() {
           onMapFocus={focusOnMap}
           selectedPlaces={tour.placeIds}
           onToggleTour={togglePlace}
-          onStartExperience={startExperienceForPlace}
         />
         <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />
         <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
