@@ -8,7 +8,7 @@ import {
   type TenantConfig,
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
-import { HowItWorks, Services, Prices, Experiences, Places, Gastronomy } from "./components/Sections"
+import { HowItWorks, Services, Prices, MoodStrip, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
 import { TourBar, type TourSelection } from "./components/TourBar"
@@ -17,6 +17,18 @@ import { MiQr } from "./components/MiQr"
 import { GuidedExperiences } from "./components/ExperiencePlayer"
 import { DriverSignup } from "./components/DriverSignup"
 
+/**
+ * Narrative order (immersive, no repetition):
+ * 1. Arrival (Hero + Passion)
+ * 2. Trust (How + Services + Prices)
+ * 3. Live a guided walk (Guiadas)
+ * 4. Deep dive places with video + mini-guide (Imperdibles)
+ * 5. Orient on map
+ * 6. Combine days (Itineraries — compact)
+ * 7. Taste (Gastronomy)
+ * 8. Act (form) + driver QR + FAQ
+ * 9. B2B driver signup last
+ */
 export default function App() {
   const [lang, setLang] = useLang()
   const [tenant, setTenant] = useState<TenantConfig>(() => {
@@ -73,7 +85,10 @@ export default function App() {
     setFormService("tours")
     scrollTo("reserva")
   }
-  const focusOnMap = (placeId: PlaceId) => setMapHighlight(placeId)
+  const focusOnMap = (placeId: PlaceId) => {
+    setMapHighlight(placeId)
+    scrollTo("mapa")
+  }
 
   const togglePlace = (id: PlaceId) => {
     setTour((prev) => ({
@@ -116,7 +131,8 @@ export default function App() {
     <div className="min-h-screen flex flex-col pb-24">
       {isDemo && (
         <div className="bg-gold text-navy text-center text-xs sm:text-sm font-medium py-2 px-4">
-          Vista de demostración: <strong>{tenantLabel}</strong> · slug <code className="font-mono">/c/{tenant.slug}</code>
+          Vista de demostración: <strong>{tenantLabel}</strong> · slug{" "}
+          <code className="font-mono">/c/{tenant.slug}</code>
         </div>
       )}
       <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
@@ -126,7 +142,10 @@ export default function App() {
         <HowItWorks lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
-        <Experiences lang={lang} onSelect={selectInterest} />
+
+        {/* Bridge: mood only — no place photos (those live in Imperdibles) */}
+        <MoodStrip lang={lang} onSelect={selectInterest} onExplore={() => scrollTo("guiadas")} />
+
         {f.guidedExperiences && (
           <GuidedExperiences
             lang={lang}
@@ -136,6 +155,7 @@ export default function App() {
             onSelectPlace={selectPlace}
           />
         )}
+
         {f.places && (
           <Places
             lang={lang}
@@ -145,10 +165,13 @@ export default function App() {
             onToggleTour={togglePlace}
           />
         )}
+
         {f.map && <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />}
+
         {f.itineraries && (
           <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
         )}
+
         {f.gastronomy && (
           <Gastronomy
             lang={lang}
@@ -157,10 +180,11 @@ export default function App() {
             onToggleRestaurant={toggleRestaurant}
           />
         )}
-        {f.miQr && <MiQr lang={lang} />}
+
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
-        {f.driverSignup && <DriverSignup lang={lang} />}
+        {f.miQr && <MiQr lang={lang} />}
         <FAQ lang={lang} />
+        {f.driverSignup && <DriverSignup lang={lang} />}
       </main>
       <Footer lang={lang} onNav={scrollTo} />
       <TourBar
