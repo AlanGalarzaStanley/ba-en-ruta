@@ -2,72 +2,63 @@
 
 ## Objetivo
 
-Una plantilla SPA compartida + configuración por chofer, para publicar sitios independientes sin duplicar el proyecto.
+Plantilla SPA compartida + configuración por chofer, sin clonar el proyecto por cliente.
 
-## Estado actual (implementado)
+## Estado implementado
 
-- **Producto A (turismo):** sitio único en `https://ba-en-ruta.vercel.app`.
-- **Config base:** `src/lib/tenant.ts` — tipo `TenantConfig`, registro `TENANTS`, tenant por defecto `ba-en-ruta`.
-- **Formulario comercial:** sección `#para-choferes` → WhatsApp con mensaje estructurado (sin persistencia en DB).
-- **Sin backend multi-tenant aún:** un solo deploy, un solo WhatsApp de operación.
+| Pieza | Estado |
+|-------|--------|
+| Producto turismo (BA en Ruta) | Activo en `/` |
+| `TenantConfig` + registro | `src/lib/tenant.ts` |
+| Resolución por ruta | `/c/:slug` → `resolveTenantFromPath` |
+| Tenant demo | `/c/demo-chofer` (nombre y features distintas; banner de demo) |
+| WhatsApp por tenant | `getActiveWhatsAppNumber()` en `whatsapp.ts` / Mi QR |
+| Formulario comercial choferes | `#para-choferes` → WhatsApp |
+| Features flags | Ocultan gastronomía / driverSignup / etc. por tenant |
+| SPA rewrites Vercel | `vercel.json` |
+| Vista previa automática | **Diseño solo** (ver abajo) |
 
-## Modelo de configuración por chofer
+## Cómo dar de alta un chofer (proceso manual actual)
 
-Campos previstos en `TenantConfig`:
+1. Recibir solicitud por el formulario o WhatsApp.
+2. Acordar alcance y condiciones (fuera del código).
+3. En `src/lib/tenant.ts`, agregar una entrada en `TENANTS`:
 
-| Campo | Uso |
-|-------|-----|
-| `id`, `slug` | Identificador y ruta/subdominio |
-| `status` | `draft` \| `active` \| `suspended` \| `preview` |
-| `publicName`, `commercialName` | Identidad |
-| `whatsappNumber` | Contacto del chofer |
-| `languages` | ES / EN / PT |
-| `features.*` | Secciones habilitadas |
-| `domain` / `subdomain` | Publicación |
+```ts
+"juan-perez": {
+  id: "juan-perez",
+  slug: "juan-perez",
+  status: "active",
+  publicName: "Juan Pérez Transfers",
+  whatsappNumber: "54911XXXXXXXX",
+  languages: ["es", "en"],
+  tagline: "…",
+  features: { /* copiar de DEFAULT_TENANT y ajustar */ },
+},
+```
 
-Una mejora en la plantilla beneficia a todos los sitios compatibles; el cambio de nombre/WhatsApp de un chofer no afecta a otro.
+4. Commit + push a `main` → deploy Vercel.
+5. URL del sitio: `https://ba-en-ruta.vercel.app/c/juan-perez`
 
-## Estrategia de publicación (Fase 1 viable)
+El sitio principal `/` no se ve afectado. El demo `/c/demo-chofer` prueba el aislamiento de config (nombre, banner, features).
 
-1. **Rutas en el mismo dominio** (recomendado al inicio): `ba-en-ruta.vercel.app/c/:slug`  
-   - Vite SPA + rewrite a `index.html`; el shell lee `slug` y carga `getTenant(slug)`.
-2. **Subdominios** (`juan.ba-en-ruta.vercel.app`): requiere configuración en Vercel (wildcard DNS + project domains). Más tarde.
-3. **Dominio propio del chofer:** CNAME al deploy; mapping en config. Coste y setup por cliente.
+## Publicación
 
-No comprar dominios ni contratar servicios sin autorización.
+1. **Rutas en el mismo dominio** (actual): `/c/:slug`
+2. **Subdominios** (`slug.dominio.com`): requiere DNS wildcard + dominios en Vercel (posterior).
+3. **Dominio propio**: CNAME al proyecto; mapear en config (posterior).
 
-## Flujo comercial actual
+## Vista previa automática (futuro — no implementado)
 
-1. Chofer ve «Para choferes».
-2. Completa formulario breve.
-3. Se abre WhatsApp con el mensaje (el interesado debe enviar).
-4. Operador acuerda precio/alcance de forma manual.
-5. Operador agrega un `TenantConfig` (hoy: editar `tenant.ts` o futuro panel) y publica.
+1. Formulario → config `status: "preview"` + slug temporal.
+2. Enlace `/c/:previewSlug` con vencimiento.
+3. CTA WhatsApp para contratar; admin activa o suspende.
+4. Sin pago automático ni servicio permanente al generar la preview.
 
-Precios y planes **no** se hardcodean en el frontend comercial como oferta fija.
-
-## Generación automática de vista previa (futuro — diseño, no implementado)
-
-Flujo deseado:
-
-1. Formulario → genera config `status: "preview"` con slug temporal.
-2. Enlace único `/c/:previewSlug` (o token firmado con vencimiento).
-3. Visitante ve plantilla con sus datos; CTA WhatsApp para contratar.
-4. Admin recibe aviso (WhatsApp/email) y puede activar, suspender o borrar.
-5. Previews caducan (p. ej. 7–14 días); no implican pago ni servicio permanente.
-
-Requisitos de seguridad: rate-limit del formulario, tokens no adivinables, sin exposición de datos de otros tenants, separación preview vs active.
-
-**Dependencias para implementarlo:** almacenamiento de configs (archivo versionado, KV o DB), routing por slug, política de caducidad, notificación al admin. Reutilizar `TenantConfig` y el shell actual; no clonar repos por chofer.
-
-## Administración mínima (siguiente paso técnico)
-
-- Herramienta interna o script: `createTenant(config)` → escribe registro + commit/deploy.
-- Panel privado solo con autenticación (no ocultar botones en el frontend como “seguridad”).
-- Export/backup de la config de cada sitio.
+Dependencias: almacenamiento de configs, tokens, rate-limit, notificación al admin.
 
 ## Principios
 
-- No sobreingenierizar: configs + rutas antes que microservicios.
-- Plantilla única; datos y marca por tenant.
-- WhatsApp como canal de alta hasta validar el modelo de negocio.
+- Una plantilla; datos y marca por tenant.
+- WhatsApp como canal de alta hasta validar el negocio.
+- No hardcodear precios comerciales en el frontend.
