@@ -58,16 +58,14 @@ export function Header({
 }) {
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  // Menú corto: sin sección fantasma «Experiencias»
   const nav = [
-    { id: "como-funciona", key: "navHow" as CopyKey },
     { id: "servicios", key: "navServices" as CopyKey },
-    { id: "experiencias", key: "navExperiences" as CopyKey },
     { id: "guiadas", key: "guidedLabel" as CopyKey },
     { id: "imperdibles", key: "navPlaces" as CopyKey },
+    { id: "mapa", key: "mapLabel" as CopyKey },
     { id: "gastronomia", key: "navGastronomy" as CopyKey },
-    { id: "recorridos", key: "itinLabel" as CopyKey },
-    { id: "mi-qr", key: "navQr" as CopyKey },
-    { id: "para-choferes", key: "navDrivers" as CopyKey },
+    { id: "reserva", key: "navCta" as CopyKey },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -80,7 +78,7 @@ export function Header({
             <span className="block text-[10px] uppercase tracking-widest text-navy/50">Buenos Aires</span>
           </span>
         </button>
-        <nav className="hidden lg:flex items-center gap-4 text-sm text-navy/80">
+        <nav className="hidden lg:flex items-center gap-5 text-sm text-navy/80">
           {nav.map((item) => (
             <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors whitespace-nowrap">{t(lang, item.key)}</button>
           ))}
@@ -117,7 +115,6 @@ export function Header({
           {nav.map((item) => (
             <button key={item.id} type="button" onClick={() => { onNav(item.id); setOpen(false) }} className="block w-full text-left py-2.5 text-navy/80 hover:text-navy font-medium">{t(lang, item.key)}</button>
           ))}
-          <button type="button" onClick={() => { onNav("reserva"); setOpen(false) }} className="mt-2 w-full bg-gold text-navy font-medium py-2.5 rounded-lg">{t(lang, "navCta")}</button>
         </div>
       )}
     </header>
@@ -128,7 +125,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
   return (
     <section id="inicio" className="relative min-h-[85vh] flex items-end">
       <div className="absolute inset-0">
-        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires al atardecer, Buenos Aires" className="w-full h-full object-cover" fetchPriority="high" />
+        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires al atardecer" className="w-full h-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/50 to-navy/30" />
       </div>
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-32">
@@ -141,7 +138,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
           <button type="button" onClick={() => onNav("reserva")} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors">
             <MessageCircle className="w-4 h-4" />{t(lang, "heroCtaWhatsApp")}<span aria-hidden>→</span>
           </button>
-          <button type="button" onClick={() => onNav("experiencias")} className="inline-flex items-center gap-2 text-white/90 hover:text-white font-medium px-5 py-3">
+          <button type="button" onClick={() => onNav("imperdibles")} className="inline-flex items-center gap-2 text-white/90 hover:text-white font-medium px-5 py-3">
             {t(lang, "heroCtaExperiences")}<span aria-hidden>→</span>
           </button>
         </div>
