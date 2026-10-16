@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Plane, Car, Map, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
+import { Plane, Car, Map, Play, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
 import {
   PLACES,
   EXP_IMAGES,
@@ -94,43 +94,46 @@ export function Prices({ lang, onEnquire }: { lang: Lang; onEnquire: () => void 
   )
 }
 
-export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interest: InterestId) => void }) {
-  const cards: { interest: InterestId; label: CopyKey; title: CopyKey; desc: CopyKey; chips?: CopyKey[]; note?: CopyKey; img: string }[] = [
-    { interest: "city", label: "expEssentialLabel", title: "expEssentialTitle", desc: "expEssentialDesc", img: EXP_IMAGES.city },
-    { interest: "football", label: "expFootballLabel", title: "expFootballTitle", desc: "expFootballDesc", chips: ["chipBombonera", "chipMonumental", "chipMuseums"], note: "expFootballNote", img: EXP_IMAGES.football },
-    { interest: "folklore", label: "expFolkloreLabel", title: "expFolkloreTitle", desc: "expFolkloreDesc", chips: ["chipTango", "chipPena", "chipAsado", "chipMate", "chipCampo"], img: EXP_IMAGES.folklore },
+/**
+ * Mood bridge — text only, no destination photos.
+ * Avoids repeating Caminito/Bombonera imagery before Imperdibles.
+ */
+export function MoodStrip({
+  lang,
+  onSelect,
+  onExplore,
+}: {
+  lang: Lang
+  onSelect: (interest: InterestId) => void
+  onExplore: () => void
+}) {
+  const moods: { interest: InterestId; title: CopyKey; desc: CopyKey }[] = [
+    { interest: "city", title: "expEssentialTitle", desc: "moodCityDesc" },
+    { interest: "football", title: "expFootballTitle", desc: "moodFootballDesc" },
+    { interest: "folklore", title: "expFolkloreTitle", desc: "moodFolkloreDesc" },
   ]
   return (
-    <section id="experiencias" className="py-16 sm:py-20 bg-cream">
+    <section id="experiencias" className="py-14 sm:py-16 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "expLabel")}</p>
-        <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "expTitle")}</h2>
-        <p className="text-navy/60 text-sm mb-10 max-w-xl">{t(lang, "expSubtitle")}</p>
-        <div className="grid md:grid-cols-3 gap-6">
-          {cards.map((c) => (
-            <article key={c.interest} className="ba-card bg-white rounded-2xl border border-navy/5 overflow-hidden flex flex-col">
-              <div className="aspect-[16/10] overflow-hidden bg-navy/5">
-                <img src={c.img} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={560} />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, c.label)}</p>
-                <h3 className="font-display text-xl text-navy mb-2">{t(lang, c.title)}</h3>
-                <p className="text-sm text-navy/60 leading-relaxed mb-3 flex-1">{t(lang, c.desc)}</p>
-                {c.chips && (
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {c.chips.map((ch) => (
-                      <span key={ch} className="text-xs rounded-full bg-cream px-2.5 py-0.5 text-navy/70">{t(lang, ch)}</span>
-                    ))}
-                  </div>
-                )}
-                {c.note && <p className="text-xs text-navy/40 mb-3">{t(lang, c.note)}</p>}
-                <button type="button" onClick={() => onSelect(c.interest)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors mt-auto min-h-11">
-                  {t(lang, "expCta")} <span aria-hidden>→</span>
-                </button>
-              </div>
-            </article>
+        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "moodLabel")}</p>
+        <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">{t(lang, "moodTitle")}</h2>
+        <p className="text-navy/60 text-sm mb-8 max-w-2xl leading-relaxed">{t(lang, "moodSubtitle")}</p>
+        <div className="flex flex-wrap gap-3 mb-8">
+          {moods.map((m) => (
+            <button
+              key={m.interest}
+              type="button"
+              onClick={() => onSelect(m.interest)}
+              className="text-left rounded-xl border border-navy/10 bg-white px-4 py-3 hover:border-gold/50 transition-colors min-h-11 max-w-xs"
+            >
+              <span className="block font-medium text-navy text-sm">{t(lang, m.title)}</span>
+              <span className="block text-xs text-navy/50 mt-0.5">{t(lang, m.desc)}</span>
+            </button>
           ))}
         </div>
+        <button type="button" onClick={onExplore} className="text-sm font-medium text-navy hover:text-gold min-h-11">
+          {t(lang, "moodExplore")} →
+        </button>
       </div>
     </section>
   )
@@ -154,13 +157,20 @@ function PlaceCard({
   onToggleTour?: (id: PlaceId) => void
 }) {
   const [open, setOpen] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const guideId = `guide-${place.id}`
   const nearbyRests = RESTAURANTS.filter((r) => r.placeIds.includes(place.id))
+  const yt = place.youtube
+  const videoLangs = [
+    { code: "es" as Lang, label: "ES", url: yt?.es },
+    { code: "en" as Lang, label: "EN", url: yt?.en },
+    { code: "pt" as Lang, label: "PT", url: yt?.pt },
+  ].filter((l) => l.url)
 
   return (
     <div id={`place-${place.id}`} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
       <div className="aspect-video relative bg-navy/10">
-        {place.image && (
+        {place.image && !imgError ? (
           <img
             src={place.image}
             alt={t(lang, (place.imageAltKey || place.nameKey) as CopyKey)}
@@ -168,11 +178,33 @@ function PlaceCard({
             loading="lazy"
             width={640}
             height={360}
+            onError={() => setImgError(true)}
           />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-navy/15 px-3">
+            <span className="font-display text-navy/40 text-sm text-center">{t(lang, place.nameKey as CopyKey)}</span>
+          </div>
         )}
         <span className="absolute top-2 left-2 w-7 h-7 rounded-full bg-navy/90 text-white text-xs font-medium flex items-center justify-center">
           {index + 1}
         </span>
+        {videoLangs.length > 0 && (
+          <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
+            {videoLangs.map((l) => (
+              <a
+                key={l.code}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 min-h-9 px-2.5 rounded-full bg-navy/85 hover:bg-navy text-white text-[11px] font-medium backdrop-blur-sm"
+                aria-label={`${t(lang, "placesVideo")} (${l.label})`}
+              >
+                <Play className="w-3 h-3 fill-current" aria-hidden />
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
       <div className="p-4 flex flex-col flex-1">
         <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
@@ -285,7 +317,7 @@ export function Places({
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "placesLabel")}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "placesTitle")}</h2>
-        <p className="text-navy/60 text-sm mb-10">{t(lang, "placesSubtitle")}</p>
+        <p className="text-navy/60 text-sm mb-10 max-w-xl">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {PLACES.map((place, i) => (
             <PlaceCard
@@ -320,39 +352,46 @@ export function Gastronomy({
   return (
     <section id="gastronomia" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
-          <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-navy/5">
-            <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={675} />
-          </div>
-          <div>
-            <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-navy mb-4">{t(lang, "gastroTitle")}</h2>
-            <p className="text-navy/60 text-sm leading-relaxed mb-5">{t(lang, "gastroDesc")}</p>
-            <ul className="space-y-2 text-sm text-navy/70 mb-5">
-              <li>• {t(lang, "gastroParrilla")}</li>
-              <li>• {t(lang, "gastroCafe")}</li>
-              <li>• {t(lang, "gastroEmpanadas")}</li>
-            </ul>
-            <p className="text-xs text-navy/40 mb-5">{t(lang, "gastroNote")}</p>
-            <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
-              {t(lang, "gastroCta")} <span aria-hidden>→</span>
-            </button>
-          </div>
+        <div className="max-w-2xl mb-10">
+          <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">{t(lang, "gastroTitle")}</h2>
+          <p className="text-navy/60 text-sm leading-relaxed">{t(lang, "gastroDesc")}</p>
+          <p className="text-xs text-navy/40 mt-3">{t(lang, "gastroNote")}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {RESTAURANTS.map((r) => (
-            <div key={r.id} className="ba-card bg-white rounded-xl border border-navy/5 p-4">
-              <h3 className="font-medium text-navy text-sm mb-1">{r.name}</h3>
-              <p className="text-[10px] text-navy/40 mb-1">{t(lang, r.categoryKey as CopyKey)}</p>
-              <p className="text-xs text-navy/55 mb-2">{r.address}</p>
-              {onToggleRestaurant && (
-                <button type="button" onClick={() => onToggleRestaurant(r.id)} className="text-xs font-medium text-navy hover:text-gold min-h-10">
-                  {selectedRestaurants?.includes(r.id) ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
-                </button>
-              )}
+            <div key={r.id} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+              {r.image ? (
+                <div className="aspect-[16/10] bg-navy/5">
+                  <img
+                    src={r.image}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      ;(e.target as HTMLImageElement).style.display = "none"
+                    }}
+                  />
+                </div>
+              ) : null}
+              <div className="p-4 flex flex-col flex-1">
+                <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-0.5">{t(lang, r.categoryKey as CopyKey)}</p>
+                <h3 className="font-medium text-navy text-sm mb-1">{r.name}</h3>
+                <p className="text-xs text-navy/55 mb-1">{r.address}</p>
+                <p className="text-xs text-navy/60 leading-relaxed flex-1 mb-2">{t(lang, r.descKey as CopyKey)}</p>
+                <p className="text-[11px] text-navy/45 mb-2">{t(lang, r.whyKey as CopyKey)}</p>
+                {onToggleRestaurant && (
+                  <button type="button" onClick={() => onToggleRestaurant(r.id)} className="text-xs font-medium text-navy hover:text-gold min-h-10 self-start">
+                    {selectedRestaurants?.includes(r.id) ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
+        <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold min-h-11">
+          {t(lang, "gastroCta")} <span aria-hidden>→</span>
+        </button>
       </div>
     </section>
   )
