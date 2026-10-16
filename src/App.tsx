@@ -6,6 +6,7 @@ import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
 import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
+import { MiQr } from "./components/MiQr"
 
 export default function App() {
   const [lang, setLang] = useLang()
@@ -102,6 +103,7 @@ export default function App() {
           selectedRestaurants={tour.restaurantIds}
           onToggleRestaurant={toggleRestaurant}
         />
+        <MiQr lang={lang} />
         <EnquiryForm lang={lang} initialService={formService} initialInterests={formInterests} initialPlace={formPlace} />
         <FAQ lang={lang} />
       </main>
