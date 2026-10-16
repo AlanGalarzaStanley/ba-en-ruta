@@ -1,6 +1,15 @@
 import { useState } from "react"
-import { Plane, Car, Map, Play } from "lucide-react"
-import { PLACES, EXP_IMAGES, type ServiceId, type InterestId, type PlaceId, type Place } from "../lib/ba-config"
+import { Plane, Car, Map, Play, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
+import {
+  PLACES,
+  EXP_IMAGES,
+  RESTAURANTS,
+  type ServiceId,
+  type InterestId,
+  type PlaceId,
+  type Place,
+  type RestaurantId,
+} from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 
 export function HowItWorks({ lang }: { lang: Lang }) {
@@ -13,7 +22,8 @@ export function HowItWorks({ lang }: { lang: Lang }) {
     <section id="como-funciona" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <p className="text-center text-navy/40 text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "howLabel")}</p>
-        <h2 className="font-display text-3xl sm:text-4xl text-center text-navy mb-12">{t(lang, "howTitle")}</h2>
+        <h2 className="font-display text-3xl sm:text-4xl text-center text-navy mb-4">{t(lang, "howTitle")}</h2>
+        <div className="ba-accent-line max-w-xs mx-auto mb-12" aria-hidden />
         <div className="grid md:grid-cols-3 gap-8 md:gap-10">
           {steps.map((s) => (
             <div key={s.n} className="text-center">
@@ -47,8 +57,8 @@ export function Services({ lang, onEnquire }: { lang: Lang; onEnquire: (service:
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {items.map((item) => (
-            <div key={item.id} className="bg-cream rounded-2xl border border-navy/5 p-6 flex flex-col">
-              <item.icon className="w-6 h-6 text-navy/40 mb-4" />
+            <div key={item.id} className="ba-card bg-cream rounded-2xl border border-navy/5 p-6 flex flex-col">
+              <item.icon className="w-6 h-6 text-sky mb-4" />
               <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, item.label)}</p>
               <h3 className="font-display text-xl text-navy mb-2">{t(lang, item.title)}</h3>
               <p className="text-sm text-navy/60 leading-relaxed flex-1 mb-5">{t(lang, item.desc)}</p>
@@ -97,7 +107,7 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
         <p className="text-navy/60 text-sm mb-10 max-w-xl">{t(lang, "expSubtitle")}</p>
         <div className="grid md:grid-cols-3 gap-6">
           {cards.map((c) => (
-            <article key={c.interest} className="bg-white rounded-2xl border border-navy/5 overflow-hidden flex flex-col">
+            <article key={c.interest} className="ba-card bg-white rounded-2xl border border-navy/5 overflow-hidden flex flex-col">
               <div className="aspect-[16/10] overflow-hidden bg-navy/5">
                 <img src={c.img} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={560} />
               </div>
@@ -125,8 +135,26 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
   )
 }
 
-function PlaceCard({ place, lang, onSelect }: { place: Place; lang: Lang; onSelect: (id: PlaceId) => void }) {
+function PlaceCard({
+  place,
+  index,
+  lang,
+  onSelect,
+  onMapFocus,
+  selected,
+  onToggleTour,
+}: {
+  place: Place
+  index: number
+  lang: Lang
+  onSelect: (id: PlaceId) => void
+  onMapFocus?: (id: PlaceId) => void
+  selected?: boolean
+  onToggleTour?: (id: PlaceId) => void
+}) {
   const [imgError, setImgError] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [galIdx, setGalIdx] = useState(0)
   const yt = place.youtube
   const langs: { code: Lang; label: string; url?: string }[] = [
     { code: "es", label: "ES", url: yt?.es },
@@ -135,14 +163,22 @@ function PlaceCard({ place, lang, onSelect }: { place: Place; lang: Lang; onSele
   ].filter((l) => l.url)
 
   const alt = place.imageAltKey ? t(lang, place.imageAltKey as CopyKey) : t(lang, place.nameKey as CopyKey)
+  const guideId = `guide-${place.id}`
+  const gallery = place.gallery?.length
+    ? place.gallery
+    : place.image
+      ? [{ src: place.image, altKey: place.imageAltKey || place.nameKey }]
+      : []
+  const mainSrc = !imgError && gallery[galIdx]?.src ? gallery[galIdx].src : place.image
+  const nearbyRests = RESTAURANTS.filter((r) => r.placeIds.includes(place.id))
 
   return (
-    <div className="bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+    <div id={`place-${place.id}`} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
       <div className="aspect-video relative bg-navy/10">
-        {place.image && !imgError ? (
+        {mainSrc ? (
           <img
-            src={place.image}
-            alt={alt}
+            src={mainSrc}
+            alt={gallery[galIdx] ? t(lang, gallery[galIdx].altKey as CopyKey) : alt}
             className="w-full h-full object-cover"
             loading="lazy"
             width={640}
@@ -154,6 +190,9 @@ function PlaceCard({ place, lang, onSelect }: { place: Place; lang: Lang; onSele
             <span className="font-display text-navy/40 text-sm text-center">{t(lang, place.nameKey as CopyKey)}</span>
           </div>
         )}
+        <span className="absolute top-2 left-2 w-7 h-7 rounded-full bg-navy/90 text-white text-xs font-medium flex items-center justify-center">
+          {index + 1}
+        </span>
         {langs.length > 0 && (
           <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
             {langs.map((l) => (
@@ -178,15 +217,136 @@ function PlaceCard({ place, lang, onSelect }: { place: Place; lang: Lang; onSele
         {place.durationKey && (
           <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>
         )}
-        <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors text-left min-h-11">
-          {t(lang, "placesCta")} →
-        </button>
+
+        <div className="border-t border-navy/8 pt-2 mt-1">
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="w-full flex items-center justify-between text-xs font-medium text-navy/70 hover:text-navy min-h-10 py-1"
+            aria-expanded={open}
+            aria-controls={guideId}
+          >
+            <span>{t(lang, "guideToggle")}</span>
+            {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+          {open && (
+            <div id={guideId} className="pb-2 space-y-3 text-xs text-navy/65 leading-relaxed">
+              {gallery.length > 1 && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-1.5">{t(lang, "guideGallery")}</p>
+                  <div className="flex gap-1.5 overflow-x-auto pb-1">
+                    {gallery.map((g, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => {
+                          setGalIdx(i)
+                          setImgError(false)
+                        }}
+                        className={`shrink-0 w-16 h-12 rounded overflow-hidden border-2 ${galIdx === i ? "border-gold" : "border-transparent"}`}
+                      >
+                        <img src={g.src} alt={t(lang, g.altKey as CopyKey)} className="w-full h-full object-cover" loading="lazy" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideHistory")}</p>
+                <p>{t(lang, place.historyKey as CopyKey)}</p>
+              </div>
+              {place.seeDoKeys && place.seeDoKeys.length > 0 && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideSeeDo")}</p>
+                  <ul className="list-disc list-inside space-y-0.5">
+                    {place.seeDoKeys.map((k) => (
+                      <li key={k}>{t(lang, k as CopyKey)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {place.detailKey && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideDetail")}</p>
+                  <p>{t(lang, place.detailKey as CopyKey)}</p>
+                </div>
+              )}
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideTip")}</p>
+                <p>{t(lang, place.tipKey as CopyKey)}</p>
+              </div>
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideLogistics")}</p>
+                <p>{t(lang, place.logisticsKey as CopyKey)}</p>
+              </div>
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideNearby")}</p>
+                <p>{t(lang, place.nearbyKey as CopyKey)}</p>
+              </div>
+              {nearbyRests.length > 0 && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "gastroNear")}</p>
+                  <ul className="space-y-0.5">
+                    {nearbyRests.map((r) => (
+                      <li key={r.id}>
+                        {r.name}
+                        {r.address ? ` — ${r.address}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-2">
+          {onMapFocus && (
+            <button
+              type="button"
+              onClick={() => onMapFocus(place.id)}
+              className="inline-flex items-center gap-1 text-xs text-navy/60 hover:text-navy min-h-10"
+            >
+              <MapPin className="w-3 h-3" />
+              {t(lang, "guideShowOnMap")}
+            </button>
+          )}
+          {onToggleTour && (
+            <button
+              type="button"
+              onClick={() => onToggleTour(place.id)}
+              className={`inline-flex items-center gap-1 text-xs font-medium min-h-10 ${selected ? "text-gold" : "text-navy hover:text-gold"}`}
+            >
+              {selected ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+              {selected ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => onSelect(place.id)}
+            className="text-xs font-medium text-navy hover:text-gold transition-colors min-h-10"
+          >
+            {t(lang, "placesCta")} →
+          </button>
+        </div>
       </div>
     </div>
   )
 }
 
-export function Places({ lang, onSelect }: { lang: Lang; onSelect: (placeId: PlaceId) => void }) {
+export function Places({
+  lang,
+  onSelect,
+  onMapFocus,
+  selectedPlaces,
+  onToggleTour,
+}: {
+  lang: Lang
+  onSelect: (placeId: PlaceId) => void
+  onMapFocus?: (id: PlaceId) => void
+  selectedPlaces?: PlaceId[]
+  onToggleTour?: (id: PlaceId) => void
+}) {
   return (
     <section id="imperdibles" className="py-16 sm:py-20 bg-cream-dark/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -194,38 +354,92 @@ export function Places({ lang, onSelect }: { lang: Lang; onSelect: (placeId: Pla
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "placesTitle")}</h2>
         <p className="text-navy/60 text-sm mb-10">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PLACES.map((place) => (
-            <PlaceCard key={place.id} place={place} lang={lang} onSelect={onSelect} />
+          {PLACES.map((place, i) => (
+            <PlaceCard
+              key={place.id}
+              place={place}
+              index={i}
+              lang={lang}
+              onSelect={onSelect}
+              onMapFocus={onMapFocus}
+              selected={selectedPlaces?.includes(place.id)}
+              onToggleTour={onToggleTour}
+            />
           ))}
         </div>
-        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">
-          {t(lang, "placesPhotoCredit")}
-        </p>
+        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">{t(lang, "placesPhotoCredit")}</p>
       </div>
     </section>
   )
 }
 
-export function Gastronomy({ lang, onSelect }: { lang: Lang; onSelect: () => void }) {
+export function Gastronomy({
+  lang,
+  onSelect,
+  selectedRestaurants,
+  onToggleRestaurant,
+}: {
+  lang: Lang
+  onSelect: () => void
+  selectedRestaurants?: RestaurantId[]
+  onToggleRestaurant?: (id: RestaurantId) => void
+}) {
   return (
     <section id="gastronomia" className="py-16 sm:py-20 bg-cream">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-10 items-center">
-        <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-navy/5">
-          <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={675} />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
+          <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-navy/5">
+            <img src={EXP_IMAGES.gastro} alt="" className="w-full h-full object-cover" loading="lazy" width={900} height={675} />
+          </div>
+          <div>
+            <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
+            <h2 className="font-display text-3xl sm:text-4xl text-navy mb-4">{t(lang, "gastroTitle")}</h2>
+            <p className="text-navy/60 text-sm leading-relaxed mb-5">{t(lang, "gastroDesc")}</p>
+            <ul className="space-y-2 text-sm text-navy/70 mb-5">
+              <li>• {t(lang, "gastroParrilla")}</li>
+              <li>• {t(lang, "gastroCafe")}</li>
+              <li>• {t(lang, "gastroEmpanadas")}</li>
+            </ul>
+            <p className="text-xs text-navy/40 mb-5">{t(lang, "gastroNote")}</p>
+            <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
+              {t(lang, "gastroCta")} <span aria-hidden>→</span>
+            </button>
+          </div>
         </div>
-        <div>
-          <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-navy mb-4">{t(lang, "gastroTitle")}</h2>
-          <p className="text-navy/60 text-sm leading-relaxed mb-5">{t(lang, "gastroDesc")}</p>
-          <ul className="space-y-2 text-sm text-navy/70 mb-5">
-            <li>• {t(lang, "gastroParrilla")}</li>
-            <li>• {t(lang, "gastroCafe")}</li>
-            <li>• {t(lang, "gastroEmpanadas")}</li>
-          </ul>
-          <p className="text-xs text-navy/40 mb-5">{t(lang, "gastroNote")}</p>
-          <button type="button" onClick={onSelect} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
-            {t(lang, "gastroCta")} <span aria-hidden>→</span>
-          </button>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {RESTAURANTS.map((r) => {
+            const sel = selectedRestaurants?.includes(r.id)
+            return (
+              <article key={r.id} className="ba-card bg-white rounded-xl border border-navy/5 p-4 flex flex-col">
+                {r.image && (
+                  <div className="aspect-video rounded-lg overflow-hidden bg-navy/5 mb-3">
+                    <img src={r.image} alt={r.name} className="w-full h-full object-cover" loading="lazy" />
+                  </div>
+                )}
+                <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, r.categoryKey as CopyKey)}</p>
+                <h3 className="font-medium text-navy text-sm mb-1">{r.name}</h3>
+                <p className="text-[10px] text-navy/45 mb-2">{r.address}</p>
+                <p className="text-xs text-navy/60 leading-relaxed flex-1 mb-2">{t(lang, r.descKey as CopyKey)}</p>
+                <p className="text-xs text-navy/50 italic mb-3">{t(lang, r.whyKey as CopyKey)}</p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  {r.url && (
+                    <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-action hover:underline min-h-10 inline-flex items-center">
+                      Web →
+                    </a>
+                  )}
+                  {onToggleRestaurant && (
+                    <button
+                      type="button"
+                      onClick={() => onToggleRestaurant(r.id)}
+                      className={`text-xs font-medium min-h-10 ${sel ? "text-gold" : "text-navy hover:text-gold"}`}
+                    >
+                      {sel ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
+                    </button>
+                  )}
+                </div>
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>
