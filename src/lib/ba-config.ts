@@ -28,6 +28,16 @@ export const INTERESTS: { id: InterestId; key: string }[] = [
   { id: "countryside", key: "interestCountryside" },
 ]
 
+/** Tipos de experiencia para consulta rápida por WhatsApp */
+export type ExperienceType = "walk" | "private" | "photo" | "general"
+
+export const EXPERIENCE_TYPES: { id: ExperienceType; key: string }[] = [
+  { id: "walk", key: "expTypeWalk" },
+  { id: "private", key: "expTypePrivate" },
+  { id: "photo", key: "expTypePhoto" },
+  { id: "general", key: "expTypeGeneral" },
+]
+
 export type PlaceId =
   | "caminito"
   | "bombonera"
@@ -51,9 +61,14 @@ export interface Place {
     en?: string
     pt?: string
   }
+  lat: number
+  lng: number
+  historyKey: string
+  tipKey: string
+  logisticsKey: string
+  nearbyKey: string
 }
 
-/** Imágenes vía Special:FilePath (Commons). Verificadas HTTP 200. */
 const commons = (file: string) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1280`
 
@@ -66,6 +81,12 @@ export const PLACES: Place[] = [
     image: commons("Buenos_Aires_Caminito_4.jpg"),
     imageAltKey: "placeCaminitoAlt",
     attribution: "Andrzej Otrębski / CC BY-SA 4.0",
+    lat: -34.6345,
+    lng: -58.363,
+    historyKey: "guideCaminitoHistory",
+    tipKey: "guideCaminitoTip",
+    logisticsKey: "guideCaminitoLogistics",
+    nearbyKey: "guideCaminitoNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=7PWpMvnbQXY",
       en: "https://www.youtube.com/watch?v=vTzI97Hm6Rs",
@@ -80,6 +101,12 @@ export const PLACES: Place[] = [
     image: commons("Bombonera_Boca_Juniors.JPG"),
     imageAltKey: "placeBomboneraAlt",
     attribution: "Massimo Finizio / CC BY-SA 2.0 IT",
+    lat: -34.6355,
+    lng: -58.3647,
+    historyKey: "guideBomboneraHistory",
+    tipKey: "guideBomboneraTip",
+    logisticsKey: "guideBomboneraLogistics",
+    nearbyKey: "guideBomboneraNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=nabRYZnDh_0",
       en: "https://www.youtube.com/watch?v=X2IfbY-YIk0",
@@ -94,6 +121,12 @@ export const PLACES: Place[] = [
     image: commons("Casa_Rosada_2024.jpg"),
     imageAltKey: "placeSanTelmoPlazaAlt",
     attribution: "Casa Rosada / CC BY 2.5 AR",
+    lat: -34.6083,
+    lng: -58.3712,
+    historyKey: "guideSanTelmoHistory",
+    tipKey: "guideSanTelmoTip",
+    logisticsKey: "guideSanTelmoLogistics",
+    nearbyKey: "guideSanTelmoNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=oFif5l3DDjU",
       en: "https://www.youtube.com/watch?v=t4m8Di2x09A",
@@ -108,6 +141,12 @@ export const PLACES: Place[] = [
     image: commons("Recoleta_Cemetery,_Buenos_Aires,_Argentina.jpg"),
     imageAltKey: "placeRecoletaAlt",
     attribution: "Wikimedia Commons",
+    lat: -34.5875,
+    lng: -58.393,
+    historyKey: "guideRecoletaHistory",
+    tipKey: "guideRecoletaTip",
+    logisticsKey: "guideRecoletaLogistics",
+    nearbyKey: "guideRecoletaNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=F7-ye591xvU",
       en: "https://www.youtube.com/watch?v=EJvI77M_r58",
@@ -122,6 +161,12 @@ export const PLACES: Place[] = [
     image: commons("El_Rosedal.jpg"),
     imageAltKey: "placePalermoAlt",
     attribution: "Wikimedia Commons",
+    lat: -34.5703,
+    lng: -58.4219,
+    historyKey: "guidePalermoHistory",
+    tipKey: "guidePalermoTip",
+    logisticsKey: "guidePalermoLogistics",
+    nearbyKey: "guidePalermoNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=jJGO3Y-bh3w",
       en: "https://www.youtube.com/watch?v=pvx0ThxFsRA",
@@ -136,6 +181,12 @@ export const PLACES: Place[] = [
     image: commons("2011.10.17.151426_Puente_de_la_Mujer_Puerto_Madero_Buenos_Aires.jpg"),
     imageAltKey: "placeMaderoAlt",
     attribution: "Wikimedia Commons",
+    lat: -34.608,
+    lng: -58.3615,
+    historyKey: "guideMaderoHistory",
+    tipKey: "guideMaderoTip",
+    logisticsKey: "guideMaderoLogistics",
+    nearbyKey: "guideMaderoNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=vBRRdV0965A",
       en: "https://www.youtube.com/watch?v=Z7oweo9DlAQ",
@@ -150,6 +201,12 @@ export const PLACES: Place[] = [
     image: commons("Obelisco_Buenos_Aires.jpg"),
     imageAltKey: "placeObeliscoColonAlt",
     attribution: "Wikimedia Commons",
+    lat: -34.6037,
+    lng: -58.3816,
+    historyKey: "guideObeliscoHistory",
+    tipKey: "guideObeliscoTip",
+    logisticsKey: "guideObeliscoLogistics",
+    nearbyKey: "guideObeliscoNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=mhlr8Kc-skE",
       en: "https://www.youtube.com/watch?v=scu_tWHsshs",
@@ -164,6 +221,12 @@ export const PLACES: Place[] = [
     image: commons("El_maravilloso_Delta_en_Tigre.jpg"),
     imageAltKey: "placeTigreAlt",
     attribution: "Tigre Municipio / CC BY 2.0",
+    lat: -34.426,
+    lng: -58.5796,
+    historyKey: "guideTigreHistory",
+    tipKey: "guideTigreTip",
+    logisticsKey: "guideTigreLogistics",
+    nearbyKey: "guideTigreNearby",
     youtube: {
       es: "https://www.youtube.com/watch?v=KkXUP9sFieU",
       en: "https://www.youtube.com/watch?v=C20NuCd0Tqg",
