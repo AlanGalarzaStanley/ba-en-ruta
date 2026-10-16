@@ -22,7 +22,7 @@ export const copyEs = {
   valueCustom: "Recorridos a tu medida",
   valueLocal: "Traslados y mirada local",
   passionLabel: "Pasión argentina",
-  passionTitle: "Acá el fútbol se canta, el asado se comparte y el tango se siente.",
+  passionTitle: "El fútbol se vive, el asado se comparte y el tango se siente.",
   passionStadiums: "Estadios que laten",
   passionFire: "Fogón y guitarra",
   passionTango: "Noches de tango",
