@@ -196,7 +196,7 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
             <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-white/60 hover:text-gold transition-colors">{CONTACT_EMAIL}</a>
           </div>
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/60">
-            {([["como-funciona", "navHow"], ["servicios", "navServices"], ["experiencias", "navExperiences"], ["gastronomia", "navGastronomy"], ["imperdibles", "navPlaces"], ["precios", "navPrices"], ["faq", "navFaq"]] as const).map(([id, key]) => (
+            {([["como-funciona", "navHow"], ["servicios", "navServices"], ["experiencias", "navExperiences"], ["gastronomia", "navGastronomy"], ["imperdibles", "navPlaces"], ["mapa", "mapLabel"], ["mi-qr", "navQr"], ["precios", "navPrices"], ["faq", "navFaq"]] as const).map(([id, key]) => (
               <button key={id} type="button" onClick={() => onNav(id)} className="hover:text-white transition-colors">{t(lang, key)}</button>
             ))}
             <button type="button" onClick={() => onNav("reserva")} className="hover:text-white transition-colors">{t(lang, "navCta")} →</button>
