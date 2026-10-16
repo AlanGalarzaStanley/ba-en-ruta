@@ -1,5 +1,4 @@
 import {
-  WHATSAPP_NUMBER,
   SITE_URL,
   PLACES,
   RESTAURANTS,
@@ -12,6 +11,7 @@ import {
   type RestaurantId,
   type ItineraryId,
 } from "./ba-config"
+import { getActiveWhatsAppNumber } from "./tenant"
 import { t, type Lang, type CopyKey } from "./ba-copy"
 
 export interface EnquiryPayload {
@@ -186,53 +186,38 @@ export function buildTourWhatsAppMessage(opts: {
   return lines.join(" ")
 }
 
-/** Contextual message when the visitor is inside a guided experience. */
 export function buildExperienceWhatsAppMessage(opts: {
   lang: Lang
-  experienceId: string
-  experienceName: string
-  stopTitle?: string
-  date?: string
+  experienceTitle: string
+  stopName?: string
+  stopIndex?: number
+  totalStops?: number
 }): string {
-  const { lang, experienceName, stopTitle, date } = opts
-
+  const { lang, experienceTitle, stopName, stopIndex, totalStops } = opts
   if (lang === "en") {
-    const lines = [
-      "Hello! I'm following a guided experience on BA en Ruta.",
-      `Experience: ${experienceName}.`,
-    ]
-    if (stopTitle) lines.push(`I was looking at the stop: ${stopTitle}.`)
-    if (date) lines.push(`Estimated date: ${date}.`)
-    lines.push("I'd like options to personalise this route or add a private transfer.")
-    lines.push("Preferred language: English.")
-    lines.push("This is an enquiry only, not a confirmed booking.")
-    return lines.join(" ")
+    let msg = `Hello! I'm following the guided experience "${experienceTitle}" on BA en Ruta.`
+    if (stopName && stopIndex != null && totalStops != null) {
+      msg += ` I'm at stop ${stopIndex}/${totalStops}: ${stopName}.`
+    }
+    msg += " I'd like options for a private transfer or to do this route with a driver. This is an enquiry only, not a confirmed booking."
+    return msg
   }
   if (lang === "pt") {
-    const lines = [
-      "Olá! Estou seguindo uma experiência guiada no BA en Ruta.",
-      `Experiência: ${experienceName}.`,
-    ]
-    if (stopTitle) lines.push(`Estava na parada: ${stopTitle}.`)
-    if (date) lines.push(`Data estimada: ${date}.`)
-    lines.push("Gostaria de opções para personalizar este roteiro ou somar um traslado privado.")
-    lines.push("Idioma preferido: português.")
-    lines.push("Isto é apenas uma consulta, não uma reserva confirmada.")
-    return lines.join(" ")
+    let msg = `Olá! Estou seguindo a experiência guiada "${experienceTitle}" no BA en Ruta.`
+    if (stopName && stopIndex != null && totalStops != null) {
+      msg += ` Estou na parada ${stopIndex}/${totalStops}: ${stopName}.`
+    }
+    msg += " Gostaria de opções de traslado particular ou de fazer este roteiro com motorista. Isto é apenas uma consulta, não uma reserva confirmada."
+    return msg
   }
-  const lines = [
-    "¡Hola! Estoy siguiendo una experiencia guiada en BA en Ruta.",
-    `Experiencia: ${experienceName}.`,
-  ]
-  if (stopTitle) lines.push(`Estaba en la parada: ${stopTitle}.`)
-  if (date) lines.push(`Fecha estimada: ${date}.`)
-  lines.push("Me gustaría opciones para personalizar este recorrido o sumar un traslado privado.")
-  lines.push("Idioma preferido: español.")
-  lines.push("Esto es solo una consulta, no una reserva confirmada.")
-  return lines.join(" ")
+  let msg = `¡Hola! Estoy siguiendo la experiencia guiada "${experienceTitle}" en BA en Ruta.`
+  if (stopName && stopIndex != null && totalStops != null) {
+    msg += ` Estoy en la parada ${stopIndex}/${totalStops}: ${stopName}.`
+  }
+  msg += " Me gustaría opciones de traslado privado o de hacer este recorrido con chofer. Esto es solo una consulta, no una reserva confirmada."
+  return msg
 }
 
-/** Mensaje precargado para el QR del conductor (pasajero guarda contacto). */
 export function buildPassengerContactMessage(): string {
   return (
     "¡Hola! Viajé con vos y quiero guardar tu contacto para futuros traslados. " +
@@ -241,14 +226,14 @@ export function buildPassengerContactMessage(): string {
   )
 }
 
-/** URL wa.me del QR de contacto del conductor. null si el número no es válido. */
 export function getDriverQrWhatsAppUrl(): string | null {
   return getWhatsAppUrl(buildPassengerContactMessage())
 }
 
 export function getWhatsAppUrl(message: string): string | null {
-  if (!WHATSAPP_NUMBER || !/^\d{10,15}$/.test(WHATSAPP_NUMBER)) return null
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  const num = getActiveWhatsAppNumber()
+  if (!num || !/^\d{10,15}$/.test(num)) return null
+  return `https://wa.me/${num}?text=${encodeURIComponent(message)}`
 }
 
 export function openWhatsApp(message: string): { opened: boolean; url: string | null } {
