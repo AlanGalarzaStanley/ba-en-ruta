@@ -1,10 +1,9 @@
 /**
  * Configuración central de BA en Ruta
+ * Imágenes: preferimos fuentes estables (Pexels/Unsplash) para evitar 429 de Wikimedia.
  */
 
 export const WHATSAPP_NUMBER = "5491151448632"
-
-/** URL pública canónica (producción). */
 export const SITE_URL = "https://ba-en-ruta.vercel.app"
 
 export type ServiceId = "airport" | "private" | "tours" | "general"
@@ -54,8 +53,8 @@ export type RestaurantId = "tortoni" | "preferido" | "cabrera" | "puerto-frutos"
 
 export type ItineraryId = "historica" | "clasica" | "gastronomica" | "futbolera" | "tigre-delta"
 
-const commons = (file: string) =>
-  `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1280`
+/** Pexels/Unsplash: estables y aptas para web. */
+const img = (url: string) => url
 
 export interface Place {
   id: PlaceId
@@ -106,12 +105,9 @@ export const PLACES: Place[] = [
     nameKey: "placeCaminito",
     descKey: "placeCaminitoDesc",
     durationKey: "duration2h",
-    image: commons("Buenos_Aires_Caminito_4.jpg"),
+    image: img("https://images.pexels.com/photos/1842332/pexels-photo-1842332.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeCaminitoAlt",
-    attribution: "Andrzej Otrębski / CC BY-SA 4.0",
-    gallery: [
-      { src: commons("Buenos_Aires_Caminito_4.jpg"), altKey: "placeCaminitoAlt", attribution: "Andrzej Otrębski / CC BY-SA 4.0" },
-    ],
+    attribution: "Pexels",
     lat: -34.6345,
     lng: -58.363,
     historyKey: "guideCaminitoHistory",
@@ -131,12 +127,9 @@ export const PLACES: Place[] = [
     nameKey: "placeBombonera",
     descKey: "placeBomboneraDesc",
     durationKey: "duration2h",
-    image: commons("Bombonera_Boca_Juniors.JPG"),
+    image: img("https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeBomboneraAlt",
-    attribution: "Massimo Finizio / CC BY-SA 2.0 IT",
-    gallery: [
-      { src: commons("Bombonera_Boca_Juniors.JPG"), altKey: "placeBomboneraAlt", attribution: "Massimo Finizio / CC BY-SA 2.0 IT" },
-    ],
+    attribution: "Pexels",
     lat: -34.6355,
     lng: -58.3647,
     historyKey: "guideBomboneraHistory",
@@ -156,12 +149,9 @@ export const PLACES: Place[] = [
     nameKey: "placeSanTelmoPlaza",
     descKey: "placeSanTelmoPlazaDesc",
     durationKey: "duration3h",
-    image: commons("Casa_Rosada_2024.jpg"),
+    image: img("https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeSanTelmoPlazaAlt",
-    attribution: "Casa Rosada / CC BY 2.5 AR",
-    gallery: [
-      { src: commons("Casa_Rosada_2024.jpg"), altKey: "placeSanTelmoPlazaAlt", attribution: "Casa Rosada / CC BY 2.5 AR" },
-    ],
+    attribution: "Pexels",
     lat: -34.6083,
     lng: -58.3712,
     historyKey: "guideSanTelmoHistory",
@@ -181,12 +171,9 @@ export const PLACES: Place[] = [
     nameKey: "placeRecoleta",
     descKey: "placeRecoletaDesc",
     durationKey: "duration3h",
-    image: commons("Recoleta_Cemetery,_Buenos_Aires,_Argentina.jpg"),
+    image: img("https://images.pexels.com/photos/163864/buenos-aires-argentina-cemetery-recoleta-163864.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeRecoletaAlt",
-    attribution: "Wikimedia Commons",
-    gallery: [
-      { src: commons("Recoleta_Cemetery,_Buenos_Aires,_Argentina.jpg"), altKey: "placeRecoletaAlt", attribution: "Wikimedia Commons" },
-    ],
+    attribution: "Pexels",
     lat: -34.5875,
     lng: -58.393,
     historyKey: "guideRecoletaHistory",
@@ -206,12 +193,9 @@ export const PLACES: Place[] = [
     nameKey: "placePalermo",
     descKey: "placePalermoDesc",
     durationKey: "duration3h",
-    image: commons("El_Rosedal.jpg"),
+    image: img("https://images.pexels.com/photos/2506923/pexels-photo-2506923.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placePalermoAlt",
-    attribution: "Wikimedia Commons",
-    gallery: [
-      { src: commons("El_Rosedal.jpg"), altKey: "placePalermoAlt", attribution: "Wikimedia Commons" },
-    ],
+    attribution: "Pexels",
     lat: -34.5703,
     lng: -58.4219,
     historyKey: "guidePalermoHistory",
@@ -231,12 +215,9 @@ export const PLACES: Place[] = [
     nameKey: "placeMadero",
     descKey: "placeMaderoDesc",
     durationKey: "duration2h",
-    image: commons("2011.10.17.151426_Puente_de_la_Mujer_Puerto_Madero_Buenos_Aires.jpg"),
+    image: img("https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeMaderoAlt",
-    attribution: "Wikimedia Commons",
-    gallery: [
-      { src: commons("2011.10.17.151426_Puente_de_la_Mujer_Puerto_Madero_Buenos_Aires.jpg"), altKey: "placeMaderoAlt", attribution: "Wikimedia Commons" },
-    ],
+    attribution: "Pexels",
     lat: -34.608,
     lng: -58.3615,
     historyKey: "guideMaderoHistory",
@@ -256,12 +237,9 @@ export const PLACES: Place[] = [
     nameKey: "placeObeliscoColon",
     descKey: "placeObeliscoColonDesc",
     durationKey: "duration3h",
-    image: commons("Obelisco_Buenos_Aires.jpg"),
+    image: img("https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeObeliscoColonAlt",
-    attribution: "Wikimedia Commons",
-    gallery: [
-      { src: commons("Obelisco_Buenos_Aires.jpg"), altKey: "placeObeliscoColonAlt", attribution: "Wikimedia Commons" },
-    ],
+    attribution: "Pexels",
     lat: -34.6037,
     lng: -58.3816,
     historyKey: "guideObeliscoHistory",
@@ -281,12 +259,9 @@ export const PLACES: Place[] = [
     nameKey: "placeTigre",
     descKey: "placeTigreDesc",
     durationKey: "durationHalf",
-    image: commons("El_maravilloso_Delta_en_Tigre.jpg"),
+    image: img("https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=1280"),
     imageAltKey: "placeTigreAlt",
-    attribution: "Tigre Municipio / CC BY 2.0",
-    gallery: [
-      { src: commons("El_maravilloso_Delta_en_Tigre.jpg"), altKey: "placeTigreAlt", attribution: "Tigre Municipio / CC BY 2.0" },
-    ],
+    attribution: "Pexels",
     lat: -34.426,
     lng: -58.5796,
     historyKey: "guideTigreHistory",
@@ -303,7 +278,6 @@ export const PLACES: Place[] = [
   },
 ]
 
-/** Establecimientos reales y públicos. Imágenes de atmósfera (no necesariamente del local exacto). */
 export const RESTAURANTS: Restaurant[] = [
   {
     id: "tortoni",
@@ -315,7 +289,7 @@ export const RESTAURANTS: Restaurant[] = [
     placeIds: ["san-telmo-plaza", "obelisco-colon"],
     itineraryIds: ["historica", "clasica", "gastronomica"],
     url: "https://www.cafetortoni.com.ar/",
-    image: commons("Cafe_Tortoni_Buenos_Aires.jpg"),
+    image: img("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"),
   },
   {
     id: "preferido",
@@ -327,7 +301,7 @@ export const RESTAURANTS: Restaurant[] = [
     placeIds: ["palermo"],
     itineraryIds: ["clasica", "gastronomica"],
     url: "https://elpreferidodepalermo.com.ar/",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    image: img("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80"),
   },
   {
     id: "cabrera",
@@ -339,7 +313,7 @@ export const RESTAURANTS: Restaurant[] = [
     placeIds: ["palermo"],
     itineraryIds: ["gastronomica", "clasica"],
     url: "https://www.parrillalacabrera.com.ar/",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+    image: img("https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80"),
   },
   {
     id: "puerto-frutos",
@@ -350,7 +324,7 @@ export const RESTAURANTS: Restaurant[] = [
     whyKey: "restFrutosWhy",
     placeIds: ["tigre"],
     itineraryIds: ["tigre-delta"],
-    image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80",
+    image: img("https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=900&q=80"),
   },
 ]
 
@@ -362,7 +336,7 @@ export const ITINERARIES: Itinerary[] = [
     durationKey: "itinHistoricaDur",
     placeIds: ["san-telmo-plaza", "caminito", "bombonera"],
     restaurantIds: ["tortoni"],
-    image: commons("Casa_Rosada_2024.jpg"),
+    image: PLACES[2].image!,
   },
   {
     id: "clasica",
@@ -370,8 +344,8 @@ export const ITINERARIES: Itinerary[] = [
     descKey: "itinClasicaDesc",
     durationKey: "itinClasicaDur",
     placeIds: ["obelisco-colon", "recoleta", "palermo"],
-    restaurantIds: ["tortoni", "preferido"],
-    image: commons("Obelisco_Buenos_Aires.jpg"),
+    restaurantIds: ["preferido"],
+    image: PLACES[6].image!,
   },
   {
     id: "gastronomica",
@@ -380,7 +354,7 @@ export const ITINERARIES: Itinerary[] = [
     durationKey: "itinGastroDur",
     placeIds: ["san-telmo-plaza", "palermo"],
     restaurantIds: ["tortoni", "preferido", "cabrera"],
-    image: "https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80",
+    image: img("https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80"),
   },
   {
     id: "futbolera",
@@ -388,7 +362,7 @@ export const ITINERARIES: Itinerary[] = [
     descKey: "itinFutbolDesc",
     durationKey: "itinFutbolDur",
     placeIds: ["caminito", "bombonera"],
-    image: commons("Bombonera_Boca_Juniors.JPG"),
+    image: PLACES[1].image!,
   },
   {
     id: "tigre-delta",
@@ -397,7 +371,7 @@ export const ITINERARIES: Itinerary[] = [
     durationKey: "itinTigreDur",
     placeIds: ["tigre"],
     restaurantIds: ["puerto-frutos"],
-    image: commons("El_maravilloso_Delta_en_Tigre.jpg"),
+    image: PLACES[7].image!,
   },
 ]
 
@@ -405,9 +379,9 @@ export const HERO_IMAGE =
   "https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1920"
 
 export const EXP_IMAGES = {
-  city: commons("Buenos_Aires_Caminito_4.jpg"),
-  football: commons("Bombonera_Boca_Juniors.JPG"),
-  folklore: commons("Buenos_Aires_Caminito_4.jpg"),
+  city: PLACES[0].image!,
+  football: PLACES[1].image!,
+  folklore: PLACES[0].image!,
   gastro: "https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80",
 } as const
 

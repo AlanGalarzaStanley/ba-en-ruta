@@ -8,7 +8,7 @@ import {
   type TenantConfig,
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
-import { HowItWorks, Services, Prices, MoodStrip, Places, Gastronomy } from "./components/Sections"
+import { HowItWorks, Services, Prices, Places, Gastronomy } from "./components/Sections"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
 import { TourBar, type TourSelection } from "./components/TourBar"
@@ -18,16 +18,10 @@ import { GuidedExperiences } from "./components/ExperiencePlayer"
 import { DriverSignup } from "./components/DriverSignup"
 
 /**
- * Narrative order (immersive, no repetition):
- * 1. Arrival (Hero + Passion)
- * 2. Trust (How + Services + Prices)
- * 3. Live a guided walk (Guiadas)
- * 4. Deep dive places with video + mini-guide (Imperdibles)
- * 5. Orient on map
- * 6. Combine days (Itineraries — compact)
- * 7. Taste (Gastronomy)
- * 8. Act (form) + driver QR + FAQ
- * 9. B2B driver signup last
+ * Narrative (no repeated destination galleries):
+ * Hero → Passion → How → Services → Prices
+ * → Guided walk (Casco) → Places (deep + video) → Map
+ * → Day plans (text only) → Food → Form → QR → FAQ → Drivers
  */
 export default function App() {
   const [lang, setLang] = useLang()
@@ -65,12 +59,6 @@ export default function App() {
 
   const enquireService = (service: ServiceId) => {
     setFormService(service)
-    scrollTo("reserva")
-  }
-  const selectInterest = (interest: InterestId) => {
-    setFormInterests((prev) => (prev.includes(interest) ? prev : [...prev, interest]))
-    if (interest === "city" || interest === "football" || interest === "folklore" || interest === "gastronomy")
-      setFormService("tours")
     scrollTo("reserva")
   }
   const selectPlace = (placeId: PlaceId) => {
@@ -131,7 +119,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col pb-24">
       {isDemo && (
         <div className="bg-gold text-navy text-center text-xs sm:text-sm font-medium py-2 px-4">
-          Vista de demostración: <strong>{tenantLabel}</strong> · slug{" "}
+          Vista de demostración: <strong>{tenantLabel}</strong> ·{" "}
           <code className="font-mono">/c/{tenant.slug}</code>
         </div>
       )}
@@ -142,9 +130,6 @@ export default function App() {
         <HowItWorks lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
-
-        {/* Bridge: mood only — no place photos (those live in Imperdibles) */}
-        <MoodStrip lang={lang} onSelect={selectInterest} onExplore={() => scrollTo("guiadas")} />
 
         {f.guidedExperiences && (
           <GuidedExperiences
