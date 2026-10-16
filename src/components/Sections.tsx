@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Plane, Car, Map, Play, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
+import { Plane, Car, Map, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
 import {
   PLACES,
   EXP_IMAGES,
@@ -136,6 +136,137 @@ export function Experiences({ lang, onSelect }: { lang: Lang; onSelect: (interes
   )
 }
 
+function PlaceCard({
+  place,
+  index,
+  lang,
+  onSelect,
+  onMapFocus,
+  selected,
+  onToggleTour,
+}: {
+  place: Place
+  index: number
+  lang: Lang
+  onSelect: (id: PlaceId) => void
+  onMapFocus?: (id: PlaceId) => void
+  selected?: boolean
+  onToggleTour?: (id: PlaceId) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const guideId = `guide-${place.id}`
+  const nearbyRests = RESTAURANTS.filter((r) => r.placeIds.includes(place.id))
+
+  return (
+    <div id={`place-${place.id}`} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+      <div className="aspect-video relative bg-navy/10">
+        {place.image && (
+          <img
+            src={place.image}
+            alt={t(lang, (place.imageAltKey || place.nameKey) as CopyKey)}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            width={640}
+            height={360}
+          />
+        )}
+        <span className="absolute top-2 left-2 w-7 h-7 rounded-full bg-navy/90 text-white text-xs font-medium flex items-center justify-center">
+          {index + 1}
+        </span>
+      </div>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
+        <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
+        {place.durationKey && <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>}
+
+        <div className="border-t border-navy/8 pt-2 mt-1">
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="w-full flex items-center justify-between text-xs font-medium text-navy/70 hover:text-navy min-h-10 py-1"
+            aria-expanded={open}
+            aria-controls={guideId}
+          >
+            <span>{t(lang, "guideToggle")}</span>
+            {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
+          {open && (
+            <div id={guideId} className="pb-2 space-y-3 text-xs text-navy/65 leading-relaxed">
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideHistory")}</p>
+                <p>{t(lang, place.historyKey as CopyKey)}</p>
+              </div>
+              {place.seeDoKeys && place.seeDoKeys.length > 0 && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideSeeDo")}</p>
+                  <ul className="list-disc list-inside space-y-0.5">
+                    {place.seeDoKeys.map((k) => (
+                      <li key={k}>{t(lang, k as CopyKey)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {place.detailKey && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideDetail")}</p>
+                  <p>{t(lang, place.detailKey as CopyKey)}</p>
+                </div>
+              )}
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideTip")}</p>
+                <p>{t(lang, place.tipKey as CopyKey)}</p>
+              </div>
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideLogistics")}</p>
+                <p>{t(lang, place.logisticsKey as CopyKey)}</p>
+              </div>
+              <div>
+                <p className="font-medium text-navy/80 mb-0.5">{t(lang, "guideNearby")}</p>
+                <p>{t(lang, place.nearbyKey as CopyKey)}</p>
+              </div>
+              {nearbyRests.length > 0 && (
+                <div>
+                  <p className="font-medium text-navy/80 mb-0.5">{t(lang, "gastroNear")}</p>
+                  <ul className="space-y-0.5">
+                    {nearbyRests.map((r) => (
+                      <li key={r.id}>
+                        {r.name}
+                        {r.address ? ` — ${r.address}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-2">
+          {onMapFocus && (
+            <button type="button" onClick={() => onMapFocus(place.id)} className="inline-flex items-center gap-1 text-xs text-navy/60 hover:text-navy min-h-10">
+              <MapPin className="w-3 h-3" />
+              {t(lang, "guideShowOnMap")}
+            </button>
+          )}
+          {onToggleTour && (
+            <button
+              type="button"
+              onClick={() => onToggleTour(place.id)}
+              className={`inline-flex items-center gap-1 text-xs font-medium min-h-10 ${selected ? "text-gold" : "text-navy hover:text-gold"}`}
+            >
+              {selected ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+              {selected ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
+            </button>
+          )}
+          <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors min-h-10">
+            {t(lang, "placesCta")} →
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function Places({
   lang,
   onSelect,
@@ -157,34 +288,16 @@ export function Places({
         <p className="text-navy/60 text-sm mb-10">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {PLACES.map((place, i) => (
-            <div key={place.id} id={`place-${place.id}`} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
-              <div className="aspect-video relative bg-navy/10">
-                {place.image && (
-                  <img src={place.image} alt={t(lang, (place.imageAltKey || place.nameKey) as CopyKey)} className="w-full h-full object-cover" loading="lazy" width={640} height={360} />
-                )}
-                <span className="absolute top-2 left-2 w-7 h-7 rounded-full bg-navy/90 text-white text-xs font-medium flex items-center justify-center">{i + 1}</span>
-              </div>
-              <div className="p-4 flex flex-col flex-1">
-                <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
-                <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {onMapFocus && (
-                    <button type="button" onClick={() => onMapFocus(place.id)} className="inline-flex items-center gap-1 text-xs text-navy/60 hover:text-navy min-h-10">
-                      <MapPin className="w-3 h-3" />{t(lang, "guideShowOnMap")}
-                    </button>
-                  )}
-                  {onToggleTour && (
-                    <button type="button" onClick={() => onToggleTour(place.id)} className={`inline-flex items-center gap-1 text-xs font-medium min-h-10 ${selectedPlaces?.includes(place.id) ? "text-gold" : "text-navy hover:text-gold"}`}>
-                      {selectedPlaces?.includes(place.id) ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-                      {selectedPlaces?.includes(place.id) ? t(lang, "guideRemoveTour") : t(lang, "guideAddTour")}
-                    </button>
-                  )}
-                  <button type="button" onClick={() => onSelect(place.id)} className="text-xs font-medium text-navy hover:text-gold transition-colors min-h-10">
-                    {t(lang, "placesCta")} →
-                  </button>
-                </div>
-              </div>
-            </div>
+            <PlaceCard
+              key={place.id}
+              place={place}
+              index={i}
+              lang={lang}
+              onSelect={onSelect}
+              onMapFocus={onMapFocus}
+              selected={selectedPlaces?.includes(place.id)}
+              onToggleTour={onToggleTour}
+            />
           ))}
         </div>
         <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">{t(lang, "placesPhotoCredit")}</p>

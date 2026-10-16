@@ -45,7 +45,17 @@ export function useLang(): [Lang, (l: Lang) => void] {
   return [lang, setLang]
 }
 
-export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang) => void; onNav: (id: string) => void }) {
+export function Header({
+  lang,
+  setLang,
+  onNav,
+  tenantName,
+}: {
+  lang: Lang
+  setLang: (l: Lang) => void
+  onNav: (id: string) => void
+  tenantName?: string
+}) {
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const nav = [
@@ -62,11 +72,11 @@ export function Header({ lang, setLang, onNav }: { lang: Lang; setLang: (l: Lang
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 flex items-center justify-between h-16">
-        <button type="button" onClick={() => onNav("inicio")} className="flex items-center gap-2" aria-label="BA en Ruta">
+        <button type="button" onClick={() => onNav("inicio")} className="flex items-center gap-2" aria-label={tenantName || "BA en Ruta"}>
           <span className="font-display text-2xl font-semibold text-navy tracking-tight">BA</span>
           <span className="h-5 w-px bg-navy/20" />
           <span className="text-left leading-tight">
-            <span className="block text-sm font-medium text-navy">en Ruta</span>
+            <span className="block text-sm font-medium text-navy">{tenantName || "en Ruta"}</span>
             <span className="block text-[10px] uppercase tracking-widest text-navy/50">Buenos Aires</span>
           </span>
         </button>
