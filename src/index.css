@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #10263d;
-  --color-navy-light: #1a3a5c;
-  --color-cream: #f7f3eb;
-  --color-cream-dark: #ebe4d6;
-  --color-gold: #c4a35a;
-  --color-gold-light: #d4b76e;
-  --color-sky: #a8c5d4;
+  --color-navy: #0F172A;
+  --color-navy-light: #1E1B4B;
+  --color-cream: #F8FAFC;
+  --color-cream-dark: #E2E8F0;
+  --color-gold: #F59E0B;
+  --color-gold-light: #FBBF24;
+  --color-sky: #75AADB;
+  --color-sky-action: #00A3E0;
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
 }
@@ -30,6 +31,50 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 2px;
+}
+
+/* Subtle porteño accent line */
+.ba-accent-line {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-sky) 20%, var(--color-gold) 50%, var(--color-sky) 80%, transparent);
+  border-radius: 2px;
+}
+
+/* Card hover polish */
+.ba-card {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.ba-card:hover {
+  box-shadow: 0 8px 24px -8px rgb(15 23 42 / 0.12);
+  border-color: color-mix(in srgb, var(--color-sky) 35%, transparent);
+}
+
+/* Leaflet map container */
+.ba-map {
+  height: 360px;
+  width: 100%;
+  border-radius: 1rem;
+  z-index: 0;
+}
+@media (min-width: 640px) {
+  .ba-map {
+    height: 420px;
+  }
+}
+
+.ba-map-marker {
+  background: var(--color-navy);
+  color: white;
+  border: 2px solid var(--color-gold);
+  border-radius: 9999px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
 }
 
 @media (prefers-reduced-motion: reduce) {
