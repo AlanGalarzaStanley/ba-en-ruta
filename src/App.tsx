@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react"
+import { useState, useCallback, useEffect, useMemo, lazy, Suspense } from "react"
 import type { ServiceId, InterestId, PlaceId, RestaurantId, ItineraryId } from "./lib/ba-config"
 import {
   resolveTenantFromPath,
@@ -15,8 +15,26 @@ import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 import { MiQr } from "./components/MiQr"
 import { DriverSignup } from "./components/DriverSignup"
-import { RoutePlayer } from "./components/RoutePlayer"
 import { ITINERARIES } from "./lib/ba-config"
+
+// El simulador (y Leaflet) se descargan recién cuando alguien lo abre.
+const loadRoutePlayer = () => import("./components/RoutePlayer")
+const RoutePlayer = lazy(() => loadRoutePlayer().then((m) => ({ default: m.RoutePlayer })))
+
+function readInitialStep(): number {
+  if (typeof window === "undefined") return 0
+  const n = Number(new URLSearchParams(window.location.search).get("parada"))
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0
+}
+
+function PlayerFallback() {
+  return (
+    <div className="fixed inset-0 z-[90] bg-[#070B16] flex items-center justify-center" role="status" aria-live="polite">
+      <span className="w-10 h-10 rounded-full border-2 border-white/20 border-t-gold animate-spin" aria-hidden />
+      <span className="sr-only">…</span>
+    </div>
+  )
+}
 
 function useScrollReveal() {
   useEffect(() => {
@@ -61,7 +79,28 @@ export default function App() {
     const q = new URLSearchParams(window.location.search).get("recorrido")
     return ITINERARIES.some((i) => i.id === q) ? (q as ItineraryId) : null
   })
+  const [initialStep, setInitialStep] = useState(readInitialStep)
+  useEffect(() => {
+    // Si alguien pasa el cursor o el dedo por un recorrido, precargamos el simulador.
+    const warm = () => void loadRoutePlayer()
+    const el = document.getElementById("recorridos")
+    el?.addEventListener("pointerenter", warm, { once: true })
+    el?.addEventListener("touchstart", warm, { once: true, passive: true })
+    return () => {
+      el?.removeEventListener("pointerenter", warm)
+      el?.removeEventListener("touchstart", warm)
+    }
+  }, [])
+  const syncStep = useCallback((idx: number) => {
+    try {
+      const u = new URL(window.location.href)
+      if (idx > 0) u.searchParams.set("parada", String(idx))
+      else u.searchParams.delete("parada")
+      window.history.replaceState(null, "", u)
+    } catch { /* ignore */ }
+  }, [])
   const openPlayer = useCallback((id: ItineraryId) => {
+    setInitialStep(0)
     setPlaying(id)
     try {
       const u = new URL(window.location.href)
@@ -74,6 +113,7 @@ export default function App() {
     try {
       const u = new URL(window.location.href)
       u.searchParams.delete("recorrido")
+      u.searchParams.delete("parada")
       window.history.replaceState(null, "", u)
     } catch { /* ignore */ }
   }, [])
@@ -216,7 +256,16 @@ export default function App() {
       </main>
       <Footer lang={lang} onNav={scrollTo} />
       {playing && (
-        <RoutePlayer itineraryId={playing} lang={lang} onClose={closePlayer} onCustomize={customizeItinerary} />
+        <Suspense fallback={<PlayerFallback />}>
+          <RoutePlayer
+            itineraryId={playing}
+            lang={lang}
+            onClose={closePlayer}
+            onCustomize={customizeItinerary}
+            initialStep={initialStep}
+            onStepChange={syncStep}
+          />
+        </Suspense>
       )}
       <TourBar
         lang={lang}

@@ -15,6 +15,8 @@ import {
   RotateCcw,
   SlidersHorizontal,
   Instagram,
+  Share2,
+  Check,
 } from "lucide-react"
 import { HERO_IMAGE, type ItineraryId, type PlaceId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
@@ -30,6 +32,7 @@ import {
 } from "../lib/route"
 import { buildTourWhatsAppMessage, openWhatsApp } from "../lib/whatsapp"
 import { VideoEmbed } from "./VideoEmbed"
+import { optimizeImage, imageSrcSet } from "../lib/img"
 
 const STEP_MS = 12000
 const PHOTO_MS = 4000
@@ -39,6 +42,10 @@ type Props = {
   lang: Lang
   onClose: () => void
   onCustomize?: (placeIds: PlaceId[]) => void
+  /** Paso inicial (0 = punto de encuentro). Permite enlaces directos a una parada. */
+  initialStep?: number
+  /** Se llama cada vez que cambia el paso, para sincronizar la URL compartible. */
+  onStepChange?: (idx: number) => void
 }
 
 function stepTitle(lang: Lang, s: RouteStep): string {
@@ -73,6 +80,7 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
 
   useEffect(() => {
     let cancelled = false
+    const timers: number[] = []
     ;(async () => {
       const L = await import("leaflet")
       await import("leaflet/dist/leaflet.css")
@@ -82,6 +90,8 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
         attributionControl: true,
         scrollWheelZoom: false,
         dragging: true,
+        // Las flechas del teclado ya navegan entre paradas; el mapa no debe capturarlas.
+        keyboard: false,
       })
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -107,17 +117,19 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
         zIndexOffset: 1000,
       }).addTo(map)
       const fit = () => {
-        map.invalidateSize()
-        if (pts.length > 1) map.fitBounds(L.latLngBounds(pts), { padding: [28, 28], maxZoom: 15 })
-        else if (pts.length === 1) map.setView(pts[0], 14)
+        if (cancelled) return
+        map.invalidateSize({ animate: false })
+        if (pts.length > 1) map.fitBounds(L.latLngBounds(pts), { padding: [28, 28], maxZoom: 15, animate: false })
+        else if (pts.length === 1) map.setView(pts[0], 14, { animate: false })
       }
       fit()
       stateRef.current = { L, map, done, car, markers, last: -1 }
-      setTimeout(fit, 120)
-      setTimeout(fit, 600)
+      timers.push(window.setTimeout(fit, 120), window.setTimeout(fit, 600))
     })()
     return () => {
       cancelled = true
+      timers.forEach((id) => window.clearTimeout(id))
+      stateRef.current?.map.stop()
       stateRef.current?.map.remove()
       stateRef.current = null
     }
@@ -170,8 +182,8 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
   }, [current, geo])
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-navy">
-      <div ref={elRef} className="ba-dark-map h-44 sm:h-56 w-full" role="img" aria-label={t(lang, "playerMap")} />
+    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-navy" role="region" aria-label={t(lang, "playerMap")}>
+      <div ref={elRef} className="ba-dark-map h-44 sm:h-56 w-full" />
       <p className="absolute top-2 left-3 z-[500] text-[10px] uppercase tracking-[0.2em] text-white/70 pointer-events-none">
         {t(lang, "playerMap")}
       </p>
@@ -181,13 +193,19 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
 
 /* -------------------------------- Reproductor ------------------------------- */
 
-export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) {
+export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialStep = 0, onStepChange }: Props) {
   const itin = getItinerary(itineraryId)!
   const steps = useMemo(() => buildRoute(itin), [itin])
   const geo = useMemo(() => steps.filter((s): s is GeoStep => s.kind === "place" || s.kind === "food"), [steps])
   const totals = useMemo(() => routeTotals(steps), [steps])
-  const [idx, setIdx] = useState(0)
-  const [playing, setPlaying] = useState(true)
+  const [idx, setIdx] = useState(() => Math.max(0, Math.min(steps.length - 1, Math.floor(initialStep) || 0)))
+  const [shared, setShared] = useState(false)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  // Con "reducir movimiento" activado no hay avance automático: la persona avanza a su ritmo.
+  const [playing, setPlaying] = useState(
+    () => !(typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches),
+  )
+  const remainingRef = useRef(STEP_MS)
   const [showVideo, setShowVideo] = useState(false)
   const [photoIdx, setPhotoIdx] = useState(0)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -217,17 +235,62 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
     setPhotoIdx(0)
   }
 
-  // Bloqueo de scroll, foco y teclado
+  useEffect(() => {
+    onStepChange?.(idx)
+  }, [idx, onStepChange])
+
+  // Bloqueo de scroll, foco y teclado (el foco vuelve al botón que abrió el simulador)
   useEffect(() => {
     const prev = document.body.style.overflow
+    const opener = document.activeElement as HTMLElement | null
     document.body.style.overflow = "hidden"
     closeRef.current?.focus()
     return () => {
       document.body.style.overflow = prev
+      opener?.focus?.()
     }
   }, [])
+
+  const share = async () => {
+    const url = new URL(window.location.href)
+    url.searchParams.set("recorrido", itin.id)
+    if (idx > 0) url.searchParams.set("parada", String(idx))
+    else url.searchParams.delete("parada")
+    url.searchParams.set("lang", lang)
+    const title = `${t(lang, itin.nameKey as CopyKey)} · BA en Ruta`
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url: url.toString() })
+        return
+      }
+      await navigator.clipboard.writeText(url.toString())
+      setShared(true)
+      window.setTimeout(() => setShared(false), 2200)
+    } catch {
+      /* el usuario canceló o el navegador no lo permite */
+    }
+  }
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Tab" && dialogRef.current) {
+        const f = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])',
+        )
+        if (!f.length) return
+        const first = f[0]
+        const last = f[f.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        } else if (!dialogRef.current.contains(document.activeElement)) {
+          e.preventDefault()
+          first.focus()
+        }
+        return
+      }
       if (e.key === "Escape") onClose()
       else if (e.key === "ArrowRight") go(1)
       else if (e.key === "ArrowLeft") go(-1)
@@ -253,11 +316,28 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
     if (!next) return
     stepImages(next).slice(0, 1).forEach((im) => {
       const i = new Image()
-      i.src = im.src
+      i.sizes = "100vw"
+      i.srcset = imageSrcSet(im.src, [500, 960, 1280, 1920]) ?? ""
+      i.src = optimizeImage(im.src, 1280) ?? im.src
     })
   }, [idx, steps])
 
   const effectivePlaying = playing && !showVideo && !isLast
+
+  // Avance automático con temporizador propio (no depende de que termine una animación CSS,
+  // que con movimiento reducido dura ~0 ms). Pausar conserva el tiempo restante.
+  useEffect(() => {
+    remainingRef.current = STEP_MS
+  }, [idx])
+  useEffect(() => {
+    if (!effectivePlaying) return
+    const started = performance.now()
+    const id = window.setTimeout(() => go(1), remainingRef.current)
+    return () => {
+      window.clearTimeout(id)
+      remainingRef.current = Math.max(0, remainingRef.current - (performance.now() - started))
+    }
+  }, [effectivePlaying, idx, go])
   const book = () =>
     openWhatsApp(
       buildTourWhatsAppMessage({
@@ -273,6 +353,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
   return createPortal(
     <div
       className="fixed inset-0 z-[90] bg-[#070B16] text-white flex flex-col ba-fade-in"
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={`${t(lang, "playerDialog")}: ${t(lang, itin.nameKey as CopyKey)}`}
@@ -289,7 +370,10 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
         {img && (
           <img
             key={`${step.key}-${photoIdx}`}
-            src={img.src}
+            src={optimizeImage(img.src, 1280)}
+            srcSet={imageSrcSet(img.src, [500, 960, 1280, 1920])}
+            sizes="100vw"
+            decoding="async"
             alt=""
             className={`absolute inset-0 w-full h-full object-cover ${reduceMotion ? "" : "ba-kenburns"} ba-fade-in`}
           />
@@ -302,6 +386,18 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
       <div className="relative z-10 px-4 sm:px-8 pt-4 sm:pt-6">
         <div className="flex items-center gap-3">
           <p className="font-display text-base sm:text-lg truncate flex-1">{t(lang, itin.nameKey as CopyKey)}</p>
+          <p className="sr-only" aria-live="polite">
+            {stepTitle(lang, step)}
+          </p>
+          <button
+            type="button"
+            onClick={share}
+            className="h-11 px-3 sm:px-4 rounded-full bg-white/10 hover:bg-white/20 inline-flex items-center gap-2 shrink-0 text-sm"
+            aria-label={shared ? t(lang, "playerCopied") : t(lang, "playerShare")}
+          >
+            {shared ? <Check className="w-4 h-4 text-gold" aria-hidden /> : <Share2 className="w-4 h-4" aria-hidden />}
+            <span className="hidden sm:inline">{shared ? t(lang, "playerCopied") : t(lang, "playerShare")}</span>
+          </button>
           <button
             ref={closeRef}
             type="button"
@@ -312,14 +408,13 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div className="mt-3 flex gap-1.5" role="tablist" aria-label={t(lang, "playerDialog")}>
+        <div className="mt-3 flex gap-1.5" role="group" aria-label={t(lang, "playerDialog")}>
           {steps.map((s, i) => (
             <button
               key={s.key}
               type="button"
-              role="tab"
-              aria-selected={i === idx}
-              aria-label={stepTitle(lang, s)}
+              aria-current={i === idx ? "step" : undefined}
+              aria-label={`${i + 1}/${steps.length}: ${stepTitle(lang, s)}`}
               onClick={() => jump(i)}
               className="relative flex-1 h-1.5 rounded-full bg-white/20 overflow-hidden"
             >
@@ -330,12 +425,17 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                   i < idx
                     ? { width: "100%" }
                     : i === idx
-                      ? effectivePlaying
-                        ? { width: "100%", animation: `ba-progress ${STEP_MS}ms linear forwards` }
-                        : { width: isLast ? "100%" : "12%" }
+                      ? isLast
+                        ? { width: "100%" }
+                        : reduceMotion
+                          ? { width: "12%" }
+                          : {
+                              width: "100%",
+                              animation: `ba-progress ${STEP_MS}ms linear forwards`,
+                              animationPlayState: effectivePlaying ? "running" : "paused",
+                            }
                       : { width: "0%" }
                 }
-                onAnimationEnd={() => i === idx && go(1)}
               />
             </button>
           ))}
@@ -378,7 +478,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                   <span className="inline-flex items-center gap-1.5 text-white/85 text-sm">
                     <Clock className="w-4 h-4 text-gold" aria-hidden />
                     <span className="font-display text-xl tabular-nums">{step.clock}</span>
-                    <span className="text-white/45 text-xs">{t(lang, "playerTime")}</span>
+                    <span className="text-white/55 text-xs">{t(lang, "playerTime")}</span>
                   </span>
                 </div>
                 <h2 className="font-display text-4xl sm:text-6xl leading-[1.05] mb-3">{stepTitle(lang, step)}</h2>
@@ -435,7 +535,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                     )}
                   </>
                 )}
-                <p className="mt-4 text-xs text-white/45">{fill(t(lang, "playerVisit"), { min: step.visitMin })}</p>
+                <p className="mt-4 text-xs text-white/55">{fill(t(lang, "playerVisit"), { min: step.visitMin })}</p>
               </>
             )}
 
@@ -451,13 +551,13 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                   })}
                 </p>
                 <ol className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {geo.map((g, i) => {
+                  {geo.map((g) => {
                     const im = stepImages(g)[0]
                     return (
                       <li key={g.key}>
                         <button type="button" onClick={() => jump(steps.indexOf(g))} className="group block w-full text-left">
                           <span className="block aspect-[4/3] rounded-lg overflow-hidden bg-white/10">
-                            {im && <img src={im.src.replace(/width=\d+/, "width=480")} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />}
+                            {im && <img src={optimizeImage(im.src, 330)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy" />}
                           </span>
                           <span className="mt-1 block text-xs text-white/75 truncate">
                             <span className="text-gold tabular-nums">{g.clock}</span> · {stepTitle(lang, g)}
@@ -491,7 +591,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                     <RotateCcw className="w-4 h-4" /> {t(lang, "playerReplay")}
                   </button>
                 </div>
-                <p className="mt-3 text-xs text-white/45">{t(lang, "playerDisclaimer")}</p>
+                <p className="mt-3 text-xs text-white/55">{t(lang, "playerDisclaimer")}</p>
               </>
             )}
           </div>
@@ -525,15 +625,16 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
                       className={`w-12 h-9 rounded-md overflow-hidden border ${i === photoIdx ? "border-gold" : "border-white/20 opacity-70 hover:opacity-100"}`}
                       aria-label={`${t(lang, "photoBy")} ${i + 1}`}
                     >
-                      <img src={im.src.replace(/width=\d+/, "width=160")} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      <img src={optimizeImage(im.src, 250)} alt="" className="w-full h-full object-cover" loading="lazy" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
             {img?.credit && !showVideo && (
-              <p className="text-[10px] text-white/45">
-                {t(lang, "photoBy")}: {img.credit} · Wikimedia Commons
+              <p className="text-[10px] text-white/55">
+                {t(lang, "photoBy")}: {img.credit}
+                {/pexels/i.test(img.credit) ? "" : " · Wikimedia Commons"}
               </p>
             )}
           </aside>
@@ -557,7 +658,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
             onClick={() => setPlaying((p) => !p)}
             disabled={isLast}
             className="inline-flex items-center gap-2 h-11 px-4 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 text-sm"
-            aria-pressed={playing}
+            aria-label={playing ? t(lang, "playerPause") : t(lang, "playerAuto")}
           >
             {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             <span className="hidden sm:inline">{playing ? t(lang, "playerPause") : t(lang, "playerAuto")}</span>
@@ -571,7 +672,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize }: Props) 
           >
             <ChevronRight className="w-5 h-5" />
           </button>
-          <p className="hidden md:block text-xs text-white/40 ml-3">{t(lang, "playerSwipe")}</p>
+          <p className="hidden md:block text-xs text-white/55 ml-3">{t(lang, "playerSwipe")}</p>
           <button
             type="button"
             onClick={book}

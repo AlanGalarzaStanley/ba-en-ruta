@@ -66,16 +66,16 @@ export function EnquiryForm({
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "formLabel")}</p>
+            <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "formLabel")}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">{t(lang, "formTitle")}</h2>
             <p className="text-navy/60 text-sm leading-relaxed mb-6">{t(lang, "formSubtitle")}</p>
-            <p className="text-gold italic font-display text-sm">{t(lang, "heroTagline")}</p>
+            <p className="text-amber-700 italic font-display text-sm">{t(lang, "heroTagline")}</p>
           </div>
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-navy/5 p-6 sm:p-8 space-y-5" noValidate>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-navy mb-1.5">{t(lang, "formName")} *</label>
-                <input id="name" name="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder={t(lang, "formNamePh")} className="w-full rounded-lg border border-navy/15 bg-cream/50 px-3 py-2.5 text-sm text-navy placeholder:text-navy/35 focus:border-gold focus:ring-1 focus:ring-gold outline-none" />
+                <input id="name" name="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder={t(lang, "formNamePh")} className="w-full rounded-lg border border-navy/15 bg-cream/50 px-3 py-2.5 text-sm text-navy placeholder:text-navy/50 focus:border-gold focus:ring-1 focus:ring-gold outline-none" />
               </div>
               <div>
                 <label htmlFor="date" className="block text-sm font-medium text-navy mb-1.5">{t(lang, "formDate")} *</label>
@@ -109,7 +109,7 @@ export function EnquiryForm({
               </div>
             </fieldset>
             {place && (
-              <p className="text-xs text-navy/50">
+              <p className="text-xs text-navy/65">
                 {t(lang, "navPlaces")}:{" "}
                 <strong>
                   {(() => {
@@ -124,7 +124,7 @@ export function EnquiryForm({
             )}
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-navy mb-1.5">{t(lang, "formMessage")}</label>
-              <textarea id="message" name="message" rows={3} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t(lang, "formMessagePh")} className="w-full rounded-lg border border-navy/15 bg-cream/50 px-3 py-2.5 text-sm text-navy placeholder:text-navy/35 focus:border-gold focus:ring-1 focus:ring-gold outline-none resize-y" />
+              <textarea id="message" name="message" rows={3} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t(lang, "formMessagePh")} className="w-full rounded-lg border border-navy/15 bg-cream/50 px-3 py-2.5 text-sm text-navy placeholder:text-navy/50 focus:border-gold focus:ring-1 focus:ring-gold outline-none resize-y" />
             </div>
             {error && <p className="text-sm text-red-700">{error}</p>}
             {preview && (
@@ -139,7 +139,7 @@ export function EnquiryForm({
             <button type="submit" className="w-full inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium py-3 rounded-lg transition-colors">
               <MessageCircle className="w-4 h-4" />{t(lang, "formSubmit")}<span aria-hidden>→</span>
             </button>
-            <p className="text-center text-xs text-navy/40">{t(lang, "formPrivacy")}</p>
+            <p className="text-center text-xs text-navy/65">{t(lang, "formPrivacy")}</p>
           </form>
         </div>
       </div>
@@ -161,7 +161,7 @@ export function FAQ({ lang }: { lang: Lang }) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-10">
           <div>
-            <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "faqLabel")}</p>
+            <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "faqLabel")}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-navy">{t(lang, "faqTitle")}</h2>
           </div>
           <div>
@@ -169,7 +169,7 @@ export function FAQ({ lang }: { lang: Lang }) {
               <div key={item.q} className="border-b border-navy/10">
                 <button type="button" className="w-full flex items-center justify-between py-4 text-left text-navy font-medium text-sm sm:text-base" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
                   {t(lang, item.q)}
-                  {open === i ? <ChevronUp className="w-4 h-4 shrink-0 text-navy/40" /> : <ChevronDown className="w-4 h-4 shrink-0 text-navy/40" />}
+                  {open === i ? <ChevronUp className="w-4 h-4 shrink-0 text-navy/65" /> : <ChevronDown className="w-4 h-4 shrink-0 text-navy/65" />}
                 </button>
                 {open === i && <p className="pb-4 text-sm text-navy/60 leading-relaxed pr-8">{t(lang, item.a)}</p>}
               </div>
@@ -190,7 +190,7 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
             <div className="flex items-center gap-2 mb-3">
               <span className="font-display text-xl font-semibold">BA</span>
               <span className="h-4 w-px bg-white/20" />
-              <span className="text-sm">en Ruta<span className="block text-[10px] uppercase tracking-widest text-white/40">Buenos Aires</span></span>
+              <span className="text-sm">en Ruta<span className="block text-[10px] uppercase tracking-widest text-white/55">Buenos Aires</span></span>
             </div>
             <p className="text-white/50 text-sm italic font-display mb-2">{t(lang, "footerTagline")}</p>
             <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm text-white/60 hover:text-gold transition-colors">{CONTACT_EMAIL}</a>
@@ -202,7 +202,7 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
             <button type="button" onClick={() => onNav("reserva")} className="hover:text-white transition-colors">{t(lang, "navCta")} →</button>
           </nav>
         </div>
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-white/40">
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-white/55">
           <p>{t(lang, "footerRights")}</p>
           <p>{t(lang, "footerRole")}</p>
           <div className="flex items-center gap-4">

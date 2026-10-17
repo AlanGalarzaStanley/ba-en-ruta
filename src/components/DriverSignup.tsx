@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { MessageCircle } from "lucide-react"
-import { t, type Lang, type CopyKey } from "../lib/ba-copy"
-import { getWhatsAppUrl, openWhatsApp } from "../lib/whatsapp"
+import { t, type Lang } from "../lib/ba-copy"
+import { openWhatsApp } from "../lib/whatsapp"
 
 type Props = { lang: Lang }
 
@@ -103,7 +103,7 @@ export function DriverSignup({ lang }: Props) {
               <li>• {t(lang, "driverBenefit2")}</li>
               <li>• {t(lang, "driverBenefit3")}</li>
             </ul>
-            <p className="text-xs text-white/40">{t(lang, "driverNote")}</p>
+            <p className="text-xs text-white/55">{t(lang, "driverNote")}</p>
           </div>
 
           <form onSubmit={submit} className="ba-card bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 space-y-4">
@@ -115,7 +115,7 @@ export function DriverSignup({ lang }: Props) {
                 id="drv-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-gold"
+                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/55 focus:outline-none focus:border-gold"
                 placeholder={t(lang, "driverNamePh")}
                 autoComplete="name"
               />
@@ -128,7 +128,7 @@ export function DriverSignup({ lang }: Props) {
                 id="drv-commercial"
                 value={commercialName}
                 onChange={(e) => setCommercialName(e.target.value)}
-                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-gold"
+                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/55 focus:outline-none focus:border-gold"
                 placeholder={t(lang, "driverCommercialPh")}
               />
             </div>
@@ -140,7 +140,7 @@ export function DriverSignup({ lang }: Props) {
                 id="drv-wa"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
-                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-gold"
+                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/55 focus:outline-none focus:border-gold"
                 placeholder="54911..."
                 inputMode="tel"
               />
@@ -153,7 +153,7 @@ export function DriverSignup({ lang }: Props) {
                 id="drv-zone"
                 value={zone}
                 onChange={(e) => setZone(e.target.value)}
-                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-gold"
+                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/55 focus:outline-none focus:border-gold"
                 placeholder={t(lang, "driverZonePh")}
               />
             </div>
@@ -182,7 +182,7 @@ export function DriverSignup({ lang }: Props) {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
-                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-gold resize-y"
+                className="w-full rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-white/55 focus:outline-none focus:border-gold resize-y"
                 placeholder={t(lang, "driverNotesPh")}
               />
             </div>
@@ -194,7 +194,7 @@ export function DriverSignup({ lang }: Props) {
               <MessageCircle className="w-4 h-4" />
               {t(lang, "driverSubmit")}
             </button>
-            <p className="text-[10px] text-white/40 text-center">{t(lang, "driverPrivacy")}</p>
+            <p className="text-[10px] text-white/55 text-center">{t(lang, "driverPrivacy")}</p>
           </form>
         </div>
       </div>

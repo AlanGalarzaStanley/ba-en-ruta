@@ -43,7 +43,7 @@ export function TourBar({ lang, selection, onClear, onRemovePlace, onRemoveResta
     <div className="fixed bottom-0 inset-x-0 z-40 border-t border-navy/10 bg-white/95 backdrop-blur shadow-lg">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, "tourLabel")}</p>
+          <p className="text-[10px] uppercase tracking-widest text-navy/65 mb-1">{t(lang, "tourLabel")}</p>
           <div className="flex flex-wrap gap-1.5 text-xs">
             {itin && (
               <span className="rounded-full bg-gold/15 text-navy px-2.5 py-1">
@@ -79,10 +79,10 @@ export function TourBar({ lang, selection, onClear, onRemovePlace, onRemoveResta
               )
             })}
           </div>
-          <p className="mt-1 text-[10px] text-navy/40">{t(lang, "tourNote")}</p>
+          <p className="mt-1 text-[10px] text-navy/65">{t(lang, "tourNote")}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <button type="button" onClick={onClear} className="text-xs text-navy/50 hover:text-navy min-h-11 px-2">
+          <button type="button" onClick={onClear} className="text-xs text-navy/65 hover:text-navy min-h-11 px-2">
             {t(lang, "tourClear")}
           </button>
           <button

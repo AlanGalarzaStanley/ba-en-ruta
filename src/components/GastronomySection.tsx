@@ -7,6 +7,7 @@ import {
 } from "../lib/gastronomy"
 import type { RestaurantId } from "../lib/ba-config"
 import { t, type Lang } from "../lib/ba-copy"
+import { optimizeImage, imageSrcSet } from "../lib/img"
 
 function linkLabel(lang: Lang, kind: "site" | "reserve" | "tickets" | "ig"): string {
   if (kind === "site") return lang === "en" ? "Official site" : lang === "pt" ? "Site oficial" : "Sitio oficial"
@@ -63,10 +64,10 @@ export function Gastronomy({
     <section id="gastronomia" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl mb-8">
-          <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
+          <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "gastroLabel")}</p>
           <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">{t(lang, "gastroTitle")}</h2>
           <p className="text-navy/60 text-sm leading-relaxed">{t(lang, "gastroDesc")}</p>
-          <p className="text-xs text-navy/40 mt-3">{t(lang, "gastroNote")}</p>
+          <p className="text-xs text-navy/65 mt-3">{t(lang, "gastroNote")}</p>
         </div>
 
         <div className="mb-4">
@@ -85,7 +86,7 @@ export function Gastronomy({
                   ? "Buscar por nome, bairro…"
                   : "Buscar por nombre, barrio…"
             }
-            className="w-full max-w-md rounded-xl border border-navy/15 bg-white px-4 py-2.5 text-sm text-navy placeholder:text-navy/35 focus:outline-none focus:ring-2 focus:ring-gold/40 min-h-11"
+            className="w-full max-w-md rounded-xl border border-navy/15 bg-white px-4 py-2.5 text-sm text-navy placeholder:text-navy/50 focus:outline-none focus:ring-2 focus:ring-gold/40 min-h-11"
           />
         </div>
 
@@ -107,7 +108,7 @@ export function Gastronomy({
         </div>
 
         {list.length === 0 ? (
-          <p className="text-sm text-navy/50 py-8">
+          <p className="text-sm text-navy/65 py-8">
             {lang === "en"
               ? "No places match your search."
               : lang === "pt"
@@ -128,8 +129,11 @@ export function Gastronomy({
                   {r.image ? (
                     <div className="aspect-[16/10] bg-navy/5 relative overflow-hidden">
                       <img
-                        src={r.image}
+                        src={optimizeImage(r.image, 500)}
+                        srcSet={imageSrcSet(r.image, [330, 500, 960])}
+                        sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
                         alt={r.name}
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-105"
                         loading="lazy"
                         onError={(e) => {
@@ -159,14 +163,14 @@ export function Gastronomy({
                     </div>
                   )}
                   <div className="p-4 flex flex-col flex-1">
-                    <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-0.5">
+                    <p className="text-[10px] uppercase tracking-widest text-navy/65 mb-0.5">
                       {catMeta ? catLabel(catMeta) : r.category}
                     </p>
                     <h3 className="font-medium text-navy text-sm mb-0.5">{r.name}</h3>
-                    <p className="text-xs text-navy/50 mb-1">
+                    <p className="text-xs text-navy/65 mb-1">
                       {r.neighborhood}, {r.locality}
                     </p>
-                    <p className="text-[11px] text-navy/45 mb-2">{r.address}</p>
+                    <p className="text-[11px] text-navy/65 mb-2">{r.address}</p>
                     <p className="text-xs text-navy/60 leading-relaxed flex-1 mb-2">{r.descEs}</p>
                     {r.statusNoteEs && (
                       <p className="text-[11px] text-amber-700 bg-amber-50 rounded-md px-2 py-1 mb-2">
@@ -178,10 +182,10 @@ export function Gastronomy({
                       </p>
                     )}
                     {isOpen && (
-                      <div className="text-xs text-navy/55 leading-relaxed mb-2 space-y-1 border-t border-navy/8 pt-2">
+                      <div className="text-xs text-navy/65 leading-relaxed mb-2 space-y-1 border-t border-navy/8 pt-2">
                         <p>{r.whyEs}</p>
                         {r.confidence === "listed" && (
-                          <p className="text-[10px] text-navy/40 italic">
+                          <p className="text-[10px] text-navy/65 italic">
                             {lang === "en"
                               ? "Listed from trusted guides; confirm details before visiting."
                               : lang === "pt"
@@ -227,7 +231,7 @@ export function Gastronomy({
           </div>
         )}
 
-        <p className="text-[10px] text-navy/35 mb-4">
+        <p className="text-[10px] text-navy/65 mb-4">
           {list.length}{" "}
           {lang === "en" ? "places" : lang === "pt" ? "lugares" : "lugares"}
           {" · "}

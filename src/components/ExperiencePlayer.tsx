@@ -55,12 +55,12 @@ function ExperienceCard({
         <h3 className="font-display text-xl text-navy mb-1">
           {t(lang, exp.nameKey as CopyKey)}
         </h3>
-        <p className="text-xs text-navy/50 mb-2">{t(lang, exp.subtitleKey as CopyKey)}</p>
+        <p className="text-xs text-navy/65 mb-2">{t(lang, exp.subtitleKey as CopyKey)}</p>
         <p className="text-sm text-navy/60 leading-relaxed mb-3 flex-1">
           {t(lang, exp.introKey as CopyKey)}
         </p>
-        <p className="text-[11px] text-navy/40 mb-3">{t(lang, exp.durationKey as CopyKey)}</p>
-        <p className="text-[11px] text-navy/45 mb-4">
+        <p className="text-[11px] text-navy/65 mb-3">{t(lang, exp.durationKey as CopyKey)}</p>
+        <p className="text-[11px] text-navy/65 mb-4">
           {exp.stops.length} {lang === "en" ? "stops" : lang === "pt" ? "paradas" : "paradas"}
         </p>
         <button
@@ -111,9 +111,10 @@ function Player({
   const enquire = () => {
     const msg = buildExperienceWhatsAppMessage({
       lang,
-      experienceId: exp.id,
-      experienceName: t(lang, exp.nameKey as CopyKey),
-      stopTitle: stop ? t(lang, stop.titleKey as CopyKey) : undefined,
+      experienceTitle: t(lang, exp.nameKey as CopyKey),
+      stopName: stop ? t(lang, stop.titleKey as CopyKey) : undefined,
+      stopIndex: stop ? idx + 1 : undefined,
+      totalStops: exp.stops.length,
     })
     openWhatsApp(msg)
   }
@@ -171,7 +172,7 @@ function Player({
               </div>
             </div>
           )}
-          <button type="button" onClick={onClose} className="text-sm text-navy/50 hover:text-navy min-h-10">
+          <button type="button" onClick={onClose} className="text-sm text-navy/65 hover:text-navy min-h-10">
             {t(lang, "guidedBackList" as CopyKey)}
           </button>
         </div>
@@ -206,7 +207,7 @@ function Player({
 
       {/* Progress */}
       <div className="px-4 sm:px-6 pt-3 pb-1">
-        <div className="flex items-center justify-between text-[11px] text-navy/50 mb-1.5">
+        <div className="flex items-center justify-between text-[11px] text-navy/65 mb-1.5">
           <span>{progressLabel(lang, idx + 1, total)}</span>
           <span>{t(lang, exp.durationKey as CopyKey)}</span>
         </div>
@@ -232,7 +233,7 @@ function Player({
               className={`w-full text-left flex items-start gap-3 p-3 rounded-xl border transition-colors ${i === idx ? "border-gold bg-cream" : "border-navy/8 hover:border-navy/20"}`}
             >
               <span
-                className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${i === idx ? "bg-navy text-white" : i < idx ? "bg-gold/20 text-navy" : "bg-cream-dark text-navy/50"}`}
+                className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${i === idx ? "bg-navy text-white" : i < idx ? "bg-gold/20 text-navy" : "bg-cream-dark text-navy/65"}`}
               >
                 {i < idx ? <Check className="w-3.5 h-3.5" /> : i + 1}
               </span>
@@ -242,7 +243,7 @@ function Player({
           <button
             type="button"
             onClick={() => setOverview(false)}
-            className="text-sm text-navy/50 hover:text-navy mt-2 min-h-10"
+            className="text-sm text-navy/65 hover:text-navy mt-2 min-h-10"
           >
             {t(lang, "guidedCloseOverview" as CopyKey)}
           </button>
@@ -341,7 +342,7 @@ export function GuidedExperiences({
   return (
     <section id="guiadas" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "guidedLabel" as CopyKey)}</p>
+        <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "guidedLabel" as CopyKey)}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "guidedTitle" as CopyKey)}</h2>
         <p className="text-navy/60 text-sm mb-10 max-w-2xl">{t(lang, "guidedSubtitle" as CopyKey)}</p>
 
