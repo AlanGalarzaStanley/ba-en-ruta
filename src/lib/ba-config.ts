@@ -1,6 +1,7 @@
 /**
  * Configuración central de BA en Ruta
  * Official links verified 2026-10-17
+ * YouTube videos restored from prior catalog (no invented links)
  */
 
 export const WHATSAPP_NUMBER = "5491151448632"
@@ -110,6 +111,11 @@ export const PLACES: Place[] = [
     seeDoKeys: ["seeCaminito1", "seeCaminito2", "seeCaminito3", "seeCaminito4"],
     detailKey: "detailCaminito",
     officialUrl: "https://turismo.buenosaires.gob.ar/es/otros-establecimientos/caminito",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=7PWpMvnbQXY",
+      en: "https://www.youtube.com/watch?v=vTzI97Hm6Rs",
+      pt: "https://www.youtube.com/watch?v=t00XHCE4v8E",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["turismo.buenosaires.gob.ar"],
   },
@@ -128,6 +134,11 @@ export const PLACES: Place[] = [
     detailKey: "detailBombonera",
     officialUrl: "https://www.bocajuniors.com.ar/la-bombonera",
     ticketsUrl: "https://museoboquense.com/",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=nabRYZnDh_0",
+      en: "https://www.youtube.com/watch?v=X2IfbY-YIk0",
+      pt: "https://www.youtube.com/watch?v=nabRYZnDh_0",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["bocajuniors.com.ar", "museoboquense.com"],
   },
@@ -145,6 +156,11 @@ export const PLACES: Place[] = [
     seeDoKeys: ["seeSanTelmo1", "seeSanTelmo2", "seeSanTelmo3", "seeSanTelmo4"],
     detailKey: "detailSanTelmo",
     officialUrl: "https://turismo.buenosaires.gob.ar/es/atractivo/plaza-de-mayo",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=oFif5l3DDjU",
+      en: "https://www.youtube.com/watch?v=t4m8Di2x09A",
+      pt: "https://www.youtube.com/watch?v=30_pv30Sva8",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["turismo.buenosaires.gob.ar"],
   },
@@ -163,6 +179,11 @@ export const PLACES: Place[] = [
     detailKey: "detailRecoleta",
     officialUrl: "https://buenosaires.gob.ar/gobierno/gestion-comunal/cementerios-de-la-ciudad/cementerio-de-la-recoleta",
     ticketsUrl: "https://buenosaires.gob.ar/gobierno/gestion-comunal/cementerios-de-la-ciudad/visitas-turisticas-al-cementerio-de-la-recoleta",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=F7-ye591xvU",
+      en: "https://www.youtube.com/watch?v=EJvI77M_r58",
+      pt: "https://www.youtube.com/watch?v=EJvI77M_r58",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["buenosaires.gob.ar"],
   },
@@ -180,6 +201,11 @@ export const PLACES: Place[] = [
     seeDoKeys: ["seePalermo1", "seePalermo2", "seePalermo3", "seePalermo4"],
     detailKey: "detailPalermo",
     officialUrl: "https://turismo.buenosaires.gob.ar/es/atractivo/bosques-de-palermo",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=jJGO3Y-bh3w",
+      en: "https://www.youtube.com/watch?v=pvx0ThxFsRA",
+      pt: "https://www.youtube.com/watch?v=Zs238FXKuTw",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["turismo.buenosaires.gob.ar"],
   },
@@ -197,6 +223,11 @@ export const PLACES: Place[] = [
     seeDoKeys: ["seeMadero1", "seeMadero2", "seeMadero3"],
     detailKey: "detailMadero",
     officialUrl: "https://turismo.buenosaires.gob.ar/es/atractivo/puerto-madero",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=vBRRdV0965A",
+      en: "https://www.youtube.com/watch?v=Z7oweo9DlAQ",
+      pt: "https://www.youtube.com/watch?v=PUmCdZeGMW4",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["turismo.buenosaires.gob.ar"],
   },
@@ -215,6 +246,11 @@ export const PLACES: Place[] = [
     detailKey: "detailObelisco",
     officialUrl: "https://teatrocolon.org.ar/",
     ticketsUrl: "https://teatrocolon.org.ar/entradas/",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=mhlr8Kc-skE",
+      en: "https://www.youtube.com/watch?v=scu_tWHsshs",
+      pt: "https://www.youtube.com/watch?v=cXYJ44RnJg8",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["teatrocolon.org.ar"],
   },
@@ -232,6 +268,11 @@ export const PLACES: Place[] = [
     seeDoKeys: ["seeTigre1", "seeTigre2", "seeTigre3", "seeTigre4"],
     detailKey: "detailTigre",
     officialUrl: "https://vivitigre.gob.ar/",
+    youtube: {
+      es: "https://www.youtube.com/watch?v=KkXUP9sFieU",
+      en: "https://www.youtube.com/watch?v=C20NuCd0Tqg",
+      pt: "https://www.youtube.com/watch?v=C20NuCd0Tqg",
+    },
     linksReviewedAt: "2026-10-17",
     linksSources: ["vivitigre.gob.ar", "tigre.gob.ar"],
   },
