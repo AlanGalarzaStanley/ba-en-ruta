@@ -2,6 +2,10 @@
 
 Última actualización: 2026-10-17.
 
+## Rama en desarrollo: `feat/modo-en-ruta` (no publicada)
+
+Activación por código, GPS y narraciones. Estado detallado, configuración pendiente en Vercel y pruebas: `docs/MODO-EN-RUTA.md`.
+
 ## Producción
 - URL: https://ba-en-ruta.vercel.app (Vercel Free, despliegue automático desde `main`).
 - Commit de la aplicación verificado en producción: `0a3016558b69ba06b4a0f35490cdeb6db6695c57`.
