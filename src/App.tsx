@@ -17,6 +17,39 @@ import { MiQr } from "./components/MiQr"
 import { DriverSignup } from "./components/DriverSignup"
 import { ITINERARIES } from "./lib/ba-config"
 
+// Modo en ruta (/tour) y panel de códigos (/admin): pantallas propias, cargadas aparte.
+const TourMode = lazy(() => import("./components/TourMode").then((m) => ({ default: m.TourMode })))
+const AdminCodes = lazy(() => import("./components/AdminCodes").then((m) => ({ default: m.AdminCodes })))
+
+function currentApp(): "site" | "tour" | "admin" {
+  if (typeof window === "undefined") return "site"
+  const p = window.location.pathname.replace(/\/+$/, "")
+  if (p === "/tour") return "tour"
+  if (p === "/admin") return "admin"
+  return "site"
+}
+
+function TourApp() {
+  const [lang, setLang] = useLang()
+  return (
+    <Suspense fallback={<PlayerFallback />}>
+      <TourMode lang={lang} setLang={setLang} />
+    </Suspense>
+  )
+}
+
+export default function App() {
+  const which = currentApp()
+  if (which === "tour") return <TourApp />
+  if (which === "admin")
+    return (
+      <Suspense fallback={<PlayerFallback />}>
+        <AdminCodes />
+      </Suspense>
+    )
+  return <SiteApp />
+}
+
 // El simulador (y Leaflet) se descargan recién cuando alguien lo abre.
 const loadRoutePlayer = () => import("./components/RoutePlayer")
 const RoutePlayer = lazy(() => loadRoutePlayer().then((m) => ({ default: m.RoutePlayer })))
@@ -71,7 +104,7 @@ function useScrollReveal() {
  * Hero (cinematográfico) → Passion → Recorridos inmersivos (simulador) → How → Services → Prices
  * → Places (deep + video embebido) → Map → Food → Form → QR → FAQ → Drivers
  */
-export default function App() {
+function SiteApp() {
   const [lang, setLang] = useLang()
   useScrollReveal()
   const [playing, setPlaying] = useState<ItineraryId | null>(() => {

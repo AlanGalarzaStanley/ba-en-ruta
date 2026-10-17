@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { tt } from "../lib/tour-copy"
 import { MessageCircle, ChevronUp, ChevronDown } from "lucide-react"
 import { CONTACT_EMAIL, YOUTUBE_CHANNEL, SERVICES, INTERESTS, PLACES, type ServiceId, type InterestId, type PlaceId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
@@ -200,6 +201,7 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
               <button key={id} type="button" onClick={() => onNav(id)} className="hover:text-white transition-colors">{t(lang, key)}</button>
             ))}
             <button type="button" onClick={() => onNav("reserva")} className="hover:text-white transition-colors">{t(lang, "navCta")} →</button>
+            <a href="/tour" className="text-gold/90 hover:text-gold transition-colors" data-testid="footer-tour-link">{tt(lang, "siteCta")}</a>
           </nav>
         </div>
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-white/55">

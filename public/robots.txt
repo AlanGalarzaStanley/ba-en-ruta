@@ -3,6 +3,8 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
 
 # OpenAI search results bot (ChatGPT Search) — allow for possible appearance in search
 User-agent: OAI-SearchBot

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { readFileSync } from 'node:fs'
+import { localApi } from './server/vite-plugin'
 
 // Mismas cabeceras de seguridad que Vercel (vercel.json), para que `vite preview`
 // y las pruebas E2E detecten cualquier recurso bloqueado por la CSP antes de publicar.
@@ -16,7 +17,7 @@ const securityHeaders = Object.fromEntries(
 )
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), localApi()],
   // GitHub Pages: https://alangalarzastanley.github.io/ba-en-ruta/
   // Vercel/Netlify: leave BASE_PATH empty or unset
   base: process.env.BASE_PATH || '/',
