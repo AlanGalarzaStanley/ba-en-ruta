@@ -3,9 +3,41 @@ import {
   GASTRO_CATEGORIES,
   gastroSearch,
   type GastroCategory,
+  type GastroPlace,
 } from "../lib/gastronomy"
 import type { RestaurantId } from "../lib/ba-config"
 import { t, type Lang } from "../lib/ba-copy"
+
+function linkLabel(lang: Lang, kind: "site" | "reserve" | "tickets" | "ig"): string {
+  if (kind === "site") return lang === "en" ? "Official site" : lang === "pt" ? "Site oficial" : "Sitio oficial"
+  if (kind === "reserve") return lang === "en" ? "Reserve" : lang === "pt" ? "Reservar" : "Reservar"
+  if (kind === "tickets") return lang === "en" ? "Buy tickets" : lang === "pt" ? "Comprar ingressos" : "Comprar entradas"
+  return "Instagram"
+}
+
+function GastroLinks({ r, lang }: { r: GastroPlace; lang: Lang }) {
+  const links: { href: string; kind: "site" | "reserve" | "tickets" | "ig" }[] = []
+  if (r.url) links.push({ href: r.url, kind: "site" })
+  if (r.reserveUrl) links.push({ href: r.reserveUrl, kind: "reserve" })
+  if (r.ticketsUrl) links.push({ href: r.ticketsUrl, kind: "tickets" })
+  if (r.instagramUrl) links.push({ href: r.instagramUrl, kind: "ig" })
+  if (links.length === 0) return null
+  return (
+    <>
+      {links.map((l) => (
+        <a
+          key={l.kind + l.href}
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-medium text-sky-action hover:text-navy min-h-10 inline-flex items-center"
+        >
+          {linkLabel(lang, l.kind)}
+        </a>
+      ))}
+    </>
+  )
+}
 
 export function Gastronomy({
   lang,
@@ -152,16 +184,7 @@ export function Gastronomy({
                               ? "Mais"
                               : "Más"}
                       </button>
-                      {r.url && (
-                        <a
-                          href={r.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs font-medium text-sky-action hover:text-navy min-h-10 inline-flex items-center"
-                        >
-                          {lang === "en" ? "Official site" : lang === "pt" ? "Site oficial" : "Sitio oficial"}
-                        </a>
-                      )}
+                      <GastroLinks r={r} lang={lang} />
                       {onToggleRestaurant && (
                         <button
                           type="button"
@@ -184,10 +207,10 @@ export function Gastronomy({
           {lang === "en" ? "places" : lang === "pt" ? "lugares" : "lugares"}
           {" · "}
           {lang === "en"
-            ? "Sources: GCBA Notable Bars, official sites, city tourism."
+            ? "Links verified 2026-10-17. Only official destinations are shown."
             : lang === "pt"
-              ? "Fontes: GCBA Bares Notáveis, sites oficiais, turismo da cidade."
-              : "Fuentes: GCBA Bares Notables, sitios oficiales, turismo de la Ciudad."}
+              ? "Links verificados em 2026-10-17. Só destinos oficiais são exibidos."
+              : "Enlaces verificados 2026-10-17. Solo se muestran destinos oficiales."}
         </p>
         <button
           type="button"
