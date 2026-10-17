@@ -45,3 +45,10 @@ Si está vacío, el formulario muestra el mensaje preparado y permite copiarlo (
 
 ## Referencia visual
 https://buenos-aires-voyage.lovable.app
+
+## Experiencia inmersiva (2026-10-17)
+- `src/components/RoutePlayer.tsx`: simulador "Sentí el recorrido antes de contratarlo" (fotos con Ken Burns, video embebido, mapa con ruta animada, horarios y trayectos orientativos, CTA WhatsApp). Enlace directo: `?recorrido=<itineraryId>`.
+- `src/lib/route.ts`: arma paradas y estima km/min (orientativo). `src/lib/media.ts`: fotos verificadas de Wikimedia Commons con crédito obligatorio.
+- `src/components/VideoEmbed.tsx`: YouTube liviano (nocookie) dentro del sitio.
+- Auditoría de imágenes/Instagram: `docs/auditoria-2026-10-17/`. No usar fotos de Instagram sin autorización.
+- Respaldo previo: tag `respaldo-pre-inmersiva-2026-10-17`.

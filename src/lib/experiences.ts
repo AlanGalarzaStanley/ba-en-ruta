@@ -73,7 +73,7 @@ export const EXPERIENCES: GuidedExperience[] = [
         tipKey: "stopPlazaTip",
         lat: -34.6083,
         lng: -58.3712,
-        image: commons("Plaza_de_Mayo_Buenos_Aires.jpg"),
+        image: commons("2018-10-19_Plaza_de_Mayo,_Buenos_Aires,_Argentina_(Martin_Rulsch)_02.jpg"),
         mapLabel: "Plaza de Mayo",
       },
       {
@@ -95,7 +95,7 @@ export const EXPERIENCES: GuidedExperience[] = [
         tipKey: "stopCatedralTip",
         lat: -34.6075,
         lng: -58.3733,
-        image: commons("Catedral_Metropolitana_de_Buenos_Aires.jpg"),
+        image: commons("Catedral_metropolitana_de_Buenos_Aires_(1),_AA_2014.jpg"),
         mapLabel: "Catedral Metropolitana",
       },
       {
@@ -117,6 +117,7 @@ export const EXPERIENCES: GuidedExperience[] = [
         tipKey: "stopDiagonalTip",
         lat: -34.6058,
         lng: -58.3775,
+        image: commons("Avenida_Roque_Sáenz_Peña_(Diagonal_Norte)_Obelisco_Buenos_Aires.JPG"),
         mapLabel: "Diagonal Norte",
       },
       {
@@ -127,7 +128,7 @@ export const EXPERIENCES: GuidedExperience[] = [
         tipKey: "stopTortoniTip",
         lat: -34.6085,
         lng: -58.3783,
-        image: commons("Cafe_Tortoni_Buenos_Aires.jpg"),
+        image: commons("Cafe_Tortoni_vitrales.jpg"),
         mapLabel: "Café Tortoni",
       },
     ],

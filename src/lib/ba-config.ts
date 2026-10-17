@@ -2,7 +2,10 @@
  * Configuración central de BA en Ruta
  * Official links verified 2026-10-17
  * YouTube videos restored from prior catalog (no invented links)
+ * Fotos: auditoría Wikimedia Commons 2026-10-17 (ver src/lib/media.ts)
  */
+
+import { PLACE_PHOTOS, GASTRO_PHOTOS, commonsUrl, type Photo } from "./media"
 
 export const WHATSAPP_NUMBER = "5491151448632"
 export const SITE_URL = "https://ba-en-ruta.vercel.app"
@@ -71,6 +74,10 @@ export interface Place {
   instagramUrl?: string
   linksReviewedAt?: string
   linksSources?: string[]
+  /** Fotos verificadas (portada + galería) con crédito */
+  photos?: Photo[]
+  /** Minutos orientativos de visita para el simulador de recorrido */
+  visitMinutes?: number
 }
 
 export interface Restaurant {
@@ -84,6 +91,10 @@ export interface Restaurant {
   itineraryIds?: ItineraryId[]
   url?: string
   image?: string
+  imageCredit?: string
+  instagramUrl?: string
+  lat?: number
+  lng?: number
 }
 
 export interface Itinerary {
@@ -96,7 +107,7 @@ export interface Itinerary {
   image: string
 }
 
-export const PLACES: Place[] = [
+const PLACES_BASE: Place[] = [
   {
     id: "caminito",
     nameKey: "placeCaminito",
@@ -278,27 +289,63 @@ export const PLACES: Place[] = [
   },
 ]
 
-export const RESTAURANTS: Restaurant[] = [
-  { id: "tortoni", name: "Café Tortoni", categoryKey: "restCatCafe", address: "Av. de Mayo 825, Monserrat, CABA", descKey: "restTortoniDesc", whyKey: "restTortoniWhy", placeIds: ["san-telmo-plaza", "obelisco-colon"], itineraryIds: ["historica", "clasica", "gastronomica"], url: "https://www.cafetortoni.com.ar/", image: commons("Cafe_Tortoni_Buenos_Aires.jpg") },
-  { id: "preferido", name: "El Preferido de Palermo", categoryKey: "restCatClassic", address: "Jorge Luis Borges 2108, Palermo, CABA", descKey: "restPreferidoDesc", whyKey: "restPreferidoWhy", placeIds: ["palermo"], itineraryIds: ["clasica", "gastronomica"], url: "https://elpreferidodepalermo.com.ar/" },
-  { id: "cabrera", name: "La Cabrera", categoryKey: "restCatParrilla", address: "José Antonio Cabrera 5099, Palermo, CABA", descKey: "restCabreraDesc", whyKey: "restCabreraWhy", placeIds: ["palermo"], itineraryIds: ["gastronomica", "clasica"], url: "https://www.parrillalacabrera.com.ar/" },
-  { id: "puerto-frutos", name: "Puerto de Frutos", categoryKey: "restCatMarket", address: "Sarmiento y Río Luján, Tigre", descKey: "restFrutosDesc", whyKey: "restFrutosWhy", placeIds: ["tigre"], itineraryIds: ["tigre-delta"] },
+const VISIT_MINUTES: Record<PlaceId, number> = {
+  "caminito": 60,
+  "bombonera": 75,
+  "san-telmo-plaza": 90,
+  "recoleta": 60,
+  "palermo": 75,
+  "puerto-madero": 45,
+  "obelisco-colon": 45,
+  "tigre": 180
+}
+
+const PLACE_INSTAGRAM: Partial<Record<PlaceId, string>> = {
+  "bombonera": "https://www.instagram.com/museodeboca/",
+  "obelisco-colon": "https://www.instagram.com/teatrocolon/",
+  "tigre": "https://www.instagram.com/turismotigre/"
+}
+
+/** Aplica fotos verificadas, crédito y tiempos de visita a cada imperdible. */
+export const PLACES: Place[] = PLACES_BASE.map((p) => {
+  const photos = PLACE_PHOTOS[p.id]
+  const cover = photos?.[0]
+  return {
+    ...p,
+    image: cover ? commonsUrl(cover.file, 1280) : p.image,
+    attribution: cover ? cover.credit : p.attribution,
+    photos,
+    visitMinutes: VISIT_MINUTES[p.id],
+    instagramUrl: p.instagramUrl ?? PLACE_INSTAGRAM[p.id],
+  }
+})
+
+const RESTAURANTS_BASE: Restaurant[] = [
+  { id: "tortoni", name: "Café Tortoni", categoryKey: "restCatCafe", address: "Av. de Mayo 825, Monserrat, CABA", descKey: "restTortoniDesc", whyKey: "restTortoniWhy", placeIds: ["san-telmo-plaza", "obelisco-colon"], itineraryIds: ["historica", "clasica", "gastronomica"], url: "https://www.cafetortoni.com.ar/", instagramUrl: "https://www.instagram.com/grancafetortoni/", lat: -34.6088, lng: -58.3787 },
+  { id: "preferido", name: "El Preferido de Palermo", categoryKey: "restCatClassic", address: "Jorge Luis Borges 2108, Palermo, CABA", descKey: "restPreferidoDesc", whyKey: "restPreferidoWhy", placeIds: ["palermo"], itineraryIds: ["clasica", "gastronomica"], instagramUrl: "https://www.instagram.com/elpreferidodepalermo/", lat: -34.5857, lng: -58.4306 },
+  { id: "cabrera", name: "La Cabrera", categoryKey: "restCatParrilla", address: "José Antonio Cabrera 5099, Palermo, CABA", descKey: "restCabreraDesc", whyKey: "restCabreraWhy", placeIds: ["palermo"], itineraryIds: ["gastronomica", "clasica"], url: "https://www.lacabrera.com.ar/", instagramUrl: "https://www.instagram.com/lacabrera_bsas/", lat: -34.5871, lng: -58.4373 },
+  { id: "puerto-frutos", name: "Puerto de Frutos", categoryKey: "restCatMarket", address: "Sarmiento 160, Tigre", descKey: "restFrutosDesc", whyKey: "restFrutosWhy", placeIds: ["tigre"], itineraryIds: ["tigre-delta"], url: "https://vivitigre.gob.ar/actividades/puerto-de-frutos/", instagramUrl: "https://www.instagram.com/puertodefrutosok/", lat: -34.4183, lng: -58.5806 },
 ]
 
+export const RESTAURANTS: Restaurant[] = RESTAURANTS_BASE.map((r) => {
+  const ph = GASTRO_PHOTOS[r.id]?.[0]
+  return ph ? { ...r, image: commonsUrl(ph.file, 960), imageCredit: ph.credit } : r
+})
+
 export const ITINERARIES: Itinerary[] = [
-  { id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur", placeIds: ["san-telmo-plaza", "caminito", "bombonera"], restaurantIds: ["tortoni"], image: commons("Casa_Rosada_2024.jpg") },
+  { id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur", placeIds: ["san-telmo-plaza", "caminito", "bombonera"], restaurantIds: ["tortoni"], image: commons("San_Telmo_Plaza_Dorrego.JPG") },
   { id: "clasica", nameKey: "itinClasicaName", descKey: "itinClasicaDesc", durationKey: "itinClasicaDur", placeIds: ["obelisco-colon", "recoleta", "palermo"], restaurantIds: ["tortoni", "preferido"], image: commons("Obelisco_Buenos_Aires.jpg") },
-  { id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur", placeIds: ["san-telmo-plaza", "palermo"], restaurantIds: ["tortoni", "preferido", "cabrera"], image: "https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80" },
-  { id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur", placeIds: ["caminito", "bombonera"], image: commons("Bombonera_Boca_Juniors.JPG") },
+  { id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur", placeIds: ["san-telmo-plaza", "palermo"], restaurantIds: ["tortoni", "preferido", "cabrera"], image: commons("Don_Julio_Grill_dining_room_Buenos_Aires_Argentina.jpg") },
+  { id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur", placeIds: ["caminito", "bombonera"], image: commons("Estadio_Alberto_J._Armando_field_view.jpg") },
   { id: "tigre-delta", nameKey: "itinTigreName", descKey: "itinTigreDesc", durationKey: "itinTigreDur", placeIds: ["tigre"], restaurantIds: ["puerto-frutos"], image: commons("El_maravilloso_Delta_en_Tigre.jpg") },
 ]
 
 export const HERO_IMAGE = "https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1920"
 export const EXP_IMAGES = {
   city: commons("Buenos_Aires_Caminito_4.jpg"),
-  football: commons("Bombonera_Boca_Juniors.JPG"),
-  folklore: commons("Buenos_Aires_Caminito_4.jpg"),
-  gastro: "https://images.unsplash.com/photo-1555935062-eca2db5e2c60?auto=format&fit=crop&w=900&q=80",
+  football: commons("Estadio_Alberto_J._Armando_field_view.jpg"),
+  folklore: commons("Tango_in_Plaza_Dorrego.jpg"),
+  gastro: commons("Don_Julio_Grill_dining_room_Buenos_Aires_Argentina.jpg"),
 } as const
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/user/visitarg"
 export const CONTACT_EMAIL = "galarza.alan.g@gmail.com"

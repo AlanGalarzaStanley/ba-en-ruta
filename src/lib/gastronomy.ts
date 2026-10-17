@@ -31,11 +31,17 @@ export interface GastroPlace {
   instagramUrl?: string
   phone?: string
   image?: string
+  /** Crédito obligatorio de la foto (autor / licencia) */
+  imageCredit?: string
+  /** Aviso operativo (p. ej. estado a confirmar) */
+  statusNoteEs?: string
   placeIds?: string[]
   confidence: GastroConfidence
   sources: string[]
   reviewedAt?: string
 }
+
+import { GASTRO_PHOTOS, commonsUrl } from "./media"
 
 const commons = (file: string) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=900`
@@ -51,7 +57,7 @@ export const GASTRO_CATEGORIES: { id: GastroCategory | "all"; labelEs: string; l
   { id: "sweets", labelEs: "Dulces y helados", labelEn: "Sweets & ice cream", labelPt: "Doces e sorvetes" },
 ]
 
-export const GASTRO_PLACES: GastroPlace[] = [
+const GASTRO_BASE: GastroPlace[] = [
   {
     id: "tortoni",
     name: "Café Tortoni",
@@ -420,6 +426,44 @@ export const GASTRO_PLACES: GastroPlace[] = [
     sources: ["guías gastronómicas"],
   },
 ]
+
+/**
+ * Correcciones de la auditoría 2026-10-17 (Instagram verificado desde sitios oficiales,
+ * direcciones y URLs revisadas). Ver docs de auditoría.
+ */
+const GASTRO_FIXES: Record<string, Partial<GastroPlace>> = {
+  "la-biela": { instagramUrl: "https://www.instagram.com/labielacafe/" },
+  "el-gato-negro": { url: "https://donvictoriano.com.ar/", instagramUrl: "https://www.instagram.com/elgatonegrocafe/" },
+  "la-giralda": { instagramUrl: "https://www.instagram.com/lagiralda1453/" },
+  "homero-manzi": { url: "https://www.esquinahomeromanzi.com.ar/", reserveUrl: "https://www.esquinahomeromanzi.com.ar/", instagramUrl: "https://www.instagram.com/esquinahomeromanzi/" },
+  "36-billares": { url: "https://www.los36billares.com.ar/" },
+  "cabrera": { url: "https://www.lacabrera.com.ar/", instagramUrl: "https://www.instagram.com/lacabrera_bsas/" },
+  "preferido": { url: undefined, instagramUrl: "https://www.instagram.com/elpreferidodepalermo/" },
+  "mercado-san-telmo": { url: "https://www.mercadosantelmo.com.ar/", instagramUrl: "https://www.instagram.com/elmercadosantelmo/" },
+  "mercat-villa-crespo": { instagramUrl: "https://www.instagram.com/mercatvillacrespo/" },
+  "mercado-progreso": { address: "Av. Rivadavia 5430", instagramUrl: "https://www.instagram.com/mercadodelprogreso/" },
+  "puerto-frutos": { address: "Sarmiento 160, Tigre", url: "https://vivitigre.gob.ar/actividades/puerto-de-frutos/", instagramUrl: "https://www.instagram.com/puertodefrutosok/" },
+  "fogon-asado": { neighborhood: "Palermo", address: "Uriarte 1423", url: "https://fogonasado.com/", reserveUrl: "https://fogonasado.com/", instagramUrl: "https://www.instagram.com/fogonasado/" },
+  "cadore": { url: "https://heladeriacadore.com.ar/", instagramUrl: "https://www.instagram.com/heladeriacadore/" },
+  "la-mezzetta": { neighborhood: "Villa Ortúzar", address: "Av. Álvarez Thomas 1321" },
+  "el-cuartito": { neighborhood: "Retiro", url: "https://www.elcuartito.com.ar/" },
+  "los-laureles": { statusNoteEs: "Estado operativo cambiante en 2026: confirmá que esté abierto antes de ir." },
+}
+
+/** Entradas no verificables que se retiran del catálogo público. */
+const GASTRO_REMOVED = new Set(["scuzo"])
+
+export const GASTRO_PLACES: GastroPlace[] = GASTRO_BASE.filter((g) => !GASTRO_REMOVED.has(g.id)).map((g) => {
+  const merged = { ...g, ...(GASTRO_FIXES[g.id] ?? {}) }
+  const ph = GASTRO_PHOTOS[g.id]?.[0]
+  if (ph) {
+    merged.image = commonsUrl(ph.file, 960)
+    merged.imageCredit = ph.credit
+  } else {
+    merged.image = undefined
+  }
+  return merged
+})
 
 export function gastroByCategory(cat: GastroCategory | "all"): GastroPlace[] {
   if (cat === "all") return GASTRO_PLACES

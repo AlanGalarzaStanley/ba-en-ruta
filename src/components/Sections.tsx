@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { VideoModal } from "./VideoEmbed"
 import { Plane, Car, Map, Play, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
 import {
   PLACES,
@@ -154,6 +155,7 @@ function PlaceCard({
 }) {
   const [open, setOpen] = useState(false)
   const [imgError, setImgError] = useState(false)
+  const [video, setVideo] = useState<{ url: string; label: string } | null>(null)
   const guideId = `guide-${place.id}`
   const nearbyRests = RESTAURANTS.filter((r) => r.placeIds.includes(place.id))
   const yt = place.youtube
@@ -164,13 +166,21 @@ function PlaceCard({
   ].filter((l) => l.url)
 
   return (
-    <div id={`place-${place.id}`} className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
-      <div className="aspect-video relative bg-navy/10">
+    <div id={`place-${place.id}`} className="ba-card ba-reveal bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col">
+      {video && (
+        <VideoModal
+          url={video.url}
+          lang={lang}
+          title={`${t(lang, place.nameKey as CopyKey)} · ${video.label}`}
+          onClose={() => setVideo(null)}
+        />
+      )}
+      <div className="aspect-video relative bg-navy/10 overflow-hidden">
         {place.image && !imgError ? (
           <img
             src={place.image}
             alt={t(lang, (place.imageAltKey || place.nameKey) as CopyKey)}
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-105"
             loading="lazy"
             width={640}
             height={360}
@@ -187,22 +197,26 @@ function PlaceCard({
         {videoLangs.length > 0 && (
           <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1.5 justify-center">
             {videoLangs.map((l) => (
-              <a
+              <button
+                type="button"
                 key={l.code}
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 min-h-9 px-2.5 rounded-full bg-navy/85 hover:bg-navy text-white text-[11px] font-medium backdrop-blur-sm"
+                onClick={() => setVideo({ url: l.url!, label: l.label })}
+                className="inline-flex items-center gap-1 min-h-9 px-2.5 rounded-full bg-navy/85 hover:bg-gold hover:text-navy text-white text-[11px] font-medium backdrop-blur-sm transition-colors"
                 aria-label={`${t(lang, "placesVideo")} (${l.label})`}
               >
                 <Play className="w-3 h-3 fill-current" aria-hidden />
                 {l.label}
-              </a>
+              </button>
             ))}
           </div>
         )}
       </div>
       <div className="p-4 flex flex-col flex-1">
+        {place.attribution && (
+          <p className="text-[9px] text-navy/35 mb-1.5 truncate" title={place.attribution}>
+            {t(lang, "photoBy")}: {place.attribution}
+          </p>
+        )}
         <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
         <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
         {place.durationKey && <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>}
@@ -348,7 +362,7 @@ export function Places({
             />
           ))}
         </div>
-        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">{t(lang, "placesPhotoCredit")}</p>
+        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">{t(lang, "placesPhotoCreditFix")}</p>
       </div>
     </section>
   )

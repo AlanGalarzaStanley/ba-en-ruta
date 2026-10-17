@@ -15,14 +15,68 @@ import { TourBar, type TourSelection } from "./components/TourBar"
 import { EnquiryForm, FAQ, Footer } from "./components/FormFaq"
 import { MiQr } from "./components/MiQr"
 import { DriverSignup } from "./components/DriverSignup"
+import { RoutePlayer } from "./components/RoutePlayer"
+import { ITINERARIES } from "./lib/ba-config"
+
+function useScrollReveal() {
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return
+    const root = document.documentElement
+    root.classList.add("ba-js-reveal")
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible")
+            io.unobserve(e.target)
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+    )
+    const scan = () => document.querySelectorAll(".ba-reveal:not(.is-visible)").forEach((el) => io.observe(el))
+    scan()
+    const mo = new MutationObserver(scan)
+    mo.observe(document.body, { childList: true, subtree: true })
+    // Seguridad: nada queda oculto si el observer falla
+    const safety = window.setTimeout(() => document.querySelectorAll(".ba-reveal").forEach((el) => el.classList.add("is-visible")), 4000)
+    return () => {
+      io.disconnect()
+      mo.disconnect()
+      window.clearTimeout(safety)
+    }
+  }, [])
+}
 
 /**
  * Narrative:
- * Hero → Passion → How → Services → Prices
- * → Places (deep + video) → Map → Day plans → Food → Form → QR → FAQ → Drivers
+ * Hero (cinematográfico) → Passion → Recorridos inmersivos (simulador) → How → Services → Prices
+ * → Places (deep + video embebido) → Map → Food → Form → QR → FAQ → Drivers
  */
 export default function App() {
   const [lang, setLang] = useLang()
+  useScrollReveal()
+  const [playing, setPlaying] = useState<ItineraryId | null>(() => {
+    if (typeof window === "undefined") return null
+    const q = new URLSearchParams(window.location.search).get("recorrido")
+    return ITINERARIES.some((i) => i.id === q) ? (q as ItineraryId) : null
+  })
+  const openPlayer = useCallback((id: ItineraryId) => {
+    setPlaying(id)
+    try {
+      const u = new URL(window.location.href)
+      u.searchParams.set("recorrido", id)
+      window.history.replaceState(null, "", u)
+    } catch { /* ignore */ }
+  }, [])
+  const closePlayer = useCallback(() => {
+    setPlaying(null)
+    try {
+      const u = new URL(window.location.href)
+      u.searchParams.delete("recorrido")
+      window.history.replaceState(null, "", u)
+    } catch { /* ignore */ }
+  }, [])
   const [tenant, setTenant] = useState<TenantConfig>(() => {
     if (typeof window === "undefined") return getActiveTenant()
     const t = resolveTenantFromPath(window.location.pathname)
@@ -119,6 +173,17 @@ export default function App() {
       <main>
         <Hero lang={lang} onNav={scrollTo} />
         <Passion lang={lang} />
+        {f.itineraries && (
+          <Itineraries
+            lang={lang}
+            onSelectItinerary={(id, p, r) => {
+              selectItinerary(id, p, r)
+              scrollTo("reserva")
+            }}
+            onCustomize={customizeItinerary}
+            onPlay={openPlayer}
+          />
+        )}
         <HowItWorks lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
@@ -135,10 +200,6 @@ export default function App() {
 
         {f.map && <PlacesMap lang={lang} highlightId={mapHighlight} onSelectPlace={selectPlace} />}
 
-        {f.itineraries && (
-          <Itineraries lang={lang} onSelectItinerary={selectItinerary} onCustomize={customizeItinerary} />
-        )}
-
         {f.gastronomy && (
           <Gastronomy
             lang={lang}
@@ -154,6 +215,9 @@ export default function App() {
         {f.driverSignup && <DriverSignup lang={lang} />}
       </main>
       <Footer lang={lang} onNav={scrollTo} />
+      {playing && (
+        <RoutePlayer itineraryId={playing} lang={lang} onClose={closePlayer} onCustomize={customizeItinerary} />
+      )}
       <TourBar
         lang={lang}
         selection={tour}

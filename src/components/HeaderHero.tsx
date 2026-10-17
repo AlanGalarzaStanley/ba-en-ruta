@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
-import { MessageCircle, ChevronDown, Menu, X } from "lucide-react"
-import { HERO_IMAGE } from "../lib/ba-config"
+import { MessageCircle, ChevronDown, Menu, X, Play } from "lucide-react"
+import { HERO_IMAGE, PLACES } from "../lib/ba-config"
+import { commonsUrl } from "../lib/media"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 
 function detectBrowserLang(): Lang {
@@ -59,6 +60,7 @@ export function Header({
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const nav = [
+    { id: "recorridos", key: "heroCtaLive" as CopyKey },
     { id: "servicios", key: "navServices" as CopyKey },
     { id: "imperdibles", key: "navPlaces" as CopyKey },
     { id: "mapa", key: "mapLabel" as CopyKey },
@@ -119,31 +121,80 @@ export function Header({
   )
 }
 
+const HERO_SLIDES: { src: string; placeId?: string; credit: string }[] = [
+  { src: HERO_IMAGE, credit: "Pexels" },
+  ...PLACES.filter((p) => p.photos?.length).map((p) => ({
+    src: commonsUrl(p.photos![0].file, 1920),
+    placeId: p.id,
+    credit: p.photos![0].credit,
+  })),
+]
+
 export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void }) {
+  const [i, setI] = useState(0)
+  const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+  useEffect(() => {
+    if (reduce) return
+    const id = window.setInterval(() => setI((n) => (n + 1) % HERO_SLIDES.length), 6500)
+    return () => window.clearInterval(id)
+  }, [reduce])
+  useEffect(() => {
+    const next = HERO_SLIDES[(i + 1) % HERO_SLIDES.length]
+    const im = new Image()
+    im.src = next.src
+  }, [i])
+  const slide = HERO_SLIDES[i]
+  const place = slide.placeId ? PLACES.find((p) => p.id === slide.placeId) : null
   return (
-    <section id="inicio" className="relative min-h-[85vh] flex items-end">
-      <div className="absolute inset-0">
-        <img src={HERO_IMAGE} alt="Obelisco de Buenos Aires al atardecer" className="w-full h-full object-cover" fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/50 to-navy/30" />
+    <section id="inicio" className="relative min-h-[92vh] flex items-end overflow-hidden bg-navy">
+      <div className="absolute inset-0" aria-hidden>
+        {HERO_SLIDES.map((s, n) => (
+          <img
+            key={s.src}
+            src={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? s.src : undefined}
+            alt=""
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1800ms] ease-in-out ${
+              n === i ? "opacity-100" : "opacity-0"
+            } ${n === i && !reduce ? "ba-kenburns" : ""}`}
+            fetchPriority={n === 0 ? "high" : "low"}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/55 to-navy/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-transparent to-transparent" />
       </div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-16 pt-32">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-44 sm:pb-28 pt-32">
         <p className="text-gold/90 text-xs sm:text-sm tracking-[0.2em] uppercase mb-4 font-medium">— {t(lang, "heroBadge")}</p>
-        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.1] max-w-3xl">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] max-w-3xl">
           {t(lang, "heroTitle1")}<br /><em className="text-gold not-italic font-medium">{t(lang, "heroTitle2")}</em>
         </h1>
         <p className="mt-5 text-white/85 text-base sm:text-lg max-w-xl leading-relaxed">{t(lang, "heroSubtitle")}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <button type="button" onClick={() => onNav("reserva")} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors">
-            <MessageCircle className="w-4 h-4" />{t(lang, "heroCtaWhatsApp")}<span aria-hidden>→</span>
+          <button type="button" onClick={() => onNav("recorridos")} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
+            <Play className="w-4 h-4 fill-current" />{t(lang, "heroCtaLive")}<span aria-hidden>→</span>
           </button>
-          <button type="button" onClick={() => onNav("imperdibles")} className="inline-flex items-center gap-2 text-white/90 hover:text-white font-medium px-5 py-3">
-            {t(lang, "heroCtaExperiences")}<span aria-hidden>→</span>
+          <button type="button" onClick={() => onNav("reserva")} className="inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
+            <MessageCircle className="w-4 h-4" />{t(lang, "heroCtaWhatsApp")}
           </button>
         </div>
-        <div className="mt-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-white/60 text-sm">
-          <p className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-gold" />{t(lang, "heroLocation")}</p>
-          <p className="italic font-display text-white/70">{t(lang, "heroTagline")}</p>
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-white/60 text-sm">
+          <p className="flex items-center gap-2" aria-live="polite">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+            {place ? (
+              <span>
+                <span className="text-white/45 uppercase tracking-widest text-[10px] mr-2">{t(lang, "heroNow")}</span>
+                <span className="text-white/85">{t(lang, place.nameKey as CopyKey)}</span>
+              </span>
+            ) : (
+              t(lang, "heroLocation")
+            )}
+          </p>
+          <div className="flex items-center gap-1.5" aria-hidden>
+            {HERO_SLIDES.map((s, n) => (
+              <span key={s.src} className={`h-1 rounded-full transition-all duration-500 ${n === i ? "w-6 bg-gold" : "w-1.5 bg-white/35"}`} />
+            ))}
+          </div>
         </div>
+        <p className="mt-3 text-[10px] text-white/35">{t(lang, "photoBy")}: {slide.credit}{slide.placeId ? " · Wikimedia Commons" : ""}</p>
       </div>
       <div className="absolute bottom-0 left-0 right-0 bg-cream/95 backdrop-blur border-t border-navy/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-navy/70">

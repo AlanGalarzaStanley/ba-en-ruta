@@ -123,23 +123,39 @@ export function Gastronomy({
               return (
                 <article
                   key={r.id}
-                  className="ba-card bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col"
+                  className="ba-card ba-reveal bg-white rounded-xl border border-navy/5 overflow-hidden flex flex-col"
                 >
                   {r.image ? (
-                    <div className="aspect-[16/10] bg-navy/5">
+                    <div className="aspect-[16/10] bg-navy/5 relative overflow-hidden">
                       <img
                         src={r.image}
-                        alt=""
-                        className="w-full h-full object-cover"
+                        alt={r.name}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-105"
                         loading="lazy"
                         onError={(e) => {
                           ;(e.target as HTMLImageElement).style.display = "none"
                         }}
                       />
+                      {r.imageCredit && (
+                        <span className="absolute bottom-0 left-0 right-0 px-2 py-1 text-[9px] text-white/80 bg-gradient-to-t from-black/60 to-transparent truncate">
+                          {t(lang, "photoBy")}: {r.imageCredit}
+                        </span>
+                      )}
                     </div>
                   ) : (
-                    <div className="aspect-[16/10] bg-navy/10 flex items-center justify-center">
-                      <span className="text-navy/30 text-xs font-display px-3 text-center">{r.name}</span>
+                    <div className="aspect-[16/10] relative overflow-hidden bg-gradient-to-br from-navy to-[#1E293B] flex flex-col items-center justify-center gap-2 px-4">
+                      <span className="text-gold text-[10px] uppercase tracking-[0.25em]">{r.neighborhood}</span>
+                      <span className="text-white font-display text-xl text-center leading-tight">{r.name}</span>
+                      {r.instagramUrl && (
+                        <a
+                          href={r.instagramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] text-white/70 hover:text-white underline underline-offset-4 min-h-8 inline-flex items-center"
+                        >
+                          {lang === "en" ? "See photos on Instagram" : lang === "pt" ? "Ver fotos no Instagram" : "Ver fotos en Instagram"}
+                        </a>
+                      )}
                     </div>
                   )}
                   <div className="p-4 flex flex-col flex-1">
@@ -152,6 +168,15 @@ export function Gastronomy({
                     </p>
                     <p className="text-[11px] text-navy/45 mb-2">{r.address}</p>
                     <p className="text-xs text-navy/60 leading-relaxed flex-1 mb-2">{r.descEs}</p>
+                    {r.statusNoteEs && (
+                      <p className="text-[11px] text-amber-700 bg-amber-50 rounded-md px-2 py-1 mb-2">
+                        {lang === "en"
+                          ? "Status changing in 2026: check it is open before going."
+                          : lang === "pt"
+                            ? "Situação em mudança em 2026: confirme se está aberto antes de ir."
+                            : r.statusNoteEs}
+                      </p>
+                    )}
                     {isOpen && (
                       <div className="text-xs text-navy/55 leading-relaxed mb-2 space-y-1 border-t border-navy/8 pt-2">
                         <p>{r.whyEs}</p>
