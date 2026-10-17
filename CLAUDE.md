@@ -27,15 +27,20 @@ Producción: https://ba-en-ruta.vercel.app · Repo: AlanGalarzaStanley/ba-en-rut
 - `src/lib/whatsapp.ts` / `tenant.ts`: mensajes y número de WhatsApp (5491151448632).
 - `src/components/RoutePlayer.tsx`: simulador "Sentí el recorrido antes de contratarlo". `VideoEmbed.tsx`: YouTube nocookie liviano.
 - `ExperiencePlayer.tsx` no está montado en la app (código previo conservado).
+- Modo en ruta (`/tour`) y panel de códigos (`/admin`): `src/components/TourMode.tsx`, `AdminCodes.tsx`, `src/lib/{tour-client,proximity,narrator,tour-copy}.ts`. API en `api/index.ts` + `server/` (códigos de un solo uso, Vercel Blob privado, narraciones solo en servidor). Guía completa: `docs/MODO-EN-RUTA.md`.
+- `server/tours.ts` duplica los recorridos de `ITINERARIES` (una prueba exige que coincidan): al agregar un recorrido, actualizar ambos y `server/narrations.ts`.
 
 ## URLs compartibles
 - `?lang=es|en|pt` fija el idioma (tiene prioridad sobre la preferencia guardada). hreflang + sitemap apuntan a estas URLs.
+- `/tour?codigo=XXXX-XXXX-XXXX` abre la activación con el código cargado (se borra de la URL al leerlo).
 - `?recorrido=<id>` abre el simulador; `&parada=N` abre en el paso N (0 = punto de encuentro). La URL se actualiza al avanzar y el botón Compartir la copia o usa el menú nativo del teléfono.
 
 ## Reglas de contenido
 - No inventar enlaces, cuentas de Instagram, horarios, precios ni datos históricos. Si algo no se puede confirmar, marcarlo como pendiente.
 - No usar fotos de Instagram ni de terceros sin permiso. Commons/Pexels solo con crédito visible.
 - Auditoría de imágenes e Instagram: `docs/auditoria-2026-10-17/`.
+- Narraciones del modo en ruta: solo con datos de las fuentes listadas en cada guion; nunca inventar URLs de audio.
+- Secretos (`TOUR_AUTH_SECRET`, `TOUR_ADMIN_TOKEN`) solo como variables Sensitive en Vercel; nunca en el repo ni en el cliente.
 
 ## Respaldo
 - Tag `respaldo-pre-inmersiva-2026-10-17` (ec2bae9): estado previo a la experiencia inmersiva.

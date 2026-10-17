@@ -86,7 +86,14 @@ export function evaluateFix(
   const key = inside[0].s.key
   const hits = state.candidate?.key === key ? state.candidate.hits + 1 : 1
   if (hits >= opts.confirmHits || fix.accuracy <= opts.instantAccuracyM) {
-    return { state: { arrived: [...state.arrived, key], candidate: null }, nearest, arrivedKey: key, ignored: null }
+    // Tras llegar, "más cercana" pasa a ser la siguiente pendiente.
+    let next: Evaluation["nearest"] = null
+    for (const s of pending) {
+      if (s.key === key) continue
+      const d = distanceM(fix, s)
+      if (!next || d < next.distanceM) next = { key: s.key, distanceM: d }
+    }
+    return { state: { arrived: [...state.arrived, key], candidate: null }, nearest: next, arrivedKey: key, ignored: null }
   }
   return { state: { ...state, candidate: { key, hits } }, nearest, arrivedKey: null, ignored: null }
 }

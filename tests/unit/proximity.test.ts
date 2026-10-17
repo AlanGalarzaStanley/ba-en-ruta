@@ -33,6 +33,7 @@ describe("proximidad", () => {
   it("una lectura muy precisa alcanza", () => {
     const r = evaluateFix(emptyProximity(), { ...north(OBELISCO, 50), accuracy: 10 }, stops)
     expect(r.arrivedKey).toBe("obelisco-colon")
+    expect(r.nearest?.key).toBe("recoleta") // la siguiente pendiente, no la recién visitada
   })
   it("ignora lecturas imprecisas y lejanas", () => {
     expect(evaluateFix(emptyProximity(), { ...OBELISCO, accuracy: 900 }, stops).ignored).toBe("low_accuracy")

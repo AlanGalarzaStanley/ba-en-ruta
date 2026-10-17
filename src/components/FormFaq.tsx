@@ -201,7 +201,7 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
               <button key={id} type="button" onClick={() => onNav(id)} className="hover:text-white transition-colors">{t(lang, key)}</button>
             ))}
             <button type="button" onClick={() => onNav("reserva")} className="hover:text-white transition-colors">{t(lang, "navCta")} →</button>
-            <a href="/tour" className="text-gold/90 hover:text-gold transition-colors" data-testid="footer-tour-link">{tt(lang, "siteCta")}</a>
+            <a href={`/tour?lang=${lang}`} className="text-gold/90 hover:text-gold transition-colors" data-testid="footer-tour-link">{tt(lang, "siteCta")}</a>
           </nav>
         </div>
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-white/55">
