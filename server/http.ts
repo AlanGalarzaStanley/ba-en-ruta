@@ -17,7 +17,10 @@ export function json(status: number, body: unknown, extra: Record<string, string
   return new Response(JSON.stringify(body), { status, headers: { ...baseHeaders, ...extra } })
 }
 
-const fromResult = <T>(r: Result<T>) => (r.ok ? json(200, r.value) : json(r.status, { error: r.error }))
+type Fail = Extract<Result<unknown>, { ok: false }>
+// Sin depender del estrechamiento de tipos: Vercel compila api/ con su propia configuración (no estricta).
+const fromResult = <T>(r: Result<T>) =>
+  r.ok === true ? json(200, (r as { value: T }).value) : json((r as Fail).status, { error: (r as Fail).error })
 
 async function readJson(req: Request): Promise<Record<string, unknown> | null> {
   const len = Number(req.headers.get("content-length") ?? "0")
