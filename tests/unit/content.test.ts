@@ -79,3 +79,16 @@ describe("datos de lugares, itinerarios y gastronomía", () => {
     expect(missing, "correr: node scripts/sync-commons.mjs").toEqual([])
   })
 })
+
+import { HERO_LOCAL } from "../../src/lib/hero-images"
+import { existsSync } from "node:fs"
+
+describe("fotos locales del carrusel", () => {
+  it("cada variante declarada existe en public/hero", () => {
+    for (const [slug, widths] of Object.entries(HERO_LOCAL))
+      for (const w of widths) expect(existsSync(join(__dirname, `../../public/hero/${slug}-${w}.webp`)), `${slug}-${w}`).toBe(true)
+  })
+  it("hay foto local para cada lugar con foto", () => {
+    for (const p of PLACES.filter((p) => p.photos?.length)) expect(HERO_LOCAL[p.id], p.id).toBeTruthy()
+  })
+})

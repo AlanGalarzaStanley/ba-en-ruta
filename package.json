@@ -14,9 +14,12 @@
     "test": "vitest run tests/unit",
     "test:e2e": "playwright test",
     "sync:commons": "node scripts/sync-commons.mjs",
-    "check": "npm run typecheck && npm test && vite build"
+    "check": "npm run typecheck && npm test && vite build",
+    "test:links": "vitest run tests/links"
   },
   "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",

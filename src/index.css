@@ -9,8 +9,8 @@
   --color-gold-light: #FBBF24;
   --color-sky: #75AADB;
   --color-sky-action: #0072A3;
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans Variable", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
 }
 
 html {
@@ -122,7 +122,7 @@ body {
   width: 26px; height: 26px; border-radius: 9999px;
   background: #0F172A; color: #fff; border: 2px solid rgb(255 255 255 / 0.5);
   display: flex; align-items: center; justify-content: center;
-  font: 600 11px/1 "DM Sans", system-ui, sans-serif;
+  font: 600 11px/1 "DM Sans Variable", "DM Sans", system-ui, sans-serif;
   transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 .ba-route-marker.is-food { border-style: dashed; }

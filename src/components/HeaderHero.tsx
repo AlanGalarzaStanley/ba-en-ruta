@@ -4,6 +4,7 @@ import { HERO_IMAGE, PLACES } from "../lib/ba-config"
 import { commonsUrl } from "../lib/media"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 import { optimizeImage, imageSrcSet } from "../lib/img"
+import { heroLocal } from "../lib/hero-images"
 
 function detectBrowserLang(): Lang {
   try {
@@ -87,7 +88,7 @@ export function Header({
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 flex items-center justify-between h-16">
-        <button type="button" onClick={() => onNav("inicio")} className="flex items-center gap-2" aria-label={tenantName || "BA en Ruta"}>
+        <button type="button" onClick={() => onNav("inicio")} className="flex items-center gap-2">
           <span className="font-display text-2xl font-semibold text-navy tracking-tight">BA</span>
           <span className="h-5 w-px bg-navy/20" />
           <span className="text-left leading-tight">
@@ -138,14 +139,17 @@ export function Header({
   )
 }
 
-const HERO_SLIDES: { src: string; placeId?: string; credit: string }[] = [
-  { src: HERO_IMAGE, credit: "Pexels" },
+const HERO_SLIDES: { src: string; srcSet?: string; placeId?: string; credit: string }[] = [
+  { src: HERO_IMAGE, credit: "Pexels", ...(heroLocal("obelisco-pexels") ?? {}) },
   ...PLACES.filter((p) => p.photos?.length).map((p) => ({
     src: commonsUrl(p.photos![0].file, 1920),
+    ...(heroLocal(p.id) ?? {}),
     placeId: p.id,
     credit: p.photos![0].credit,
   })),
 ]
+const slideSrc = (s: (typeof HERO_SLIDES)[number]) => (s.srcSet ? s.src : optimizeImage(s.src, 1280))
+const slideSrcSet = (s: (typeof HERO_SLIDES)[number]) => s.srcSet ?? imageSrcSet(s.src, [500, 960, 1280, 1920])
 
 export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void }) {
   const [i, setI] = useState(0)
@@ -159,8 +163,8 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
     const next = HERO_SLIDES[(i + 1) % HERO_SLIDES.length]
     const im = new Image()
     im.sizes = "100vw"
-    im.srcset = imageSrcSet(next.src, [500, 960, 1280, 1920]) ?? ""
-    im.src = optimizeImage(next.src, 1280) ?? next.src
+    im.srcset = slideSrcSet(next) ?? ""
+    im.src = slideSrc(next) ?? next.src
   }, [i])
   const slide = HERO_SLIDES[i]
   const place = slide.placeId ? PLACES.find((p) => p.id === slide.placeId) : null
@@ -170,8 +174,8 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
         {HERO_SLIDES.map((s, n) => (
           <img
             key={s.src}
-            src={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? optimizeImage(s.src, 1280) : undefined}
-            srcSet={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? imageSrcSet(s.src, [500, 960, 1280, 1920]) : undefined}
+            src={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? slideSrc(s) : undefined}
+            srcSet={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? slideSrcSet(s) : undefined}
             sizes="100vw"
             decoding="async"
             alt=""
