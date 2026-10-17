@@ -3,6 +3,7 @@ import { MessageCircle, ChevronDown, Menu, X, Play } from "lucide-react"
 import { HERO_IMAGE, PLACES } from "../lib/ba-config"
 import { commonsUrl } from "../lib/media"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
+import { optimizeImage, imageSrcSet } from "../lib/img"
 
 function detectBrowserLang(): Lang {
   try {
@@ -20,6 +21,9 @@ function detectBrowserLang(): Lang {
 export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLangState] = useState<Lang>(() => {
     try {
+      // Un enlace compartido con ?lang= manda sobre la preferencia guardada.
+      const fromUrl = new URLSearchParams(window.location.search).get("lang")
+      if (fromUrl === "es" || fromUrl === "en" || fromUrl === "pt") return fromUrl
       const stored = localStorage.getItem("ba-lang") as Lang | null
       if (stored === "es" || stored === "en" || stored === "pt") return stored
     } catch { /* ignore */ }
@@ -28,6 +32,13 @@ export function useLang(): [Lang, (l: Lang) => void] {
   const setLang = useCallback((l: Lang) => {
     setLangState(l)
     try { localStorage.setItem("ba-lang", l) } catch { /* ignore */ }
+    try {
+      const u = new URL(window.location.href)
+      if (u.searchParams.has("lang")) {
+        u.searchParams.set("lang", l)
+        window.history.replaceState(null, "", u)
+      }
+    } catch { /* ignore */ }
     document.documentElement.lang = l === "pt" ? "pt-BR" : l
   }, [])
   useEffect(() => {
@@ -41,6 +52,12 @@ export function useLang(): [Lang, (l: Lang) => void] {
       if (ogTitle) ogTitle.setAttribute("content", t(lang, "siteTitle"))
       const ogDesc = document.querySelector('meta[property="og:description"]')
       if (ogDesc) ogDesc.setAttribute("content", desc)
+      const ogLocale = document.querySelector('meta[property="og:locale"]')
+      if (ogLocale) ogLocale.setAttribute("content", lang === "pt" ? "pt_BR" : lang === "en" ? "en_US" : "es_AR")
+      // Canonical coherente con hreflang: cada idioma explícito (?lang=) apunta a sí mismo.
+      const canonical = document.querySelector('link[rel="canonical"]')
+      const hasLang = new URLSearchParams(window.location.search).has("lang")
+      if (canonical) canonical.setAttribute("href", hasLang ? `https://ba-en-ruta.vercel.app/?lang=${lang}` : "https://ba-en-ruta.vercel.app/")
     } catch { /* ignore */ }
   }, [lang])
   return [lang, setLang]
@@ -75,7 +92,7 @@ export function Header({
           <span className="h-5 w-px bg-navy/20" />
           <span className="text-left leading-tight">
             <span className="block text-sm font-medium text-navy">{tenantName || "en Ruta"}</span>
-            <span className="block text-[10px] uppercase tracking-widest text-navy/50">Buenos Aires</span>
+            <span className="block text-[10px] uppercase tracking-widest text-navy/65">Buenos Aires</span>
           </span>
         </button>
         <nav className="hidden lg:flex items-center gap-5 text-sm text-navy/80">
@@ -141,7 +158,9 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
   useEffect(() => {
     const next = HERO_SLIDES[(i + 1) % HERO_SLIDES.length]
     const im = new Image()
-    im.src = next.src
+    im.sizes = "100vw"
+    im.srcset = imageSrcSet(next.src, [500, 960, 1280, 1920]) ?? ""
+    im.src = optimizeImage(next.src, 1280) ?? next.src
   }, [i])
   const slide = HERO_SLIDES[i]
   const place = slide.placeId ? PLACES.find((p) => p.id === slide.placeId) : null
@@ -151,7 +170,10 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
         {HERO_SLIDES.map((s, n) => (
           <img
             key={s.src}
-            src={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? s.src : undefined}
+            src={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? optimizeImage(s.src, 1280) : undefined}
+            srcSet={n === 0 || Math.abs(n - i) <= 1 || n === (i + 1) % HERO_SLIDES.length ? imageSrcSet(s.src, [500, 960, 1280, 1920]) : undefined}
+            sizes="100vw"
+            decoding="async"
             alt=""
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1800ms] ease-in-out ${
               n === i ? "opacity-100" : "opacity-0"
@@ -181,7 +203,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
             <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
             {place ? (
               <span>
-                <span className="text-white/45 uppercase tracking-widest text-[10px] mr-2">{t(lang, "heroNow")}</span>
+                <span className="text-white/55 uppercase tracking-widest text-[10px] mr-2">{t(lang, "heroNow")}</span>
                 <span className="text-white/85">{t(lang, place.nameKey as CopyKey)}</span>
               </span>
             ) : (
@@ -194,7 +216,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
             ))}
           </div>
         </div>
-        <p className="mt-3 text-[10px] text-white/35">{t(lang, "photoBy")}: {slide.credit}{slide.placeId ? " · Wikimedia Commons" : ""}</p>
+        <p className="mt-3 text-[10px] text-white/55">{t(lang, "photoBy")}: {slide.credit}{slide.placeId ? " · Wikimedia Commons" : ""}</p>
       </div>
       <div className="absolute bottom-0 left-0 right-0 bg-cream/95 backdrop-blur border-t border-navy/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-navy/70">

@@ -60,11 +60,11 @@ export function MiQr({ lang }: Props) {
     <section id="mi-qr" className="py-14 sm:py-16 bg-cream-dark/20">
       <div className="max-w-lg mx-auto px-4 sm:px-6 text-center">
         <h2 className="font-display text-2xl sm:text-3xl text-navy mb-2">{t(lang, "qrTitle")}</h2>
-        <p className="text-sm text-navy/55 mb-8 max-w-sm mx-auto leading-relaxed">{brief}</p>
+        <p className="text-sm text-navy/65 mb-8 max-w-sm mx-auto leading-relaxed">{brief}</p>
 
         {!numberOk || !waUrl || !qrSrc ? (
           <div className="ba-card bg-white rounded-2xl border border-navy/5 p-8">
-            <QrCode className="w-12 h-12 text-navy/25 mx-auto mb-4" aria-hidden />
+            <QrCode className="w-12 h-12 text-navy/65 mx-auto mb-4" aria-hidden />
             <p className="text-sm text-navy/70">{t(lang, "qrMissingNumber")}</p>
           </div>
         ) : (
@@ -79,7 +79,7 @@ export function MiQr({ lang }: Props) {
                 loading="lazy"
               />
             </div>
-            <p className="mt-4 text-xs text-navy/45 max-w-xs">{t(lang, "qrHint")}</p>
+            <p className="mt-4 text-xs text-navy/65 max-w-xs">{t(lang, "qrHint")}</p>
             <div className="mt-5 flex flex-wrap gap-2 justify-center">
               <button
                 type="button"

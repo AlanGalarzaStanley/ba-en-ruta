@@ -29,10 +29,16 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (L.Icon.Default.prototype as any)._getIconUrl
+      // Íconos servidos desde el propio sitio (sin depender de un CDN externo)
+      const [retina, icon, shadow] = await Promise.all([
+        import("leaflet/dist/images/marker-icon-2x.png"),
+        import("leaflet/dist/images/marker-icon.png"),
+        import("leaflet/dist/images/marker-shadow.png"),
+      ])
       L.Icon.Default.mergeOptions({
-        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        iconRetinaUrl: retina.default,
+        iconUrl: icon.default,
+        shadowUrl: shadow.default,
       })
 
       const map = L.map(el, {
@@ -116,7 +122,7 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
   return (
     <section id="mapa" className="py-12 sm:py-16 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "mapLabel")}</p>
+        <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "mapLabel")}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "mapTitle")}</h2>
         <p className="text-navy/60 text-sm mb-6 max-w-xl">{t(lang, "mapSubtitle")}</p>
         <div className="ba-accent-line mb-6 max-w-xs" aria-hidden />
@@ -126,7 +132,7 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
           role="region"
           aria-label={t(lang, "mapTitle")}
         />
-        <p className="mt-3 text-[10px] text-navy/40">{t(lang, "mapAttribution")}</p>
+        <p className="mt-3 text-[10px] text-navy/65">{t(lang, "mapAttribution")}</p>
         <ul className="mt-4 flex flex-wrap gap-2">
           {PLACES.map((p, i) => (
             <li key={p.id}>

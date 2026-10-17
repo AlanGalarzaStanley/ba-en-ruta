@@ -3,6 +3,7 @@ import { ITINERARIES, PLACES, RESTAURANTS, type ItineraryId, type PlaceId, type 
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 import { fill } from "../lib/immersive-copy"
 import { buildRoute, routeTotals } from "../lib/route"
+import { optimizeImage, imageSrcSet } from "../lib/img"
 
 type Props = {
   lang: Lang
@@ -46,7 +47,10 @@ export function Itineraries({ lang, onSelectItinerary, onCustomize, onPlay }: Pr
                   aria-label={`${t(lang, "routePlay")}: ${t(lang, itin.nameKey as CopyKey)}`}
                 >
                   <img
-                    src={itin.image.replace(/width=\d+/, "width=1280")}
+                    src={optimizeImage(itin.image, 960)}
+                    srcSet={imageSrcSet(itin.image, [500, 960, 1280])}
+                    sizes="(min-width: 1024px) 560px, 100vw"
+                    decoding="async"
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-[1.06]"
                     loading="lazy"

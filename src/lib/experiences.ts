@@ -143,7 +143,6 @@ export function getExperienceForPlace(placeId: PlaceId): GuidedExperience | unde
   return EXPERIENCES.find((e) => e.placeId === placeId)
 }
 
-export function externalMapUrl(lat: number, lng: number, label?: string): string {
-  const q = label ? encodeURIComponent(label) : `${lat},${lng}`
+export function externalMapUrl(lat: number, lng: number, _label?: string): string {
   return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`
 }

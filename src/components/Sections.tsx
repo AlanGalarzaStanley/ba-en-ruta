@@ -3,21 +3,20 @@ import { VideoModal } from "./VideoEmbed"
 import { Plane, Car, Map, Play, ChevronDown, ChevronUp, MapPin, Plus, Check } from "lucide-react"
 import {
   PLACES,
-  EXP_IMAGES,
   RESTAURANTS,
   type ServiceId,
   type InterestId,
   type PlaceId,
   type Place,
-  type RestaurantId,
 } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
+import { optimizeImage, imageSrcSet } from "../lib/img"
 
 export function HowItWorks({ lang }: { lang: Lang }) {
   return (
     <section id="como-funciona" className="py-16 sm:py-20 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-center text-navy/40 text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "howLabel")}</p>
+        <p className="text-center text-navy/65 text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "howLabel")}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-center text-navy mb-4">{t(lang, "howTitle")}</h2>
         <div className="ba-accent-line max-w-xs mx-auto mb-12" aria-hidden />
         <div className="grid md:grid-cols-3 gap-8 md:gap-10">
@@ -29,13 +28,13 @@ export function HowItWorks({ lang }: { lang: Lang }) {
             ] as const
           ).map((s) => (
             <div key={s.n} className="text-center">
-              <p className="font-display text-4xl text-gold mb-3">{s.n}</p>
+              <p className="font-display text-4xl text-amber-700 mb-3">{s.n}</p>
               <h3 className="font-medium text-navy mb-2">{t(lang, s.title)}</h3>
               <p className="text-sm text-navy/60 leading-relaxed">{t(lang, s.desc)}</p>
             </div>
           ))}
         </div>
-        <p className="mt-10 text-center text-xs text-navy/40">{t(lang, "howNote")}</p>
+        <p className="mt-10 text-center text-xs text-navy/65">{t(lang, "howNote")}</p>
       </div>
     </section>
   )
@@ -52,16 +51,16 @@ export function Services({ lang, onEnquire }: { lang: Lang; onEnquire: (service:
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
-            <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "servicesLabel")}</p>
+            <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "servicesLabel")}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-navy">{t(lang, "servicesTitle")}</h2>
           </div>
-          <p className="text-sm text-navy/50 max-w-sm">{t(lang, "servicesSubtitle")}</p>
+          <p className="text-sm text-navy/65 max-w-sm">{t(lang, "servicesSubtitle")}</p>
         </div>
         <div className="grid md:grid-cols-3 gap-5">
           {items.map((item) => (
             <div key={item.id} className="ba-card bg-cream rounded-2xl border border-navy/5 p-6 flex flex-col">
               <item.icon className="w-6 h-6 text-sky mb-4" />
-              <p className="text-[10px] uppercase tracking-widest text-navy/40 mb-1">{t(lang, item.label)}</p>
+              <p className="text-[10px] uppercase tracking-widest text-navy/65 mb-1">{t(lang, item.label)}</p>
               <h3 className="font-display text-xl text-navy mb-2">{t(lang, item.title)}</h3>
               <p className="text-sm text-navy/60 leading-relaxed flex-1 mb-5">{t(lang, item.desc)}</p>
               <button type="button" onClick={() => onEnquire(item.id)} className="inline-flex items-center gap-1 text-sm font-medium text-navy hover:text-gold transition-colors min-h-11">
@@ -88,7 +87,7 @@ export function Prices({ lang, onEnquire }: { lang: Lang; onEnquire: () => void 
           <button type="button" onClick={onEnquire} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             {t(lang, "pricesCta")} <span aria-hidden>→</span>
           </button>
-          <p className="mt-3 text-xs text-white/40 max-w-xs md:ml-auto">{t(lang, "pricesNote")}</p>
+          <p className="mt-3 text-xs text-white/55 max-w-xs md:ml-auto">{t(lang, "pricesNote")}</p>
         </div>
       </div>
     </section>
@@ -112,7 +111,7 @@ export function MoodStrip({
   return (
     <section id="experiencias" className="py-14 sm:py-16 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "moodLabel")}</p>
+        <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "moodLabel")}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-3">{t(lang, "moodTitle")}</h2>
         <p className="text-navy/60 text-sm mb-8 max-w-2xl leading-relaxed">{t(lang, "moodSubtitle")}</p>
         <div className="flex flex-wrap gap-3 mb-8">
@@ -124,7 +123,7 @@ export function MoodStrip({
               className="text-left rounded-xl border border-navy/10 bg-white px-4 py-3 hover:border-gold/50 transition-colors min-h-11 max-w-xs"
             >
               <span className="block font-medium text-navy text-sm">{t(lang, m.title)}</span>
-              <span className="block text-xs text-navy/50 mt-0.5">{t(lang, m.desc)}</span>
+              <span className="block text-xs text-navy/65 mt-0.5">{t(lang, m.desc)}</span>
             </button>
           ))}
         </div>
@@ -178,7 +177,10 @@ function PlaceCard({
       <div className="aspect-video relative bg-navy/10 overflow-hidden">
         {place.image && !imgError ? (
           <img
-            src={place.image}
+            src={optimizeImage(place.image, 500)}
+            srcSet={imageSrcSet(place.image, [330, 500, 960])}
+            sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
+            decoding="async"
             alt={t(lang, (place.imageAltKey || place.nameKey) as CopyKey)}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out hover:scale-105"
             loading="lazy"
@@ -188,7 +190,7 @@ function PlaceCard({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-navy/15 px-3">
-            <span className="font-display text-navy/40 text-sm text-center">{t(lang, place.nameKey as CopyKey)}</span>
+            <span className="font-display text-navy/65 text-sm text-center">{t(lang, place.nameKey as CopyKey)}</span>
           </div>
         )}
         <span className="absolute top-2 left-2 w-7 h-7 rounded-full bg-navy/90 text-white text-xs font-medium flex items-center justify-center">
@@ -213,13 +215,13 @@ function PlaceCard({
       </div>
       <div className="p-4 flex flex-col flex-1">
         {place.attribution && (
-          <p className="text-[9px] text-navy/35 mb-1.5 truncate" title={place.attribution}>
+          <p className="text-[9px] text-navy/65 mb-1.5 truncate" title={place.attribution}>
             {t(lang, "photoBy")}: {place.attribution}
           </p>
         )}
         <h3 className="font-medium text-navy text-sm mb-1">{t(lang, place.nameKey as CopyKey)}</h3>
-        <p className="text-xs text-navy/55 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
-        {place.durationKey && <p className="text-[10px] text-navy/40 mb-2">{t(lang, place.durationKey as CopyKey)}</p>}
+        <p className="text-xs text-navy/65 leading-relaxed flex-1 mb-2">{t(lang, place.descKey as CopyKey)}</p>
+        {place.durationKey && <p className="text-[10px] text-navy/65 mb-2">{t(lang, place.durationKey as CopyKey)}</p>}
 
         <div className="border-t border-navy/8 pt-2 mt-1">
           <button
@@ -345,7 +347,7 @@ export function Places({
   return (
     <section id="imperdibles" className="py-16 sm:py-20 bg-cream-dark/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <p className="text-navy/40 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "placesLabel")}</p>
+        <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "placesLabel")}</p>
         <h2 className="font-display text-3xl sm:text-4xl text-navy mb-2">{t(lang, "placesTitle")}</h2>
         <p className="text-navy/60 text-sm mb-10 max-w-xl">{t(lang, "placesSubtitle")}</p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -362,7 +364,7 @@ export function Places({
             />
           ))}
         </div>
-        <p className="mt-6 text-[10px] text-navy/35 leading-relaxed">{t(lang, "placesPhotoCreditFix")}</p>
+        <p className="mt-6 text-[10px] text-navy/65 leading-relaxed">{t(lang, "placesPhotoCreditFix")}</p>
       </div>
     </section>
   )
