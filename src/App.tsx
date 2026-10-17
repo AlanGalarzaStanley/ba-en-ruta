@@ -7,7 +7,8 @@ import {
   type TenantConfig,
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
-import { HowItWorks, Services, Prices, Places, Gastronomy } from "./components/Sections"
+import { HowItWorks, Services, Prices, Places } from "./components/Sections"
+import { Gastronomy } from "./components/GastronomySection"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
 import { TourBar, type TourSelection } from "./components/TourBar"
