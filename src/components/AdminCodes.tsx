@@ -27,9 +27,12 @@ interface PublicCode {
 }
 
 const ERRORS: Record<string, string> = {
-  unauthorized: "Token de administrador incorrecto.",
-  admin_not_configured: "Falta configurar TOUR_ADMIN_TOKEN en Vercel.",
-  not_configured: "Falta configurar TOUR_AUTH_SECRET o el almacenamiento (Blob) en Vercel.",
+  unauthorized: "Contraseña incorrecta.",
+  not_configured: "Falta conectar el almacenamiento (Blob) al proyecto en Vercel. Ver docs/MODO-EN-RUTA.md.",
+  weak_password: "La contraseña debe tener al menos 10 caracteres.",
+  already_set: "La contraseña ya fue creada. Ingresala abajo.",
+  mismatch: "Las dos contraseñas no coinciden.",
+  not_allowed: "La contraseña se crea desde la vista previa del proyecto, no desde el sitio publicado.",
   invalid_params: "Revisá los valores del formulario.",
   invalid_tour: "Recorrido inválido.",
   busy: "Otro cambio ocurrió al mismo tiempo. Probá de nuevo.",
@@ -85,6 +88,46 @@ export function AdminCodes() {
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [copied, setCopied] = useState<string | null>(null)
+  const [status, setStatus] = useState<{ state: "env" | "ready" | "setup_required"; setupAllowed: boolean } | null>(null)
+  const [pw1, setPw1] = useState("")
+  const [pw2, setPw2] = useState("")
+  useEffect(() => {
+    void fetch("/api/admin/status", { cache: "no-store" })
+      .then(async (r) => {
+        const d = (await r.json().catch(() => null)) as { state?: string; setupAllowed?: boolean; error?: string } | null
+        if (r.ok && d?.state) setStatus({ state: d.state as "env" | "ready" | "setup_required", setupAllowed: !!d.setupAllowed })
+        else setError(d?.error ?? "server_error")
+      })
+      .catch(() => setError("network"))
+  }, [])
+  const setup = async (e: FormEvent) => {
+    e.preventDefault()
+    if (pw1 !== pw2) return setError("mismatch")
+    setBusy(true)
+    try {
+      const r = await fetch("/api/admin/setup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pw1 }), cache: "no-store" })
+      const d = (await r.json().catch(() => null)) as { error?: string } | null
+      if (r.ok) {
+        try {
+          sessionStorage.setItem(TOKEN_KEY, pw1)
+        } catch {
+          /* ignore */
+        }
+        setStatus({ state: "ready", setupAllowed: false })
+        setError(null)
+        setToken(pw1)
+      } else {
+        setError(d?.error ?? "server_error")
+        if (d?.error === "already_set") setStatus({ state: "ready", setupAllowed: false })
+      }
+    } catch {
+      setError("network")
+    } finally {
+      setBusy(false)
+      setPw1("")
+      setPw2("")
+    }
+  }
   const [form, setForm] = useState({ tour: ITINERARIES[0].id as ItineraryId, count: 1, redeemDays: 30, sessionHours: 12, maxDevices: 1, note: "" })
 
   useEffect(() => {
@@ -207,13 +250,29 @@ export function AdminCodes() {
           </p>
         )}
 
-        {!token ? (
+        {!token && status?.state === "setup_required" ? (
+          status.setupAllowed ? (
+            <form onSubmit={setup} className="max-w-md bg-white rounded-2xl shadow p-6">
+              <h1 className="text-xl font-semibold flex items-center gap-2">
+                <KeyRound className="w-5 h-5 text-gold" aria-hidden /> Primera vez: elegí tu contraseña
+              </h1>
+              <p className="text-sm text-navy/70 mt-2">Con esta contraseña vas a entrar al panel, acá y en el sitio publicado. Se puede crear una sola vez. Anotala en un lugar seguro: no se puede ver después.</p>
+              <label htmlFor="pw1" className="block text-sm font-medium mt-4">Contraseña (mínimo 10 caracteres)</label>
+              <input id="pw1" type="password" autoComplete="new-password" minLength={10} value={pw1} onChange={(e) => setPw1(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5" />
+              <label htmlFor="pw2" className="block text-sm font-medium mt-3">Repetí la contraseña</label>
+              <input id="pw2" type="password" autoComplete="new-password" minLength={10} value={pw2} onChange={(e) => setPw2(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5" />
+              <button type="submit" disabled={busy || pw1.length < 10} className="mt-4 rounded-lg bg-navy text-white px-4 py-2.5 font-semibold disabled:opacity-50">Crear contraseña</button>
+            </form>
+          ) : (
+            <p className="max-w-md bg-white rounded-2xl shadow p-6 text-sm">{ERRORS.not_allowed}</p>
+          )
+        ) : !token ? (
           <form onSubmit={login} className="max-w-md bg-white rounded-2xl shadow p-6">
             <h1 className="text-xl font-semibold flex items-center gap-2">
               <KeyRound className="w-5 h-5 text-gold" aria-hidden /> Acceso de administración
             </h1>
-            <p className="text-sm text-navy/70 mt-2">Pegá el token de administrador (variable TOUR_ADMIN_TOKEN en Vercel). Se guarda solo en esta pestaña.</p>
-            <label htmlFor="admin-token" className="block text-sm font-medium mt-4">Token</label>
+            <p className="text-sm text-navy/70 mt-2">Ingresá la contraseña del panel. Queda guardada solo en esta pestaña.</p>
+            <label htmlFor="admin-token" className="block text-sm font-medium mt-4">Contraseña</label>
             <input id="admin-token" type="password" autoComplete="current-password" value={input} onChange={(e) => setInput(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2.5" />
             <button type="submit" className="mt-4 rounded-lg bg-navy text-white px-4 py-2.5 font-semibold">Entrar</button>
           </form>

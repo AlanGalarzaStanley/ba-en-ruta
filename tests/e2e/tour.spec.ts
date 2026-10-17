@@ -152,11 +152,11 @@ test.describe("modo en ruta", () => {
 test.describe("panel de códigos", () => {
   test("token incorrecto, crear, listar y liberar", async ({ page }) => {
     await page.goto("/admin")
-    await page.getByLabel("Token").fill("incorrecto")
+    await page.getByLabel("Contraseña", { exact: true }).fill("incorrecto")
     await page.getByRole("button", { name: "Entrar" }).click()
-    await expect(page.getByRole("alert")).toContainText("incorrecto")
+    await expect(page.getByRole("alert")).toContainText("incorrecta")
 
-    await page.getByLabel("Token").fill(ADMIN)
+    await page.getByLabel("Contraseña", { exact: true }).fill(ADMIN)
     await page.getByRole("button", { name: "Entrar" }).click()
     await page.getByLabel("Recorrido").selectOption("futbolera")
     await page.getByLabel("Nota interna (cliente, fecha)").fill("Cliente prueba")

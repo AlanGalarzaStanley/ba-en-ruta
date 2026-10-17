@@ -1,4 +1,4 @@
-import { safeEqual } from "./crypto.js"
+import { adminState, setupAdminPassword, verifyAdminPassword } from "./bootstrap.js"
 import type { ServerConfig } from "./env.js"
 import { narrationsForTour } from "./narrations.js"
 import { checkSession, createCodes, listCodes, redeem, releaseDevices, revokeCode, verifySessionToken, type Result } from "./service.js"
@@ -59,9 +59,9 @@ export async function handleApi(req: Request, route: string, cfg: ServerConfig):
   try {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: { Allow: "GET, POST" } })
     if (!sameOrigin(req)) return json(403, { error: "forbidden_origin" })
-    if (route === "tour/health") return json(200, { ok: !cfg.problem, problem: cfg.problem, admin: !!cfg.adminToken })
-    if (!cfg.ctx) return json(503, { error: "not_configured" })
-    const ctx = cfg.ctx
+    if (route === "tour/health") return json(200, { ok: !cfg.problem, problem: cfg.problem })
+    if (!cfg.store) return json(503, { error: "not_configured" })
+    const ctx = await cfg.getCtx()
 
     if (route === "tour/redeem") {
       if (req.method !== "POST") return json(405, { error: "method_not_allowed" })
@@ -86,9 +86,21 @@ export async function handleApi(req: Request, route: string, cfg: ServerConfig):
       return json(200, { tour: p.t, expiresAt: p.exp, stops: narrationsForTour(p.t) })
     }
 
+    if (route === "admin/status") {
+      const state = await adminState(ctx.store, cfg.adminToken)
+      return json(200, { state, setupAllowed: state === "setup_required" && cfg.vercelEnv !== "production" })
+    }
+
+    if (route === "admin/setup") {
+      if (req.method !== "POST") return json(405, { error: "method_not_allowed" })
+      const body = await readJson(req)
+      if (!body) return json(400, { error: "bad_request" })
+      const r = await setupAdminPassword(ctx.store, cfg.adminToken, cfg.vercelEnv, body.password)
+      return r === "ok" ? json(200, { ok: true }) : json(r === "weak_password" ? 400 : 409, { error: r })
+    }
+
     if (route === "admin/codes") {
-      if (!cfg.adminToken) return json(503, { error: "admin_not_configured" })
-      if (!safeEqual(bearer(req), cfg.adminToken)) return json(401, { error: "unauthorized" })
+      if (!(await verifyAdminPassword(ctx.store, cfg.adminToken, bearer(req)))) return json(401, { error: "unauthorized" })
       if (req.method === "GET") return fromResult(await listCodes(ctx))
       if (req.method !== "POST") return json(405, { error: "method_not_allowed" })
       const body = await readJson(req)

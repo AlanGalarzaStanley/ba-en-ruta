@@ -27,7 +27,7 @@ Convención: **implementado** = código en la rama. **Probado** = pruebas autom�
 | Lógica | `server/service.ts` | Canje, sesión, crear, listar, revocar y liberar. |
 | Criptografía | `server/crypto.ts` | Ver "Modelo de seguridad". |
 | Almacenamiento | `server/store.ts` | `BlobStore` (Vercel Blob privado) y `MemoryStore` (local y pruebas). |
-| Configuración | `server/env.ts` | Falla cerrado: sin secreto o sin almacenamiento responde 503. En Vercel nunca usa la memoria. |
+| Configuración | `server/env.ts`, `server/bootstrap.ts` | Sin almacenamiento responde 503. Clave interna y contraseña del panel se crean solas si faltan las variables. En Vercel nunca usa la memoria. |
 | Narraciones | `server/narrations.ts` | Solo en el servidor; no están en el código público del sitio. |
 | Desarrollo local | `server/vite-plugin.ts` | La misma API en `vite dev` y `vite preview`, con memoria y secretos locales de prueba. |
 | Cliente | `src/lib/tour-client.ts` | Identificador aleatorio del dispositivo, sesión, caché y progreso en `localStorage`. |
@@ -42,7 +42,7 @@ Convención: **implementado** = código en la rama. **Probado** = pruebas autom�
 - **Canje atómico:** se lee el registro con su ETag y se escribe con `ifMatch`, la escritura condicional de Vercel Blob ([documentación](https://vercel.com/docs/vercel-blob/using-blob-sdk)). Si dos canjes compiten, el perdedor relee y recibe `in_use`. En memoria se probó con 10 canjes simultáneos (prueba unitaria) y con 6 por HTTP (prueba E2E).
 - **Sesión:** token firmado con HMAC-SHA256 que incluye el id del código, el recorrido, el hash del dispositivo y el vencimiento. `tour/session` lo revalida contra el registro, así que revocar o liberar un código corta la sesión.
 - **Narraciones:** `tour/narration` verifica la firma sin leer el almacenamiento, para ahorrar operaciones.
-- **Administración:** el token `TOUR_ADMIN_TOKEN` (24 caracteres o más) viaja en `Authorization` y se compara en tiempo constante. En el navegador queda solo en la pestaña (`sessionStorage`), nunca en la URL.
+- **Administración:** contraseña de 10 caracteres o más, guardada como hash scrypt, o `TOUR_ADMIN_TOKEN` si está cargada. Viaja en `Authorization` y se compara en tiempo constante. En el navegador queda solo en la pestaña (`sessionStorage`), nunca en la URL.
 - **Fuerza bruta:** con 60 bits de entropía, adivinar un código no es viable. No se agregó límite de intentos porque gastaría operaciones de Blob.
 
 ### Privacidad
@@ -72,19 +72,24 @@ Convención: **implementado** = código en la rama. **Probado** = pruebas autom�
 - **Dependencia nueva:** `@vercel/blob` (SDK oficial). `npm audit`: 0 vulnerabilidades.
 - **Aviso:** el uso comercial en Hobby sigue siendo el riesgo documentado en `docs/INFORME-ETAPA-2026-10-17.md`. Por decisión del dueño, el proyecto sigue en Vercel.
 
-## Configuración en Vercel (pendiente, la hace el dueño)
+## Configuración en Vercel (pendiente: un solo paso del dueño)
 
-La credencial de Vercel del agente solo tiene permisos de lectura: crear el almacenamiento y las variables respondió 403. Sin estos pasos, la API responde 503 "El servicio de activación todavía no está habilitado" y el resto del sitio funciona igual.
+La credencial de Vercel del agente es de solo lectura: crear el almacenamiento respondió 403 ("You don't have permission to create the blob"). No es un tema de créditos. Para depender lo menos posible del dueño, el sistema se configura solo:
 
-1. **Storage:**
-   - Vercel → proyecto `ba-en-ruta` → Storage → Create → **Blob**.
-   - Nombre `ba-en-ruta-codigos`, acceso **Private**.
-   - Conectarlo al proyecto en Preview (y Production cuando se apruebe). Vercel agrega solo las variables del Blob.
-2. **Variables:** Settings → Environment Variables, tipo **Sensitive**:
-   - `TOUR_AUTH_SECRET`: 32 caracteres aleatorios o más. Se puede generar con `openssl rand -base64 48`. Si se cambia, se invalidan todos los códigos y sesiones.
-   - `TOUR_ADMIN_TOKEN`: 24 caracteres aleatorios o más. Es la clave para entrar a `/admin`; guardarla en un gestor de contraseñas.
-3. **Probar la vista previa:** volver a desplegar y abrir `…vercel.app/api/tour/health`. Debe responder `{"ok":true,…}`.
-4. **Datos por entorno:** se separan por prefijo (`tour/preview/…` y `tour/production/…`), así que se puede usar el mismo almacenamiento.
+- **Clave interna:** si no existe `TOUR_AUTH_SECRET`, el servidor genera una al azar la primera vez y la guarda en el almacenamiento privado (`tour/_system/secret.json`). La creación es "solo si no existe", así que no hay problema con pedidos simultáneos.
+- **Contraseña del panel:** si no existe `TOUR_ADMIN_TOKEN`, el dueño la elige la primera vez que entra a `/admin` en una **vista previa**, que Vercel protege con su inicio de sesión.
+  - Se guarda solo un hash scrypt (`tour/_system/admin.json`) y se crea una sola vez.
+  - En producción no se puede crear, solo usar.
+  - Para reiniciarla, borrar ese archivo desde Storage en Vercel.
+- **Variables:** son opcionales. Si se cargan, tienen prioridad.
+
+Único paso manual:
+
+1. Vercel → proyecto `ba-en-ruta` → **Storage** → **Create** → **Blob**.
+2. Nombre `ba-en-ruta-codigos`, acceso **Private**, Create.
+3. Conectar al proyecto con Preview y Production marcados.
+
+Después: volver a desplegar la vista previa (el agente sube un commit), entrar a `/admin` de la vista previa y crear la contraseña. Sin almacenamiento, la API responde 503 y el resto del sitio funciona igual.
 
 ## Pruebas
 
