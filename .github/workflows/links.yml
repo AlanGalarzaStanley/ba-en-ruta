@@ -1,0 +1,23 @@
+name: Enlaces oficiales
+
+# Revisión semanal: si un sitio oficial cambia o cae, el workflow falla y GitHub avisa por correo.
+on:
+  schedule:
+    - cron: "17 11 * * 1" # lunes 08:17 (Argentina)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run test:links

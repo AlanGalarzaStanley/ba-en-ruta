@@ -233,7 +233,7 @@ const PLACES_BASE: Place[] = [
     logisticsKey: "guideMaderoLogistics", nearbyKey: "guideMaderoNearby",
     seeDoKeys: ["seeMadero1", "seeMadero2", "seeMadero3"],
     detailKey: "detailMadero",
-    officialUrl: "https://turismo.buenosaires.gob.ar/es/atractivo/puerto-madero",
+    officialUrl: "https://turismo.buenosaires.gob.ar/es/atractivo/puerto-madero-0",
     youtube: {
       es: "https://www.youtube.com/watch?v=vBRRdV0965A",
       en: "https://www.youtube.com/watch?v=Z7oweo9DlAQ",
