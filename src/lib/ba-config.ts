@@ -50,7 +50,8 @@ export type PlaceId =
   | "obelisco-colon"
   | "tigre"
 
-export type RestaurantId = "tortoni" | "preferido" | "cabrera" | "puerto-frutos"
+/** Flexible id — full catalog in gastronomy.ts */
+export type RestaurantId = string
 
 export type ItineraryId = "historica" | "clasica" | "gastronomica" | "futbolera" | "tigre-delta"
 
@@ -311,6 +312,7 @@ export const PLACES: Place[] = [
   },
 ]
 
+/** Legacy 4 cards kept for itinerary links; UI uses GASTRO_PLACES */
 export const RESTAURANTS: Restaurant[] = [
   {
     id: "tortoni",
@@ -417,3 +419,6 @@ export const EXP_IMAGES = {
 
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/user/visitarg"
 export const CONTACT_EMAIL = "galarza.alan.g@gmail.com"
+
+export { GASTRO_PLACES, GASTRO_CATEGORIES, gastroSearch, getGastro } from "./gastronomy"
+export type { GastroPlace, GastroCategory } from "./gastronomy"
