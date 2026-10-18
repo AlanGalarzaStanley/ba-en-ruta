@@ -8,6 +8,7 @@ import {
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Places } from "./components/Sections"
+import { AboutDriver, Packages } from "./components/PackagesSection"
 import { Gastronomy } from "./components/GastronomySection"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
@@ -17,7 +18,6 @@ import { MiQr } from "./components/MiQr"
 import { DriverSignup } from "./components/DriverSignup"
 import { ITINERARIES } from "./lib/ba-config"
 
-// El simulador (y Leaflet) se descargan recién cuando alguien lo abre.
 const loadRoutePlayer = () => import("./components/RoutePlayer")
 const RoutePlayer = lazy(() => loadRoutePlayer().then((m) => ({ default: m.RoutePlayer })))
 
@@ -56,7 +56,6 @@ function useScrollReveal() {
     scan()
     const mo = new MutationObserver(scan)
     mo.observe(document.body, { childList: true, subtree: true })
-    // Seguridad: nada queda oculto si el observer falla
     const safety = window.setTimeout(() => document.querySelectorAll(".ba-reveal").forEach((el) => el.classList.add("is-visible")), 4000)
     return () => {
       io.disconnect()
@@ -66,11 +65,6 @@ function useScrollReveal() {
   }, [])
 }
 
-/**
- * Narrative:
- * Hero (cinematográfico) → Passion → Recorridos inmersivos (simulador) → How → Services → Prices
- * → Places (deep + video embebido) → Map → Food → Form → QR → FAQ → Drivers
- */
 export default function App() {
   const [lang, setLang] = useLang()
   useScrollReveal()
@@ -81,7 +75,6 @@ export default function App() {
   })
   const [initialStep, setInitialStep] = useState(readInitialStep)
   useEffect(() => {
-    // Si alguien pasa el cursor o el dedo por un recorrido, precargamos el simulador.
     const warm = () => void loadRoutePlayer()
     const el = document.getElementById("recorridos")
     el?.addEventListener("pointerenter", warm, { once: true })
@@ -225,7 +218,9 @@ export default function App() {
           />
         )}
         <HowItWorks lang={lang} />
+        <AboutDriver lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
+        <Packages lang={lang} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
 
         {f.places && (
