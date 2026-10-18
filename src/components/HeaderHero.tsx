@@ -80,6 +80,7 @@ export function Header({
   const nav = [
     { id: "recorridos", key: "heroCtaLive" as CopyKey },
     { id: "servicios", key: "navServices" as CopyKey },
+    { id: "paquetes", key: "packsLabel" as CopyKey },
     { id: "imperdibles", key: "navPlaces" as CopyKey },
     { id: "mapa", key: "mapLabel" as CopyKey },
     { id: "gastronomia", key: "navGastronomy" as CopyKey },
