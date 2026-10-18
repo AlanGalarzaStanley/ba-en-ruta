@@ -8,13 +8,14 @@ import { guidesEs, guidesEn, guidesPt } from "./guides-copy"
 import { experienceEs, experienceEn, experiencePt } from "./experience-copy"
 import { moodEs, moodEn, moodPt } from "./mood-copy"
 import { immersiveEs, immersiveEn, immersivePt } from "./immersive-copy"
+import { packagesEs, packagesEn, packagesPt } from "./packages-copy"
 
 export type Lang = "es" | "en" | "pt"
 
 export const copy = {
-  es: { ...copyEs, ...guidesEs, ...experienceEs, ...moodEs, ...immersiveEs },
-  en: { ...copyEn, ...guidesEn, ...experienceEn, ...moodEn, ...immersiveEn },
-  pt: { ...copyPt, ...guidesPt, ...experiencePt, ...moodPt, ...immersivePt },
+  es: { ...copyEs, ...guidesEs, ...experienceEs, ...moodEs, ...immersiveEs, ...packagesEs },
+  en: { ...copyEn, ...guidesEn, ...experienceEn, ...moodEn, ...immersiveEn, ...packagesEn },
+  pt: { ...copyPt, ...guidesPt, ...experiencePt, ...moodPt, ...immersivePt, ...packagesPt },
 } as const
 
 export type CopyKey = keyof typeof copy.es
