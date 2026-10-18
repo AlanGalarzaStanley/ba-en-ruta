@@ -13,6 +13,7 @@ import {
 } from "./ba-config"
 import { getActiveWhatsAppNumber } from "./tenant"
 import { t, type Lang, type CopyKey } from "./ba-copy"
+import type { PackageDef } from "./packages"
 
 export interface EnquiryPayload {
   name: string
@@ -243,4 +244,54 @@ export function openWhatsApp(message: string): { opened: boolean; url: string | 
     return { opened: true, url }
   }
   return { opened: false, url: null }
+}
+
+export function buildPackageWhatsAppMessage(lang: Lang, pack: PackageDef): string {
+  const title = t(lang, pack.titleKey as CopyKey)
+  if (lang === "en") {
+    return [
+      `Hello! I'd like a quote for the package: ${pack.code} — ${title}.`,
+      "Date:",
+      "Pickup area / hotel:",
+      "Passengers:",
+      "Language: EN",
+      "This is an enquiry only — not a confirmed booking.",
+    ].join("\n")
+  }
+  if (lang === "pt") {
+    return [
+      `Olá! Quero cotar o pacote: ${pack.code} — ${title}.`,
+      "Data:",
+      "Hotel / zona de pick-up:",
+      "Passageiros:",
+      "Idioma: PT",
+      "Isto é apenas uma consulta — não uma reserva confirmada.",
+    ].join("\n")
+  }
+  return [
+    `¡Hola! Quiero cotizar el paquete: ${pack.code} — ${title}.`,
+    "Fecha:",
+    "Hotel / zona de pick-up:",
+    "Pasajeros:",
+    "Idioma: ES",
+    "Esto es solo una consulta — no una reserva confirmada.",
+  ].join("\n")
+}
+
+export function openWhatsAppPackage(lang: Lang, pack: PackageDef): void {
+  openWhatsApp(buildPackageWhatsAppMessage(lang, pack))
+}
+
+export function buildAboutWhatsAppMessage(lang: Lang): string {
+  if (lang === "en") {
+    return "Hello! I saw BA en Ruta and would like to enquire about a private transfer or tour. Language: EN. This is an enquiry only."
+  }
+  if (lang === "pt") {
+    return "Olá! Vi o BA en Ruta e gostaria de consultar sobre transfer ou roteiro particular. Idioma: PT. Isto é apenas uma consulta."
+  }
+  return "¡Hola! Vi BA en Ruta y quiero consultar por un traslado o recorrido privado. Idioma: ES. Esto es solo una consulta."
+}
+
+export function openWhatsAppAbout(lang: Lang): void {
+  openWhatsApp(buildAboutWhatsAppMessage(lang))
 }

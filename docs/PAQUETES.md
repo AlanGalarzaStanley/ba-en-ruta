@@ -18,4 +18,10 @@ Secciones nuevas: `#quien` (AboutDriver), `#paquetes` (Packages).
 FAQ: ítems 6–8 (espera, idiomas, pago/cancelación).
 WhatsApp: `openWhatsAppPackage` / `openWhatsAppAbout`.
 
-**Pendiente del dueño:** montos en USD/ARS, foto y nombre en bloque “Quién te lleva”, política de cancelación numérica.
+**Pendiente del dueño (bloquean precio público):**
+1. Montos en USD y/o ARS por paquete (o rango “desde”).
+2. Ventana de cancelación gratuita en horas/días.
+3. Nombre y foto real en el bloque “Quién te lleva”.
+4. Grabar los 9 guiones de `docs/AUDIO-GUIONES.md` (prioridad: Caminito, Recoleta, Bombonera).
+
+Hasta entonces el sitio cotiza por WhatsApp sin lista fija (copy ya lo dice con claridad).
