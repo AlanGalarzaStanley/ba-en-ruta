@@ -8,7 +8,7 @@ import {
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Places } from "./components/Sections"
-import { AboutDriver, Packages } from "./components/PackagesSection"
+import { AboutDriver } from "./components/PackagesSection"
 import { VidaPorteña } from "./components/VidaPorteña"
 import { Gastronomy } from "./components/GastronomySection"
 import { PlacesMap } from "./components/PlacesMap"
@@ -206,10 +206,7 @@ export default function App() {
       <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} />
-        <AboutDriver lang={lang} />
-        <Packages lang={lang} />
-        <HowItWorks lang={lang} />
-        <VidaPorteña lang={lang} />
+        {/* Flujo: hero → experiencias con precio dentro → resto. Sin bloque "paquetes" suelto. */}
         {f.itineraries && (
           <Itineraries
             lang={lang}
@@ -221,6 +218,9 @@ export default function App() {
             onPlay={openPlayer}
           />
         )}
+        <AboutDriver lang={lang} />
+        <HowItWorks lang={lang} />
+        <VidaPorteña lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
 
