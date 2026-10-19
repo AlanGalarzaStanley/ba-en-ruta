@@ -9,6 +9,7 @@ import {
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Places } from "./components/Sections"
 import { AboutDriver, Packages } from "./components/PackagesSection"
+import { VidaPorteña } from "./components/VidaPorteña"
 import { Gastronomy } from "./components/GastronomySection"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
@@ -205,7 +206,10 @@ export default function App() {
       <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} />
-        <Passion lang={lang} />
+        <AboutDriver lang={lang} />
+        <Packages lang={lang} />
+        <HowItWorks lang={lang} />
+        <VidaPorteña lang={lang} />
         {f.itineraries && (
           <Itineraries
             lang={lang}
@@ -217,10 +221,7 @@ export default function App() {
             onPlay={openPlayer}
           />
         )}
-        <HowItWorks lang={lang} />
-        <AboutDriver lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
-        <Packages lang={lang} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
 
         {f.places && (
@@ -248,6 +249,7 @@ export default function App() {
         {f.miQr && <MiQr lang={lang} />}
         <FAQ lang={lang} />
         {f.driverSignup && <DriverSignup lang={lang} />}
+        <Passion lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />
       {playing && (
