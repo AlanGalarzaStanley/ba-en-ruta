@@ -1,4 +1,7 @@
-/** Copy de paquetes comerciales + bloque humano + políticas (ES / EN / PT) */
+/** Copy de paquetes comerciales + bloque humano + políticas (ES / EN / PT)
+ * Precios publicados (dueño 2026-10-18): TOUR-4 = USD 50 · TOUR-8 = USD 100.
+ * Transfer, horas y temáticos: cotización por WhatsApp.
+ */
 export const packagesEs = {
   aboutLabel: "Quién te lleva",
   aboutTitle: "Trato directo, mirada local.",
@@ -9,18 +12,20 @@ export const packagesEs = {
   packsLabel: "Paquetes claros",
   packsTitle: "Elegí cómo querés el día.",
   packsSubtitle:
-    "Cada opción tiene duración y alcance definidos. El precio final se acuerda por WhatsApp según fecha y pasajeros.",
+    "City tour media jornada USD 50 · día completo USD 100. Transfer, horas y experiencias temáticas se cotizan por WhatsApp según fecha y pasajeros.",
   packsNote:
-    "Sin tarifa publicada fija todavía: cotización personalizada, sin sorpresas al confirmar.",
+    "Precios de referencia en USD para city tour 4 h (50) y 8 h (100). El resto se confirma por escrito en WhatsApp antes de reservar. Peajes de transfer y entradas no incluidos salvo que se indique.",
   packsCta: "Cotizar este paquete",
   packsIncludes: "Incluye",
   packsExcludes: "No incluye",
   packsDuration: "Duración",
   packsIdeal: "Ideal para",
+  packsPrice: "Precio",
   packTrTitle: "Transfer aeropuerto o crucero",
   packTrDesc:
     "Ezeiza, Aeroparque o terminal de cruceros ↔ hotel o domicilio. Encuentro coordinado y ayuda con el equipaje.",
   packTrDur: "Según trayecto",
+  packTrPrice: "A cotizar",
   packTrIdeal: "Llegadas, salidas y escalas",
   packTrInc1: "Encuentro con cartel y ayuda con valijas",
   packTrInc2: "Peajes del trayecto",
@@ -31,6 +36,7 @@ export const packagesEs = {
   packTour4Desc:
     "Unas 4 horas privadas por barrios y paradas a tu medida. El ritmo lo marcan ustedes.",
   packTour4Dur: "Aprox. 4 horas",
+  packTour4Price: "USD 50",
   packTour4Ideal: "Cruceros, primer día, agendas cortas",
   packTour4Inc1: "Vehículo y chofer privados",
   packTour4Inc2: "Paradas acordadas y contexto local",
@@ -41,6 +47,7 @@ export const packagesEs = {
   packTour8Desc:
     "Siete a ocho horas para ver la ciudad con calma: historia, barrios y tiempo para caminar y comer.",
   packTour8Dur: "Aprox. 7–8 horas",
+  packTour8Price: "USD 100",
   packTour8Ideal: "Un día libre fuerte en Buenos Aires",
   packTour8Inc1: "Vehículo y chofer todo el día de servicio",
   packTour8Inc2: "Itinerario flexible según energía y clima",
@@ -51,6 +58,7 @@ export const packagesEs = {
   packHorasDesc:
     "El vehículo es de ustedes por la franja horaria. Varios puntos, una sola coordinación.",
   packHorasDur: "Desde 3 horas",
+  packHorasPrice: "A cotizar",
   packHorasIdeal: "Reuniones, shopping, agenda mixta",
   packHorasInc1: "Chofer a disposición en CABA (radio a acordar)",
   packHorasInc2: "Paradas múltiples y esperas razonables",
@@ -61,26 +69,31 @@ export const packagesEs = {
   packHistDesc:
     "San Telmo, Caminito y el entorno de La Boca. Adoquines, puerto e identidad de barrio.",
   packHistDur: "Aprox. 4–5 horas",
+  packHistPrice: "Ref. 4 h USD 50",
   packHistIdeal: "Quienes quieren el sur y el casco histórico",
   packClasTitle: "Experiencia clásica",
   packClasDesc:
     "Obelisco y Teatro Colón, Recoleta y Palermo. La postal de Buenos Aires con tiempo para bajar.",
   packClasDur: "Aprox. 4–5 horas",
+  packClasPrice: "Ref. 4 h USD 50",
   packClasIdeal: "Primera visita y fotos de íconos",
   packGastTitle: "Experiencia gastronómica",
   packGastDesc:
     "Te llevo entre paradas con criterio porteño. La mesa y la reserva del restaurante van aparte.",
   packGastDur: "Aprox. 4–5 horas",
+  packGastPrice: "Ref. 4 h USD 50",
   packGastIdeal: "Parrilla, cafés notables o mixto",
   packFutTitle: "Experiencia futbolera",
   packFutDesc:
     "Caminito y el entorno de la Bombonera. Entradas y museo según disponibilidad oficial.",
   packFutDur: "Aprox. 3–4 horas",
+  packFutPrice: "A cotizar",
   packFutIdeal: "Hincha o curioso del fútbol argentino",
   packTigTitle: "Tigre y Delta",
   packTigDesc:
     "Día completo ida y vuelta. Otro paisaje a poca distancia de la ciudad; navegación aparte si la desean.",
   packTigDur: "Día completo",
+  packTigPrice: "Ref. día USD 100",
   packTigIdeal: "Salida de la ciudad sin complicar la logística",
   packThemeInc1: "Vehículo privado y paradas del recorrido",
   packThemeInc2: "Contexto local en cada tramo",
@@ -107,18 +120,20 @@ export const packagesEn = {
   packsLabel: "Clear packages",
   packsTitle: "Choose how you want the day.",
   packsSubtitle:
-    "Each option has a defined duration and scope. The final rate is agreed on WhatsApp based on date and passengers.",
+    "Half-day city tour USD 50 · full day USD 100. Transfers, hourly hire and themed experiences are quoted on WhatsApp by date and passengers.",
   packsNote:
-    "No fixed public rate list yet: personalised quote, confirmed in writing before you book.",
+    "Reference rates in USD: 4 h city tour 50 · 8 h city tour 100. Everything else is confirmed in writing on WhatsApp before you book. Transfer tolls and tickets not included unless stated.",
   packsCta: "Quote this package",
   packsIncludes: "Includes",
   packsExcludes: "Does not include",
   packsDuration: "Duration",
   packsIdeal: "Best for",
+  packsPrice: "Price",
   packTrTitle: "Airport or cruise transfer",
   packTrDesc:
     "Ezeiza, Aeroparque or the cruise terminal ↔ hotel or address. Meet & greet and help with luggage.",
   packTrDur: "As required for the route",
+  packTrPrice: "On request",
   packTrIdeal: "Arrivals, departures and connections",
   packTrInc1: "Name-sign meet and luggage help",
   packTrInc2: "Tolls on the route",
@@ -129,6 +144,7 @@ export const packagesEn = {
   packTour4Desc:
     "About four private hours through neighbourhoods and stops you care about. You set the pace.",
   packTour4Dur: "Approx. 4 hours",
+  packTour4Price: "USD 50",
   packTour4Ideal: "Cruise calls, first day, short schedules",
   packTour4Inc1: "Private vehicle and driver",
   packTour4Inc2: "Agreed stops and local context",
@@ -139,6 +155,7 @@ export const packagesEn = {
   packTour8Desc:
     "Seven to eight hours to see the city properly: history, neighbourhoods, time to walk and eat.",
   packTour8Dur: "Approx. 7–8 hours",
+  packTour8Price: "USD 100",
   packTour8Ideal: "A strong full day in Buenos Aires",
   packTour8Inc1: "Private vehicle and driver for the service window",
   packTour8Inc2: "Flexible plan for energy and weather",
@@ -149,6 +166,7 @@ export const packagesEn = {
   packHorasDesc:
     "The car is yours for the booked window. Several stops, one conversation.",
   packHorasDur: "From 3 hours",
+  packHorasPrice: "On request",
   packHorasIdeal: "Meetings, shopping, mixed agendas",
   packHorasInc1: "Driver on stand-by in the city (area agreed in advance)",
   packHorasInc2: "Multiple stops and reasonable waits",
@@ -159,26 +177,31 @@ export const packagesEn = {
   packHistDesc:
     "San Telmo, Caminito and La Boca. Cobblestones, the port and neighbourhood identity.",
   packHistDur: "Approx. 4–5 hours",
+  packHistPrice: "Ref. 4 h USD 50",
   packHistIdeal: "Guests who want the south and the old centre",
   packClasTitle: "Classic experience",
   packClasDesc:
     "Obelisk and Teatro Colón, Recoleta and Palermo. Postcard Buenos Aires with time to step out.",
   packClasDur: "Approx. 4–5 hours",
+  packClasPrice: "Ref. 4 h USD 50",
   packClasIdeal: "First visit and icon photos",
   packGastTitle: "Food experience",
   packGastDesc:
     "I take you between stops with local judgment. The table and restaurant booking are separate.",
   packGastDur: "Approx. 4–5 hours",
+  packGastPrice: "Ref. 4 h USD 50",
   packGastIdeal: "Grill, historic cafés or a mix",
   packFutTitle: "Football experience",
   packFutDesc:
     "Caminito and the Bombonera area. Tickets and museum visits subject to official availability.",
   packFutDur: "Approx. 3–4 hours",
+  packFutPrice: "On request",
   packFutIdeal: "Fans and the football-curious",
   packTigTitle: "Tigre & Delta",
   packTigDesc:
     "Full-day round trip. A different landscape near the city; boat rides arranged separately if you want them.",
   packTigDur: "Full day",
+  packTigPrice: "Ref. full day USD 100",
   packTigIdeal: "A day outside the capital without logistics stress",
   packThemeInc1: "Private vehicle and route stops",
   packThemeInc2: "Local context on each leg",
@@ -205,18 +228,20 @@ export const packagesPt = {
   packsLabel: "Pacotes claros",
   packsTitle: "Escolha como quer o dia.",
   packsSubtitle:
-    "Cada opção tem duração e alcance definidos. O valor final se combina no WhatsApp conforme data e passageiros.",
+    "City tour meio período USD 50 · dia completo USD 100. Transfer, horas e experiências temáticas cotam no WhatsApp conforme data e passageiros.",
   packsNote:
-    "Ainda sem tabela pública fixa: cotação personalizada, confirmada por escrito antes de fechar.",
+    "Preços de referência em USD: city tour 4 h 50 · 8 h 100. O restante se confirma por escrito no WhatsApp antes de reservar. Pedágios de transfer e ingressos não inclusos salvo indicação.",
   packsCta: "Cotar este pacote",
   packsIncludes: "Inclui",
   packsExcludes: "Não inclui",
   packsDuration: "Duração",
   packsIdeal: "Ideal para",
+  packsPrice: "Preço",
   packTrTitle: "Transfer aeroporto ou cruzeiro",
   packTrDesc:
     "Ezeiza, Aeroparque ou terminal de cruzeiros ↔ hotel ou endereço. Encontro combinado e ajuda com as malas.",
   packTrDur: "Conforme o trajeto",
+  packTrPrice: "Sob consulta",
   packTrIdeal: "Chegadas, partidas e conexões",
   packTrInc1: "Encontro com cartaz e ajuda com bagagem",
   packTrInc2: "Pedágios do trajeto",
@@ -227,6 +252,7 @@ export const packagesPt = {
   packTour4Desc:
     "Cerca de quatro horas privadas por bairros e paradas a seu gosto. O ritmo é de vocês.",
   packTour4Dur: "Aprox. 4 horas",
+  packTour4Price: "USD 50",
   packTour4Ideal: "Cruzeiros, primeiro dia, agendas curtas",
   packTour4Inc1: "Veículo e motorista particulares",
   packTour4Inc2: "Paradas combinadas e contexto local",
@@ -237,6 +263,7 @@ export const packagesPt = {
   packTour8Desc:
     "Sete a oito horas para ver a cidade com calma: história, bairros e tempo para caminhar e comer.",
   packTour8Dur: "Aprox. 7–8 horas",
+  packTour8Price: "USD 100",
   packTour8Ideal: "Um dia cheio em Buenos Aires",
   packTour8Inc1: "Veículo e motorista no período do serviço",
   packTour8Inc2: "Roteiro flexível conforme energia e clima",
@@ -247,6 +274,7 @@ export const packagesPt = {
   packHorasDesc:
     "O carro é de vocês no período reservado. Vários pontos, uma só conversa.",
   packHorasDur: "A partir de 3 horas",
+  packHorasPrice: "Sob consulta",
   packHorasIdeal: "Reuniões, compras, agenda mista",
   packHorasInc1: "Motorista à disposição em CABA (raio a combinar)",
   packHorasInc2: "Várias paradas e esperas razoáveis",
@@ -257,26 +285,31 @@ export const packagesPt = {
   packHistDesc:
     "San Telmo, Caminito e o entorno de La Boca. Pedras, porto e identidade de bairro.",
   packHistDur: "Aprox. 4–5 horas",
+  packHistPrice: "Ref. 4 h USD 50",
   packHistIdeal: "Quem quer o sul e o centro histórico",
   packClasTitle: "Experiência clássica",
   packClasDesc:
     "Obelisco e Teatro Colón, Recoleta e Palermo. O cartão-postal com tempo para descer.",
   packClasDur: "Aprox. 4–5 horas",
+  packClasPrice: "Ref. 4 h USD 50",
   packClasIdeal: "Primeira visita e fotos dos ícones",
   packGastTitle: "Experiência gastronômica",
   packGastDesc:
     "Levo você entre paradas com critério local. A mesa e a reserva do restaurante ficam à parte.",
   packGastDur: "Aprox. 4–5 horas",
+  packGastPrice: "Ref. 4 h USD 50",
   packGastIdeal: "Parrilla, cafés históricos ou misto",
   packFutTitle: "Experiência de futebol",
   packFutDesc:
     "Caminito e o entorno da Bombonera. Ingressos e museu conforme disponibilidade oficial.",
   packFutDur: "Aprox. 3–4 horas",
+  packFutPrice: "Sob consulta",
   packFutIdeal: "Torcedor ou curioso do futebol argentino",
   packTigTitle: "Tigre e Delta",
   packTigDesc:
     "Dia completo ida e volta. Outra paisagem perto da cidade; navegação à parte se quiserem.",
   packTigDur: "Dia completo",
+  packTigPrice: "Ref. dia USD 100",
   packTigIdeal: "Sair da capital sem complicar a logística",
   packThemeInc1: "Veículo particular e paradas do roteiro",
   packThemeInc2: "Contexto local em cada trecho",
