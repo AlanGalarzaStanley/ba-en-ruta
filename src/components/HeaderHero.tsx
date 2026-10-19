@@ -63,9 +63,6 @@ export function useLang(): [Lang, (l: Lang) => void] {
 }
 
 function navLabel(lang: Lang, id: string, key?: CopyKey): string {
-  if (id === "vida") {
-    return lang === "en" ? "Daily life" : lang === "pt" ? "Vida portenha" : "Vida porteña"
-  }
   if (key) return t(lang, key)
   return id
 }
@@ -83,13 +80,11 @@ export function Header({
 }) {
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  /** Nav compacta: 4 áreas + CTA reserva */
+  /** Nav mínima: experiencias + quién + contacto */
   const nav: { id: string; key?: CopyKey }[] = [
     { id: "recorridos", key: "heroCtaLive" },
-    { id: "gastronomia", key: "navGastronomy" },
-    { id: "vida" },
     { id: "quien", key: "aboutLabel" },
-    { id: "reserva", key: "navCta" },
+    { id: "faq", key: "navCta" },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -128,8 +123,8 @@ export function Header({
               </ul>
             )}
           </div>
-          <button type="button" onClick={() => onNav("reserva")} className="hidden sm:inline-flex items-center gap-1.5 bg-gold hover:bg-gold-light text-navy font-medium text-sm px-4 py-2 rounded-lg transition-colors">
-            {t(lang, "navCta")} <span aria-hidden>→</span>
+          <button type="button" onClick={() => onNav("quien")} className="hidden sm:inline-flex items-center gap-1.5 bg-gold hover:bg-gold-light text-navy font-medium text-sm px-4 py-2 rounded-lg transition-colors">
+            {t(lang, "aboutCta")} <span aria-hidden>→</span>
           </button>
           <button type="button" className="lg:hidden p-2 text-navy" onClick={() => setOpen((v) => !v)} aria-label={open ? "Cerrar menú" : "Abrir menú"}>
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -179,7 +174,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
   const slide = HERO_SLIDES[i]
   const place = slide.placeId ? PLACES.find((p) => p.id === slide.placeId) : null
   return (
-    <section id="inicio" className="relative min-h-[92vh] flex items-end overflow-hidden bg-navy">
+    <section id="inicio" className="relative min-h-[88vh] flex items-end overflow-hidden bg-navy">
       <div className="absolute inset-0" aria-hidden>
         {HERO_SLIDES.map((s, n) => (
           <img
@@ -198,7 +193,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/55 to-navy/25" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-transparent to-transparent" />
       </div>
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-44 sm:pb-28 pt-32">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-36 sm:pb-24 pt-28">
         <p className="text-gold/90 text-xs sm:text-sm tracking-[0.2em] uppercase mb-4 font-medium">— {t(lang, "heroBadge")}</p>
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] max-w-3xl">
           {t(lang, "heroTitle1")}<br /><em className="text-gold not-italic font-medium">{t(lang, "heroTitle2")}</em>
@@ -208,7 +203,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
           <button type="button" onClick={() => onNav("recorridos")} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             <Play className="w-4 h-4 fill-current" />{t(lang, "heroCtaLive")}<span aria-hidden>→</span>
           </button>
-          <button type="button" onClick={() => onNav("reserva")} className="inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
+          <button type="button" onClick={() => onNav("quien")} className="inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             <MessageCircle className="w-4 h-4" />{t(lang, "heroCtaWhatsApp")}
           </button>
         </div>
@@ -233,7 +228,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
         <p className="mt-3 text-[10px] text-white/55">{t(lang, "photoBy")}: {slide.credit}{slide.placeId ? " · Wikimedia Commons" : ""}</p>
       </div>
       <div className="absolute bottom-0 left-0 right-0 bg-cream/95 backdrop-blur border-t border-navy/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-navy/70">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm text-navy/70">
           <p className="flex items-center gap-2"><MessageCircle className="w-4 h-4 text-gold shrink-0" />{t(lang, "valueDirect")}</p>
           <p className="flex items-center gap-2"><span className="text-gold">◇</span>{t(lang, "valueCustom")}</p>
           <p className="flex items-center gap-2"><span className="text-sky">○</span>{t(lang, "valueLocal")}</p>
@@ -245,15 +240,10 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
 
 export function Passion({ lang }: { lang: Lang }) {
   return (
-    <section className="bg-navy text-white py-14 sm:py-16">
+    <section className="bg-navy text-white py-12 sm:py-14">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <p className="text-gold text-xs tracking-[0.2em] uppercase mb-4">{t(lang, "passionLabel")}</p>
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl leading-snug">{t(lang, "passionTitle")}</h2>
-        <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/50">
-          <span>{t(lang, "passionStadiums")}</span><span className="hidden sm:inline">·</span>
-          <span>{t(lang, "passionFire")}</span><span className="hidden sm:inline">·</span>
-          <span>{t(lang, "passionTango")}</span>
-        </div>
+        <p className="text-gold text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "passionLabel")}</p>
+        <h2 className="font-display text-2xl sm:text-3xl leading-snug">{t(lang, "passionTitle")}</h2>
       </div>
     </section>
   )
