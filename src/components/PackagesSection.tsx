@@ -25,7 +25,8 @@ function PackageCard({ lang, pack }: { lang: Lang; pack: PackageDef }) {
         <span className="text-[10px] font-mono uppercase tracking-wider text-navy/45">{pack.code}</span>
       </div>
       <h3 className="font-display text-lg sm:text-xl text-navy mb-2">{t(lang, pack.titleKey as CopyKey)}</h3>
-      <p className="text-sm text-navy/60 leading-relaxed mb-4 flex-1">{t(lang, pack.descKey as CopyKey)}</p>
+      <p className="text-sm text-navy/60 leading-relaxed mb-3 flex-1">{t(lang, pack.descKey as CopyKey)}</p>
+      <p className="text-base font-semibold text-navy mb-3">{t(lang, pack.priceKey as CopyKey)}</p>
       <dl className="text-xs text-navy/70 space-y-1.5 mb-4">
         <div className="flex gap-2">
           <dt className="font-medium shrink-0">{t(lang, "packsDuration")}:</dt>
