@@ -22,7 +22,6 @@ function detectBrowserLang(): Lang {
 export function useLang(): [Lang, (l: Lang) => void] {
   const [lang, setLangState] = useState<Lang>(() => {
     try {
-      // Un enlace compartido con ?lang= manda sobre la preferencia guardada.
       const fromUrl = new URLSearchParams(window.location.search).get("lang")
       if (fromUrl === "es" || fromUrl === "en" || fromUrl === "pt") return fromUrl
       const stored = localStorage.getItem("ba-lang") as Lang | null
@@ -55,13 +54,20 @@ export function useLang(): [Lang, (l: Lang) => void] {
       if (ogDesc) ogDesc.setAttribute("content", desc)
       const ogLocale = document.querySelector('meta[property="og:locale"]')
       if (ogLocale) ogLocale.setAttribute("content", lang === "pt" ? "pt_BR" : lang === "en" ? "en_US" : "es_AR")
-      // Canonical coherente con hreflang: cada idioma explícito (?lang=) apunta a sí mismo.
       const canonical = document.querySelector('link[rel="canonical"]')
       const hasLang = new URLSearchParams(window.location.search).has("lang")
       if (canonical) canonical.setAttribute("href", hasLang ? `https://ba-en-ruta.vercel.app/?lang=${lang}` : "https://ba-en-ruta.vercel.app/")
     } catch { /* ignore */ }
   }, [lang])
   return [lang, setLang]
+}
+
+function navLabel(lang: Lang, id: string, key?: CopyKey): string {
+  if (id === "vida") {
+    return lang === "en" ? "Daily life" : lang === "pt" ? "Vida portenha" : "Vida porteña"
+  }
+  if (key) return t(lang, key)
+  return id
 }
 
 export function Header({
@@ -77,13 +83,13 @@ export function Header({
 }) {
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const nav = [
-    { id: "recorridos", key: "heroCtaLive" as CopyKey },
-    { id: "servicios", key: "navServices" as CopyKey },
-    { id: "imperdibles", key: "navPlaces" as CopyKey },
-    { id: "mapa", key: "mapLabel" as CopyKey },
-    { id: "gastronomia", key: "navGastronomy" as CopyKey },
-    { id: "reserva", key: "navCta" as CopyKey },
+  /** Nav compacta: 4 áreas + CTA reserva */
+  const nav: { id: string; key?: CopyKey }[] = [
+    { id: "recorridos", key: "heroCtaLive" },
+    { id: "gastronomia", key: "navGastronomy" },
+    { id: "vida" },
+    { id: "quien", key: "aboutLabel" },
+    { id: "reserva", key: "navCta" },
   ]
   return (
     <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-navy/5">
@@ -98,7 +104,9 @@ export function Header({
         </button>
         <nav className="hidden lg:flex items-center gap-5 text-sm text-navy/80">
           {nav.map((item) => (
-            <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors whitespace-nowrap">{t(lang, item.key)}</button>
+            <button key={item.id} type="button" onClick={() => onNav(item.id)} className="hover:text-navy transition-colors whitespace-nowrap">
+              {navLabel(lang, item.id, item.key)}
+            </button>
           ))}
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
@@ -131,7 +139,9 @@ export function Header({
       {open && (
         <div className="lg:hidden border-t border-navy/5 bg-cream px-4 py-4 space-y-1">
           {nav.map((item) => (
-            <button key={item.id} type="button" onClick={() => { onNav(item.id); setOpen(false) }} className="block w-full text-left py-2.5 text-navy/80 hover:text-navy font-medium">{t(lang, item.key)}</button>
+            <button key={item.id} type="button" onClick={() => { onNav(item.id); setOpen(false) }} className="block w-full text-left py-2.5 text-navy/80 hover:text-navy font-medium">
+              {navLabel(lang, item.id, item.key)}
+            </button>
           ))}
         </div>
       )}

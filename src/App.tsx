@@ -8,6 +8,8 @@ import {
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
 import { HowItWorks, Services, Prices, Places } from "./components/Sections"
+import { AboutDriver, Packages } from "./components/PackagesSection"
+import { VidaPorteña } from "./components/VidaPorteña"
 import { Gastronomy } from "./components/GastronomySection"
 import { PlacesMap } from "./components/PlacesMap"
 import { Itineraries } from "./components/Itineraries"
@@ -17,7 +19,6 @@ import { MiQr } from "./components/MiQr"
 import { DriverSignup } from "./components/DriverSignup"
 import { ITINERARIES } from "./lib/ba-config"
 
-// El simulador (y Leaflet) se descargan recién cuando alguien lo abre.
 const loadRoutePlayer = () => import("./components/RoutePlayer")
 const RoutePlayer = lazy(() => loadRoutePlayer().then((m) => ({ default: m.RoutePlayer })))
 
@@ -56,7 +57,6 @@ function useScrollReveal() {
     scan()
     const mo = new MutationObserver(scan)
     mo.observe(document.body, { childList: true, subtree: true })
-    // Seguridad: nada queda oculto si el observer falla
     const safety = window.setTimeout(() => document.querySelectorAll(".ba-reveal").forEach((el) => el.classList.add("is-visible")), 4000)
     return () => {
       io.disconnect()
@@ -66,11 +66,6 @@ function useScrollReveal() {
   }, [])
 }
 
-/**
- * Narrative:
- * Hero (cinematográfico) → Passion → Recorridos inmersivos (simulador) → How → Services → Prices
- * → Places (deep + video embebido) → Map → Food → Form → QR → FAQ → Drivers
- */
 export default function App() {
   const [lang, setLang] = useLang()
   useScrollReveal()
@@ -81,7 +76,6 @@ export default function App() {
   })
   const [initialStep, setInitialStep] = useState(readInitialStep)
   useEffect(() => {
-    // Si alguien pasa el cursor o el dedo por un recorrido, precargamos el simulador.
     const warm = () => void loadRoutePlayer()
     const el = document.getElementById("recorridos")
     el?.addEventListener("pointerenter", warm, { once: true })
@@ -212,7 +206,10 @@ export default function App() {
       <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} />
-        <Passion lang={lang} />
+        <AboutDriver lang={lang} />
+        <Packages lang={lang} />
+        <HowItWorks lang={lang} />
+        <VidaPorteña lang={lang} />
         {f.itineraries && (
           <Itineraries
             lang={lang}
@@ -224,7 +221,6 @@ export default function App() {
             onPlay={openPlayer}
           />
         )}
-        <HowItWorks lang={lang} />
         <Services lang={lang} onEnquire={enquireService} />
         <Prices lang={lang} onEnquire={() => scrollTo("reserva")} />
 
@@ -253,6 +249,7 @@ export default function App() {
         {f.miQr && <MiQr lang={lang} />}
         <FAQ lang={lang} />
         {f.driverSignup && <DriverSignup lang={lang} />}
+        <Passion lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />
       {playing && (
