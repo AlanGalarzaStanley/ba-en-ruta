@@ -1,6 +1,26 @@
 # Multi-Agent Relay — BA en Ruta
 
-**Cualquier agente** que lea este archivo puede integrarse al loop y avanzar hacia el sistema óptimo.
+Este archivo es la **fuente de verdad** del loop.
+
+Cualquier agente (Grok u otro) que se dispare por Automation, evento de GitHub o chat debe leer este archivo y continuar desde el último `### RELAY HANDOFF`.
+
+## Lógica lateral (cómo está pensado el sistema)
+
+```
+Evento de GitHub (CI fail, push, PR, comment…)
+        ↓
+Automation de Grok se dispara (gratis)
+        ↓
+Agente lee docs/RELAY.md + contexto del evento
+        ↓
+Ejecuta UNA acción de alto impacto
+        ↓
+Actualiza este archivo (nuevo handoff)
+        ↓
+Eso puede generar otro evento → el ciclo sigue
+```
+
+No depende de que alguien esté chateando. El chat es solo una forma más de entrar al mismo loop.
 
 ## Goal
 
@@ -13,35 +33,35 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ## Estado actual (2026-11-14)
 
 ### Bloqueante activo
-- **CI roto en `main`**: el job `e2e` falla porque `ubuntu-latest` ahora es Ubuntu 26.04 y Playwright **1.59.1** no soporta chromium en esa versión.
-- Ya existe la branch `fix/ci-ubuntu-playwright` con el pin a `ubuntu-24.04` (commit `66aa27c`).
-- Falta abrir/mergear el PR correspondiente.
+- **CI roto en `main`**: job `e2e` falla porque `ubuntu-latest` = Ubuntu 26.04 y Playwright **1.59.1** no soporta chromium ahí.
+- Branch lista: `fix/ci-ubuntu-playwright` (commit `66aa27c`) con pin a `ubuntu-24.04`.
+- Falta abrir/mergear el PR.
 
 ### Frentes prioritarios (orden de impacto)
-1. **CI reliability** — desbloquear (pin ubuntu-24.04 o upgrade Playwright)
-2. **Producto comercial** — WhatsApp ya configurado (5491151448632), faltan tarifas, dominio definitivo, videos, paquetes claros
-3. **Calidad técnica** — mantener E2E + unit + typecheck verdes, mejorar lo que se pueda medir
-4. **Contenido & assets** — fotos con licencia correcta, descripciones multi-idioma, datos verificados
-5. **Operación** — mantener `docs/ESTADO.md` y este archivo actualizados
+1. **CI reliability** — desbloquear
+2. **Producto comercial** — tarifas, dominio, videos, paquetes
+3. **Calidad técnica** — mantener y subir la vara
+4. **Contenido & assets** — fotos/licencias, multi-idioma, datos verificados
+5. **Operación** — este archivo + `docs/ESTADO.md` siempre al día
 
-## Protocolo de integración (para cualquier agente)
+## Protocolo para cualquier agente (turno)
 
-1. Leé este archivo completo.
-2. Leé también `docs/ESTADO.md`, `CLAUDE.md` y `roadmap.md`.
-3. Ejecutá **una sola acción de alto impacto** por turno (preferí lo que desbloquee más valor).
-4. Al terminar, actualizá este archivo (`docs/RELAY.md`) con el nuevo bloque `### RELAY HANDOFF` más abajo.
-5. Si podés, dejá también un comentario en un issue o PR relacionado.
+1. Leé este archivo completo (especialmente el último `### RELAY HANDOFF`).
+2. Leé también `docs/ESTADO.md`, `CLAUDE.md` y `roadmap.md` si hace falta contexto.
+3. Ejecutá **una sola acción de alto impacto** (la del Next Action, o mejor si descubrís algo más urgente).
+4. Actualizá este archivo reemplazando el bloque `### RELAY HANDOFF` con el nuevo estado.
+5. Si el evento que te disparó trae información útil (logs de CI, PR, etc.), usala.
 
-### Reglas de autonomía
-- **Permitido sin pedir permiso**: leer todo, crear branches, crear/actualizar archivos, abrir PRs, crear issues, comentar, correr diagnósticos, proponer upgrades de dependencias.
-- **Requiere humano**: force-push, merge a `main` de cambios grandes/arriesgados, borrar cosas de valor, cambios de billing/permisos.
-- Preferí PRs pequeños y revisables.
-- Nunca dejes el CI peor de como lo encontraste.
+### Autonomía
+- **Permitido**: leer, crear branches, crear/actualizar archivos, abrir PRs, crear issues, comentar, diagnosticar, proponer upgrades.
+- **Requiere humano**: force-push, merge arriesgado a `main`, borrar valor, billing/permisos.
+- Preferí PRs pequeños.
+- Nunca dejes el CI peor.
 
 ### Circuit breakers
-- Máximo recomendado ~7-10 turnos por ciclo de goal sin revisión humana.
-- Si dos turnos seguidos no producen progreso real → parar y pedir input humano.
-- Respetá los Stop Conditions del último handoff.
+- ~7-10 turnos por ciclo sin revisión humana.
+- 2 turnos seguidos sin progreso real → parar y pedir humano.
+- Respetá Stop Conditions del handoff.
 
 ## Handoff actual
 
@@ -51,25 +71,26 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- Diagnóstico completo del fallo de CI (Playwright 1.59.1 + Ubuntu 26.04)
-- Branch `fix/ci-ubuntu-playwright` creada con pin a `ubuntu-24.04` (commit 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b)
-- Protocolo de relay documentado en este archivo para que cualquier agente se integre
+- Diagnóstico del fallo de CI (Playwright 1.59.1 + Ubuntu 26.04)
+- Branch `fix/ci-ubuntu-playwright` lista (commit 66aa27c)
+- Protocolo lateral documentado en este archivo
+- Lógica de Automation-driven loop explicitada
 
 **Next Action**:
-Abrir (o completar) el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar que el CI del PR pase, y mergear el fix. Después de eso el siguiente frente de mayor impacto es producto comercial o upgrade de Playwright.
+Abrir el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar que el CI del PR pase en verde, y mergear. Después pasar al siguiente frente de mayor impacto.
 
 **Context**:
-- Repo: AlanGalarzaStanley/ba-en-ruta
-- Branch lista: `fix/ci-ubuntu-playwright`
-- Commit del fix: 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b
-- Playwright actual: 1.59.1
+- Repo: AlanGalarzaStanley/ba-en-ruta (id 1420887659)
+- Branch fix: fix/ci-ubuntu-playwright
+- Commit fix: 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b
+- Playwright: 1.59.1
 - Producción: https://ba-en-ruta.vercel.app
 - Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
 
 **Constraints**:
-- Autonomía con límites claros (ver arriba)
 - Una acción de alto impacto por turno
-- Mantener este archivo como fuente de verdad del handoff
+- Este archivo es la fuente de verdad del handoff
+- Autonomía con límites claros (ver arriba)
 
 **Stop Conditions**:
 - Sistema óptimo alcanzado, o
@@ -77,8 +98,9 @@ Abrir (o completar) el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar
 - El dueño detiene el loop
 
 **Suggested Trigger**:
-Cualquier agente con acceso a GitHub puede tomar el Next Action ahora mismo.
+- Automation con `workflow_run_completed` (conclusion=failure) en este repo
+- O cualquier agente que lea este archivo ahora
 
 ---
 
-*Última actualización del handoff: 2026-11-14 (~08:00 UTC)*
+*Última actualización del handoff: 2026-11-14*
