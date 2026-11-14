@@ -19,6 +19,7 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
 
     let cancelled = false
     let observer: IntersectionObserver | null = null
+    let handlePopupClick: ((e: MouseEvent) => void) | null = null
 
     const init = async () => {
       if (cancelled || loadedRef.current) return
@@ -71,7 +72,7 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
         markers.set(place.id, marker)
       })
 
-      el.addEventListener("click", (e) => {
+      handlePopupClick = (e: MouseEvent) => {
         const target = e.target as HTMLElement
         const btn = target.closest("[data-place]") as HTMLElement | null
         if (btn?.dataset.place) {
@@ -79,7 +80,8 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
           const card = document.getElementById(`place-${btn.dataset.place}`)
           card?.scrollIntoView({ behavior: "smooth", block: "center" })
         }
-      })
+      }
+      el.addEventListener("click", handlePopupClick)
 
       mapRef.current = { map, markers }
 
@@ -101,6 +103,7 @@ export function PlacesMap({ lang, highlightId, onSelectPlace }: Props) {
     return () => {
       cancelled = true
       observer?.disconnect()
+      if (handlePopupClick) el.removeEventListener("click", handlePopupClick)
       if (mapRef.current) {
         mapRef.current.map.remove()
         mapRef.current = null

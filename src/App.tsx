@@ -11,6 +11,7 @@ import { AboutDriver } from "./components/PackagesSection"
 import { Itineraries } from "./components/Itineraries"
 import { FAQ, Footer } from "./components/FormFaq"
 import { ITINERARIES } from "./lib/ba-config"
+import { buildTourWhatsAppMessage, openWhatsApp, openWhatsAppAbout } from "./lib/whatsapp"
 
 const loadRoutePlayer = () => import("./components/RoutePlayer")
 const RoutePlayer = lazy(() => loadRoutePlayer().then((m) => ({ default: m.RoutePlayer })))
@@ -126,9 +127,13 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
   }, [])
 
-  const customizeItinerary = (_placeIds: PlaceId[]) => {
-    /* personalizar ya no abre catálogo largo; el CTA va a WhatsApp vía tarjeta */
-  }
+  const customizeItinerary = useCallback((placeIds: PlaceId[]) => {
+    openWhatsApp(buildTourWhatsAppMessage({ lang, placeIds, restaurantIds: [] }))
+  }, [lang])
+
+  const enquireAbout = useCallback((id: ItineraryId, placeIds: PlaceId[], restaurantIds: RestaurantId[]) => {
+    openWhatsApp(buildTourWhatsAppMessage({ lang, itineraryId: id, placeIds, restaurantIds }))
+  }, [lang])
 
   const tenantLabel = useMemo(() => tenant.publicName, [tenant.publicName])
 
@@ -142,11 +147,11 @@ export default function App() {
       )}
       <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
-        <Hero lang={lang} onNav={scrollTo} />
+        <Hero lang={lang} onNav={scrollTo} onWhatsApp={() => openWhatsAppAbout(lang)} />
         {f.itineraries && (
           <Itineraries
             lang={lang}
-            onSelectItinerary={() => scrollTo("quien")}
+            onSelectItinerary={enquireAbout}
             onCustomize={customizeItinerary}
             onPlay={openPlayer}
           />

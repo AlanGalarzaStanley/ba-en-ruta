@@ -156,7 +156,7 @@ const HERO_SLIDES: { src: string; srcSet?: string; placeId?: string; credit: str
 const slideSrc = (s: (typeof HERO_SLIDES)[number]) => (s.srcSet ? s.src : optimizeImage(s.src, 1280))
 const slideSrcSet = (s: (typeof HERO_SLIDES)[number]) => s.srcSet ?? imageSrcSet(s.src, [500, 960, 1280, 1920])
 
-export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void }) {
+export function Hero({ lang, onNav, onWhatsApp }: { lang: Lang; onNav: (id: string) => void; onWhatsApp: () => void }) {
   const [i, setI] = useState(0)
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
   useEffect(() => {
@@ -203,7 +203,7 @@ export function Hero({ lang, onNav }: { lang: Lang; onNav: (id: string) => void 
           <button type="button" onClick={() => onNav("recorridos")} className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             <Play className="w-4 h-4 fill-current" />{t(lang, "heroCtaLive")}<span aria-hidden>→</span>
           </button>
-          <button type="button" onClick={() => onNav("quien")} className="inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
+          <button type="button" onClick={onWhatsApp} className="inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-medium px-5 py-3 rounded-lg transition-colors min-h-11">
             <MessageCircle className="w-4 h-4" />{t(lang, "heroCtaWhatsApp")}
           </button>
         </div>
