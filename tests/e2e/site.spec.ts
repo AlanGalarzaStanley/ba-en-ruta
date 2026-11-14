@@ -6,7 +6,7 @@ test.describe("portada", () => {
     await expect(page.locator("h1")).toContainText("Buenos Aires")
     await expect(page).toHaveTitle(/BA en Ruta/)
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
-    for (const id of ["recorridos", "imperdibles", "mapa", "gastronomia", "reserva"]) {
+    for (const id of ["recorridos", "quien", "faq"]) {
       await expect(page.locator(`#${id}`), id).toHaveCount(1)
     }
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /og-image\.jpg$/)
@@ -120,33 +120,19 @@ test.describe("simulador de recorrido", () => {
   })
 })
 
-test.describe("videos, gastronomía y enlaces", () => {
-  test("el video de un imperdible se abre dentro del sitio y se cierra", async ({ page }) => {
+test.describe("página corta y conversión", () => {
+  test("el CTA principal del hero abre WhatsApp con un mensaje contextual", async ({ page }) => {
+    const opened = await trapWindowOpen(page)
     await page.goto("/?lang=es")
-    const v = page.locator("#imperdibles").getByRole("button", { name: /^Ver video/ }).first()
-    await v.scrollIntoViewIfNeeded()
-    await v.click()
-    const modal = page.getByRole("dialog")
-    await expect(modal).toBeVisible()
-    await expect(modal.locator('iframe[src^="https://www.youtube-nocookie.com/embed/"]')).toHaveCount(1)
-    await page.keyboard.press("Escape")
-    await expect(modal).toBeHidden()
+    await page.locator("#inicio").getByRole("button", { name: /WhatsApp/i }).click()
+    const urls = await opened()
+    expect(urls.at(-1)).toMatch(/^https:\/\/wa\.me\/5491151448632\?text=.+/)
   })
 
-  test("buscador gastronómico filtra y los enlaces externos son seguros", async ({ page }) => {
+  test("la página corta mantiene el contacto y la FAQ visibles", async ({ page }) => {
     await page.goto("/?lang=es")
-    const search = page.locator("#gastro-search")
-    await search.scrollIntoViewIfNeeded()
-    await search.fill("Tortoni")
-    const section = page.locator("#gastronomia")
-    await expect(section.getByText("Café Tortoni").first()).toBeVisible()
-    await expect(section.getByText("Don Julio")).toHaveCount(0)
-    const ext = page.locator('a[target="_blank"]')
-    const n = await ext.count()
-    expect(n).toBeGreaterThan(10)
-    for (let i = 0; i < n; i++) {
-      const rel = (await ext.nth(i).getAttribute("rel")) ?? ""
-      expect(rel, await ext.nth(i).getAttribute("href") ?? "").toContain("noopener")
-    }
+    await expect(page.locator("#quien")).toBeVisible()
+    await expect(page.locator("#faq")).toBeVisible()
+    await expect(page.locator("#faq")).toContainText(/cancel/i)
   })
 })

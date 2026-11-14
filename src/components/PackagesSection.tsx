@@ -75,7 +75,7 @@ export function AboutDriver({ lang }: { lang: Lang }) {
             <p className="text-navy/65 text-xs tracking-[0.2em] uppercase mb-2">{t(lang, "aboutLabel")}</p>
             <h2 className="font-display text-2xl sm:text-3xl text-navy mb-3">{t(lang, "aboutTitle")}</h2>
             <p className="text-navy/70 text-sm sm:text-base leading-relaxed mb-3">{t(lang, "aboutBody")}</p>
-            <p className="text-navy/55 text-xs sm:text-sm">{t(lang, "aboutLangs")}</p>
+            <p className="text-navy/70 text-xs sm:text-sm">{t(lang, "aboutLangs")}</p>
           </div>
           <div className="shrink-0">
             <button

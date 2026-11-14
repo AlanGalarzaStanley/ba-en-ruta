@@ -1,11 +1,11 @@
 # Estado verificado de BA en Ruta
 
-Última actualización: 2026-10-17.
+Última actualización: 2026-11-14.
 
 ## Producción
 - URL: https://ba-en-ruta.vercel.app (Vercel Free, despliegue automático desde `main`).
-- Commit de la aplicación verificado en producción: `0a3016558b69ba06b4a0f35490cdeb6db6695c57`.
-  Los commits posteriores en `main` que solo tocan `docs/` no cambian la aplicación.
+- Commit de la aplicación verificado en producción: `e5d5a6c524a958a6d0128750ff465ef3628a254f`.
+  El producto vigente es una página corta orientada a consulta por WhatsApp: hero, recorridos, quién te lleva, FAQ y cierre.
 - Verificación: cabeceras de seguridad presentes (CSP, HSTS, nosniff, Referrer/Permissions-Policy, X-Frame-Options), `og-image.jpg` responde 200
   y `E2E_BASE_URL=https://ba-en-ruta.vercel.app npx playwright test` dio 30/30 en Chromium escritorio y Pixel 7 emulado.
 
@@ -27,7 +27,7 @@ Una sola corrida por versión: los valores varían unos puntos entre ejecuciones
 | Tipos | `tsc -b` (strict) | todo `src/` + configs | 0 errores (antes 10) |
 | Unitarias | Vitest, `tests/unit` | motor de rutas, imágenes, paridad ES/EN/PT, ids y enlaces, créditos, mapa de Commons, fotos locales, WhatsApp | 22/22 |
 | Enlaces | `npm run test:links` (semanal en CI) | sitios oficiales, entradas y restaurantes | 26/27 desde este entorno; La Biela falla solo aquí por TLS, verificada por otra vía |
-| E2E | Playwright, `tests/e2e` | portada, idiomas por URL, `?recorrido`, `?parada`, avance/pausa, movimiento reducido, WhatsApp, foco, videos, buscador gastronómico, `rel=noopener`, desbordes, axe WCAG A/AA, violaciones de CSP | 30/30 local, CI y producción |
+| E2E | Playwright, `tests/e2e` | portada, idiomas por URL, `?recorrido`, `?parada`, avance/pausa, movimiento reducido, WhatsApp, foco, anchors de la página corta, desbordes, axe WCAG A/AA | 13/13 escritorio tras actualizar el contrato de página corta; Android requiere navegador instalado |
 | CI | GitHub Actions `ci.yml` | `npm ci`, audit, typecheck, unit, build, E2E | verde en PR #1 |
 | Dependencias | `npm audit` | todas | 0 vulnerabilidades |
 | Fotos | curl a upload.wikimedia.org | 80 archivos distintos, 1 tamaño c/u | 80/80 OK (Wikimedia limita con 429 si se piden todas las variantes juntas) |
@@ -43,7 +43,7 @@ No se probó en dispositivos físicos ni en Safari/iOS ni en Firefox: solo en Ch
 
 ## Limitaciones conocidas
 - Las fotos de Commons debajo del pliegue siguen cargando desde upload.wikimedia.org (cookie WMF-Uniq).
-- SPA sin prerender: los buscadores que no ejecutan JavaScript solo ven los metadatos de `index.html` (en español).
+- SPA sin prerender: los buscadores que no ejecutan JavaScript solo ven los metadatos de `index.html` (en español); se mantiene como deuda SEO hasta decidir páginas indexables separadas.
 - Fotos de Lo de Jesús, El Sanjuanino, Mercat y Fogón: no hay imágenes libres. Hace falta permiso de cada local.
 - Los Laureles (estado contradictorio en medios) y Esquina Homero Manzi (riesgo de cierre): requieren confirmación periódica.
 - Las descripciones gastronómicas largas solo están en español.
