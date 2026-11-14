@@ -33,7 +33,8 @@ jobs:
 
   e2e:
     needs: check
-    runs-on: ubuntu-latest
+    # Pin to 24.04: ubuntu-latest became 26.04 and Playwright 1.59.1 lacks chromium support there.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
