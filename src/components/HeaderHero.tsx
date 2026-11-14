@@ -71,11 +71,13 @@ export function Header({
   lang,
   setLang,
   onNav,
+  onWhatsApp,
   tenantName,
 }: {
   lang: Lang
   setLang: (l: Lang) => void
   onNav: (id: string) => void
+  onWhatsApp: () => void
   tenantName?: string
 }) {
   const [open, setOpen] = useState(false)
@@ -138,6 +140,9 @@ export function Header({
               {navLabel(lang, item.id, item.key)}
             </button>
           ))}
+          <button type="button" onClick={() => { onWhatsApp(); setOpen(false) }} className="w-full text-left py-2.5 text-navy font-medium">
+            {t(lang, "heroCtaWhatsApp")}
+          </button>
         </div>
       )}
     </header>

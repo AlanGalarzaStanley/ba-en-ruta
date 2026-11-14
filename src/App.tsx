@@ -145,7 +145,7 @@ export default function App() {
           <code className="font-mono">/c/{tenant.slug}</code>
         </div>
       )}
-      <Header lang={lang} setLang={setLang} onNav={scrollTo} tenantName={isDemo ? tenant.publicName : undefined} />
+      <Header lang={lang} setLang={setLang} onNav={scrollTo} onWhatsApp={() => openWhatsAppAbout(lang)} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} onWhatsApp={() => openWhatsAppAbout(lang)} />
         {f.itineraries && (

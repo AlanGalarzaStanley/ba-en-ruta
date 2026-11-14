@@ -579,8 +579,8 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
                     <button
                       type="button"
                       onClick={() => {
+                        onCustomize(itin.placeIds)
                         onClose()
-                        window.setTimeout(() => onCustomize(itin.placeIds), 60)
                       }}
                       className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-5 py-3.5 rounded-xl"
                     >
