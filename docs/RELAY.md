@@ -35,7 +35,7 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ### Bloqueante activo
 - **CI roto en `main`**: job `e2e` falla porque `ubuntu-latest` = Ubuntu 26.04 y Playwright **1.59.1** no soporta chromium ahí.
 - Branch lista: `fix/ci-ubuntu-playwright` (commit `66aa27c`) con pin a `ubuntu-24.04`.
-- Falta abrir/mergear el PR.
+- Formulario de PR disparado; esperando confirmación para crear el PR.
 
 ### Frentes prioritarios (orden de impacto)
 1. **CI reliability** — desbloquear
@@ -71,13 +71,13 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- Diagnóstico del fallo de CI (Playwright 1.59.1 + Ubuntu 26.04)
-- Branch `fix/ci-ubuntu-playwright` lista (commit 66aa27c)
-- Protocolo lateral documentado en este archivo
-- Lógica de Automation-driven loop explicitada
+- Diagnóstico del fallo de CI confirmado en logs: Playwright 1.59.1 + Ubuntu 26.04 (`does not support chromium on ubuntu26.04-x64`)
+- Branch `fix/ci-ubuntu-playwright` lista (commit 66aa27c) con pin a ubuntu-24.04
+- Formulario interactivo de creación de PR disparado (pendiente de confirmación del usuario/sistema)
+- Protocolo lateral documentado
 
 **Next Action**:
-Abrir el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar que el CI del PR pase en verde, y mergear. Después pasar al siguiente frente de mayor impacto.
+Confirmar/crear el PR desde `fix/ci-ubuntu-playwright` → `main`, esperar CI verde en el PR, y mergear. Luego avanzar al frente comercial.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta (id 1420887659)
@@ -85,6 +85,7 @@ Abrir el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar que el CI del
 - Commit fix: 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b
 - Playwright: 1.59.1
 - Producción: https://ba-en-ruta.vercel.app
+- Último CI fail: run 43573847913 (commit 240efd4)
 - Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
 
 **Constraints**:
@@ -100,7 +101,8 @@ Abrir el PR desde `fix/ci-ubuntu-playwright` → `main`, verificar que el CI del
 **Suggested Trigger**:
 - Automation con `workflow_run_completed` (conclusion=failure) en este repo
 - O cualquier agente que lea este archivo ahora
+- O confirmación del formulario de PR
 
 ---
 
-*Última actualización del handoff: 2026-11-14*
+*Última actualización del handoff: 2026-11-14 (CI fail + PR form triggered)*
