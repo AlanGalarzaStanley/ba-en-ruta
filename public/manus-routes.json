@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "title": "BA en Ruta"
+    },
+    {
+      "path": "/c/:slug",
+      "title": "BA en Ruta · Chofer"
+    }
+  ]
+}

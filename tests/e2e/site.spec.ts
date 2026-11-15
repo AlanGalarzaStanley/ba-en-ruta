@@ -108,7 +108,7 @@ test.describe("simulador de recorrido", () => {
 
   test("abrir desde la tarjeta y volver el foco al cerrar", async ({ page }) => {
     await page.goto("/?lang=es")
-    const btn = page.getByRole("button", { name: "Vivir este recorrido" }).first()
+    const btn = page.getByRole("button", { name: "Ver el recorrido" }).first()
     await btn.scrollIntoViewIfNeeded()
     await btn.click()
     const dialog = page.getByRole("dialog")

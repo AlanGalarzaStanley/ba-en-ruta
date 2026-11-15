@@ -7,8 +7,8 @@ export const immersiveEs = {
   routeTitle: "Sentí el recorrido antes de contratarlo.",
   routeSubtitle:
     "Elegí un recorrido y viajalo parada por parada: fotos reales, videos de cada lugar, el camino en el mapa y horarios orientativos. Cuando te convenza, lo reservás por WhatsApp.",
-  routePlay: "Vivir este recorrido",
-  routeEnquire: "Consultar",
+  routePlay: "Ver el recorrido",
+  routeEnquire: "Consultar por WhatsApp",
   routeCustomize: "Personalizar",
   routeStops: "{n} paradas",
   routeHours: "~{h} h",
@@ -60,8 +60,8 @@ export const immersiveEn: Record<keyof typeof immersiveEs, string> = {
   routeTitle: "Feel the route before you book it.",
   routeSubtitle:
     "Pick a route and travel it stop by stop: real photos, videos of each place, the drive on the map and indicative times. When it feels right, book it on WhatsApp.",
-  routePlay: "Live this route",
-  routeEnquire: "Enquire",
+  routePlay: "Preview the route",
+  routeEnquire: "Enquire on WhatsApp",
   routeCustomize: "Customize",
   routeStops: "{n} stops",
   routeHours: "~{h} h",
@@ -113,8 +113,8 @@ export const immersivePt: Record<keyof typeof immersiveEs, string> = {
   routeTitle: "Sinta o roteiro antes de contratar.",
   routeSubtitle:
     "Escolha um roteiro e percorra parada por parada: fotos reais, vídeos de cada lugar, o trajeto no mapa e horários indicativos. Quando convencer, reserve pelo WhatsApp.",
-  routePlay: "Viver este roteiro",
-  routeEnquire: "Consultar",
+  routePlay: "Ver o roteiro",
+  routeEnquire: "Consultar pelo WhatsApp",
   routeCustomize: "Personalizar",
   routeStops: "{n} paradas",
   routeHours: "~{h} h",

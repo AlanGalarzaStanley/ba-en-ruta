@@ -10,7 +10,7 @@ export const test = base.extend<{ guard: { errors: string[] } }>({
         if (m.type() !== "error") return
         const t = m.text()
         // Recursos de terceros que el entorno de prueba puede no alcanzar (sin relación con el código).
-        if (/Failed to load resource|net::ERR_|status of 4\d\d|status of 5\d\d/.test(t)) return
+        if (/Failed to load resource|net::ERR_|status of 4\d\d|status of 5\d\d|upgrade-insecure-requests.*ignored/i.test(t)) return
         errors.push(`console: ${t}`)
       })
       await page.addInitScript(() => {
@@ -40,7 +40,7 @@ export async function trapWindowOpen(page: Page) {
     window.open = ((url?: string | URL) => {
       // @ts-expect-error marcador de prueba
       window.__opened.push(String(url))
-      return null
+      return {} as Window
     }) as typeof window.open
   })
   return () => page.evaluate(() => (window as unknown as { __opened: string[] }).__opened)

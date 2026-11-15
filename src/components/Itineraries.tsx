@@ -42,6 +42,13 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
                 ? "A partir de USD 50 meio período · USD 100 dia · abra o card para o dia real (comida conforme a hora)."
                 : "Desde USD 50 media jornada · USD 100 día · abrí la tarjeta y mirá el día real (comida según la hora)."}
           </p>
+          <p className="mt-2 text-xs text-white/55">
+            {lang === "en"
+              ? "WhatsApp enquiry only: availability, route and conditions are confirmed in writing before booking."
+              : lang === "pt"
+                ? "Consulta pelo WhatsApp: disponibilidade, roteiro e condições são confirmados por escrito antes da reserva."
+                : "Consulta por WhatsApp: disponibilidad, recorrido y condiciones se confirman por escrito antes de reservar."}
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4">
@@ -137,8 +144,15 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
                   <div className={`flex flex-wrap items-center gap-2 ${expanded ? "mt-5" : ""} pointer-events-auto`}>
                     <button
                       type="button"
-                      onClick={() => onPlay(itin.id)}
+                      onClick={() => onSelectItinerary(itin.id, itin.placeIds, itin.restaurantIds ?? [])}
                       className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium text-sm px-4 py-2.5 rounded-xl min-h-11"
+                    >
+                      {t(lang, "routeEnquire")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onPlay(itin.id)}
+                      className="inline-flex items-center gap-2 text-sm font-medium text-white/85 hover:text-white px-3 min-h-11 border border-white/15 rounded-xl"
                     >
                       <Play className="w-4 h-4 fill-current" aria-hidden /> {t(lang, "routePlay")}
                     </button>

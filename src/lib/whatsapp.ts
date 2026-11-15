@@ -240,8 +240,9 @@ export function getWhatsAppUrl(message: string): string | null {
 export function openWhatsApp(message: string): { opened: boolean; url: string | null } {
   const url = getWhatsAppUrl(message)
   if (url) {
-    window.open(url, "_blank", "noopener,noreferrer")
-    return { opened: true, url }
+    const popup = window.open(url, "_blank", "noopener,noreferrer")
+    if (!popup) window.location.assign(url)
+    return { opened: Boolean(popup), url }
   }
   return { opened: false, url: null }
 }
