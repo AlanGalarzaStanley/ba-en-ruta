@@ -35,7 +35,7 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ### Bloqueante activo
 - **CI roto en `main`**: job `e2e` falla porque `ubuntu-latest` = Ubuntu 26.04 y Playwright **1.59.1** no soporta chromium (`ERROR: Playwright does not support chromium on ubuntu26.04-x64`).
 - Branch lista: `fix/ci-ubuntu-playwright` (commit `66aa27c`) con pin a `ubuntu-24.04` en el job e2e.
-- Formulario de creación de PR disparado de nuevo (run 43672105019, commit fc2be9a); esperando confirmación para crear el PR.
+- Formulario de creación de PR disparado de nuevo (run 43672215433); esperando confirmación humana para crear el PR.
 
 ### Frentes prioritarios (orden de impacto)
 1. **CI reliability** — desbloquear (pin OS)
@@ -71,17 +71,17 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- Nuevo fallo de CI confirmado en logs del run 43672105019 (commit fc2be9a): mismo error Playwright 1.59.1 + Ubuntu 26.04
-- Branch `fix/ci-ubuntu-playwright` verificada y lista (pin a ubuntu-24.04 en e2e)
-- Formulario interactivo de creación de PR disparado nuevamente
+- Nuevo fallo de CI confirmado en run 43672215433 (commit 1a717b5, docs update): mismo error Playwright + Ubuntu 26.04
+- Formulario interactivo de creación de PR `fix/ci-ubuntu-playwright` → `main` disparado de nuevo
+- Branch verificada con pin a ubuntu-24.04 lista
 
 **Next Action**:
-Confirmar el formulario para crear el PR `fix/ci-ubuntu-playwright` → `main`. Una vez creado, esperar CI verde en el PR y mergear. Luego avanzar al frente comercial.
+Confirmar el formulario interactivo para crear el PR. Una vez creado y CI verde, mergear a main. Si el formulario no se confirma en este ciclo, considerar crear el PR por otro medio o avanzar en paralelo al frente comercial (tarifas/dominio).
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
 - Branch fix: fix/ci-ubuntu-playwright @ 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b
-- Último CI fail: run 43672105019 (https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/43672105019) commit fc2be9ae15476d4c0709e4fb9640a944a8bc12fb
+- Último CI fail: run 43672215433 (https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/43672215433) commit 1a717b5729f70c034096c7dee36b3bfbb79bb6d9
 - Error exacto: ERROR: Playwright does not support chromium on ubuntu26.04-x64
 - Playwright: 1.59.1
 - Producción: https://ba-en-ruta.vercel.app
@@ -104,4 +104,4 @@ Confirmar el formulario para crear el PR `fix/ci-ubuntu-playwright` → `main`. 
 
 ---
 
-*Última actualización del handoff: 2026-11-15 (nuevo CI fail + PR form re-triggered)*
+*Última actualización del handoff: 2026-11-15 (CI fail 43672215433 + PR form re-triggered)*
