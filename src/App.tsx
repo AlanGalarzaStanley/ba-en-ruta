@@ -148,6 +148,7 @@ export default function App() {
       <Header lang={lang} setLang={setLang} onNav={scrollTo} onWhatsApp={() => openWhatsAppAbout(lang)} tenantName={isDemo ? tenant.publicName : undefined} />
       <main>
         <Hero lang={lang} onNav={scrollTo} onWhatsApp={() => openWhatsAppAbout(lang)} />
+        <Passion lang={lang} />
         {f.itineraries && (
           <Itineraries
             lang={lang}
@@ -158,7 +159,6 @@ export default function App() {
         )}
         <AboutDriver lang={lang} />
         <FAQ lang={lang} />
-        <Passion lang={lang} />
       </main>
       <Footer lang={lang} onNav={scrollTo} />
       {playing && (

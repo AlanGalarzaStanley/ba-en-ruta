@@ -244,11 +244,29 @@ export function Hero({ lang, onNav, onWhatsApp }: { lang: Lang; onNav: (id: stri
 }
 
 export function Passion({ lang }: { lang: Lang }) {
+  const cards = [
+    { title: t(lang, "passionLocal"), desc: t(lang, "passionLocalDesc") },
+    { title: t(lang, "passionFootball"), desc: t(lang, "passionFootballDesc") },
+    { title: t(lang, "passionRiver"), desc: t(lang, "passionRiverDesc") },
+    { title: t(lang, "passionNight"), desc: t(lang, "passionNightDesc") },
+  ]
   return (
-    <section className="bg-navy text-white py-12 sm:py-14">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <p className="text-gold text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "passionLabel")}</p>
-        <h2 className="font-display text-2xl sm:text-3xl leading-snug">{t(lang, "passionTitle")}</h2>
+    <section className="bg-navy text-white py-14 sm:py-18">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-3xl">
+          <p className="text-gold text-xs tracking-[0.2em] uppercase mb-3">{t(lang, "passionLabel")}</p>
+          <h2 className="font-display text-2xl sm:text-4xl leading-snug">{t(lang, "passionTitle")}</h2>
+          <p className="mt-5 text-white/75 text-base sm:text-lg leading-relaxed">{t(lang, "passionBody")}</p>
+        </div>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {cards.map((card) => (
+            <article key={card.title} className="border border-white/15 rounded-xl p-4 bg-white/[0.04]">
+              <h3 className="font-medium text-gold">{card.title}</h3>
+              <p className="mt-2 text-sm text-white/70 leading-relaxed">{card.desc}</p>
+            </article>
+          ))}
+        </div>
+        <p className="mt-8 max-w-3xl text-white/60 text-sm leading-relaxed border-l-2 border-gold/70 pl-4">{t(lang, "passionNote")}</p>
       </div>
     </section>
   )

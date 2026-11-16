@@ -6,7 +6,7 @@ export const packagesEs = {
   aboutLabel: "Quién te lleva",
   aboutTitle: "No solo te llevo: te ayudo a leer la ciudad.",
   aboutBody:
-    "Soy chofer en Buenos Aires. El auto resuelve el traslado; mi trabajo es leer el día, recomendar con criterio y ajustar el recorrido cuando el tránsito, el clima o tus ganas cambian. Coordinamos directo por WhatsApp: no te vendo un asiento como si fuera una experiencia.",
+    "Soy chofer en Buenos Aires. No soy una app que te deja en la puerta: cuando el recorrido lo pide, me bajo con vos, te voy contando y ajusto el día con calle. El auto resuelve el traslado; el criterio y la charla hacen la experiencia.",
   aboutLangs: "Consultas en español, inglés y portugués.",
   aboutCta: "Escribime por WhatsApp",
   packsLabel: "Paquetes claros",
@@ -114,7 +114,7 @@ export const packagesEn = {
   aboutLabel: "Who drives you",
   aboutTitle: "I do not just drive you: I help you read the city.",
   aboutBody:
-    "I'm a driver in Buenos Aires. The car solves the transfer; my work is to read the day, recommend with judgement and adapt when traffic, weather or your energy changes. We coordinate directly on WhatsApp—you are not buying a seat sold as an experience.",
+    "I'm a driver in Buenos Aires, not an app that drops you at the door. When the route calls for it, I get out with you, tell you the city and adapt the day with street-level judgement. The car solves the transfer; conversation and judgement make the experience.",
   aboutLangs: "We can coordinate in Spanish, English or Portuguese.",
   aboutCta: "Message me on WhatsApp",
   packsLabel: "Clear packages",
@@ -222,7 +222,7 @@ export const packagesPt = {
   aboutLabel: "Quem te leva",
   aboutTitle: "Não só te levo: te ajudo a ler a cidade.",
   aboutBody:
-    "Sou motorista em Buenos Aires. O carro resolve o traslado; meu trabalho é ler o dia, recomendar com critério e adaptar quando trânsito, clima ou sua energia mudarem. Combinamos direto pelo WhatsApp: você não compra um assento vendido como experiência.",
+    "Sou motorista em Buenos Aires, não um aplicativo que deixa você na porta. Quando o roteiro pede, desço com você, conto a cidade e adapto o dia com vivência de rua. O carro resolve o traslado; a conversa e o critério fazem a experiência.",
   aboutLangs: "Atendimento em espanhol, inglês e português.",
   aboutCta: "Fale comigo no WhatsApp",
   packsLabel: "Pacotes claros",

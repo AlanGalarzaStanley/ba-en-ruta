@@ -2,11 +2,13 @@
 
 ## Tesis
 
-BA en Ruta no vende kilómetros ni un asiento dentro de un auto. Vende **acceso a Buenos Aires con criterio local**: una persona que responde, lee al pasajero, interpreta el día y ajusta el recorrido para reducir fricción, incertidumbre y malas decisiones.
+BA en Ruta no vende kilómetros ni un asiento dentro de un auto. Vende **un amigo local en Buenos Aires**: una persona que responde, lee al pasajero, interpreta el día y ajusta el recorrido para reducir fricción, incertidumbre y malas decisiones.
 
 El vehículo es la base operativa de esa promesa. No es el producto completo ni debe presentarse como una app de turismo. El auto traslada; el valor diferencial está en la relación, la lectura del contexto y la capacidad de convertir un traslado en una experiencia local controlada.
 
 > Tu destino. Tu ritmo. Mi Buenos Aires.
+
+La idea debe sentirse cercana, no como una categoría de marketing. La persona que llega busca a alguien del lugar que la lleve, le cuente y le arme el día. No busca un brochure ni una postal repetida.
 
 ## Dolor que resolvemos
 
@@ -72,6 +74,8 @@ Esta separación no enfría la venta; aumenta la confianza porque elimina sorpre
 3. En cada transición, explicar por qué la siguiente parada viene ahora y qué se puede recortar si el grupo prefiere caminar, comer o descansar.
 4. Si hay tráfico, lluvia, partido, cierre o falta de mesa, ofrecer una alternativa con criterio y explicar el costo o la condición antes de avanzar.
 5. Cerrar el día con una recomendación concreta para la próxima salida, no con una venta automática.
+
+La espontaneidad argentina puede formar parte del producto: una pelota en una plaza, una charla de fútbol, cumbia en La Boca, una parrilla de barrio o una salida nocturna orientada por un local. Se propone cuando el contexto lo permite; no se promete como espectáculo ni se fuerza a nadie a consumir o beber. Si hay alcohol, ocurre únicamente después de estacionar y con consumo responsable; nunca mientras se conduce.
 
 La guía interactiva y el simulador existen para preparar y amplificar esta conversación. No deben reemplazarla ni sugerir que el pasajero ya recibió una experiencia solo por mirar una pantalla.
 
