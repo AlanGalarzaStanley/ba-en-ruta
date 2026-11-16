@@ -33,7 +33,7 @@ test.describe("portada", () => {
 test.describe("simulador de recorrido", () => {
   test("enlace directo ?recorrido=historica, avance, retroceso y cierre", async ({ page }) => {
     await page.goto("/?recorrido=historica&lang=es")
-    const dialog = page.getByRole("dialog", { name: /Buenos Aires histórica/ })
+    const dialog = page.getByRole("dialog", { name: /Historia, café y el sur porteño/ })
     await expect(dialog).toBeVisible()
     await expect(dialog).toContainText("Te paso a buscar")
     await dialog.getByRole("button", { name: "Siguiente" }).click()

@@ -4,9 +4,9 @@
  */
 export const packagesEs = {
   aboutLabel: "Quién te lleva",
-  aboutTitle: "Trato directo, mirada local.",
+  aboutTitle: "No solo te llevo: te ayudo a leer la ciudad.",
   aboutBody:
-    "Soy chofer en Buenos Aires. Coordino traslados y recorridos privados por WhatsApp: sin intermediarios y con el ritmo que ustedes elijan. Contame la fecha y lo armamos.",
+    "Soy chofer en Buenos Aires. El auto resuelve el traslado; mi trabajo es leer el día, recomendar con criterio y ajustar el recorrido cuando el tránsito, el clima o tus ganas cambian. Coordinamos directo por WhatsApp: no te vendo un asiento como si fuera una experiencia.",
   aboutLangs: "Consultas en español, inglés y portugués.",
   aboutCta: "Escribime por WhatsApp",
   packsLabel: "Paquetes claros",
@@ -112,9 +112,9 @@ export const packagesEs = {
 
 export const packagesEn = {
   aboutLabel: "Who drives you",
-  aboutTitle: "Direct contact, local insight.",
+  aboutTitle: "I do not just drive you: I help you read the city.",
   aboutBody:
-    "I'm a private driver in Buenos Aires. Airport transfers and private tours, arranged on WhatsApp—no middlemen, at your pace. Share your dates and we'll shape the day.",
+    "I'm a driver in Buenos Aires. The car solves the transfer; my work is to read the day, recommend with judgement and adapt when traffic, weather or your energy changes. We coordinate directly on WhatsApp—you are not buying a seat sold as an experience.",
   aboutLangs: "We can coordinate in Spanish, English or Portuguese.",
   aboutCta: "Message me on WhatsApp",
   packsLabel: "Clear packages",
@@ -220,9 +220,9 @@ export const packagesEn = {
 
 export const packagesPt = {
   aboutLabel: "Quem te leva",
-  aboutTitle: "Contato direto, olhar local.",
+  aboutTitle: "Não só te levo: te ajudo a ler a cidade.",
   aboutBody:
-    "Sou motorista particular em Buenos Aires. Transfers e roteiros privados pelo WhatsApp—sem intermediários, no seu ritmo. Conte a data e montamos o dia.",
+    "Sou motorista em Buenos Aires. O carro resolve o traslado; meu trabalho é ler o dia, recomendar com critério e adaptar quando trânsito, clima ou sua energia mudarem. Combinamos direto pelo WhatsApp: você não compra um assento vendido como experiência.",
   aboutLangs: "Atendimento em espanhol, inglês e português.",
   aboutCta: "Fale comigo no WhatsApp",
   packsLabel: "Pacotes claros",

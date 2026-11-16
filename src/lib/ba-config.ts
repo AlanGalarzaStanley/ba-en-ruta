@@ -322,9 +322,13 @@ export const PLACES: Place[] = PLACES_BASE.map((p) => {
 
 const RESTAURANTS_BASE: Restaurant[] = [
   { id: "tortoni", name: "Café Tortoni", categoryKey: "restCatCafe", address: "Av. de Mayo 825, Monserrat, CABA", descKey: "restTortoniDesc", whyKey: "restTortoniWhy", placeIds: ["san-telmo-plaza", "obelisco-colon"], itineraryIds: ["historica", "clasica", "gastronomica"], url: "https://www.cafetortoni.com.ar/", instagramUrl: "https://www.instagram.com/grancafetortoni/", lat: -34.6088, lng: -58.3787 },
+  { id: "la-perla", name: "La Perla de Caminito", categoryKey: "restCatCafe", address: "Don Pedro de Mendoza 1899, La Boca, CABA", descKey: "restLaPerlaDesc", whyKey: "restLaPerlaWhy", placeIds: ["caminito"], itineraryIds: ["historica"], url: "https://turismo.buenosaires.gob.ar/es/gastronomico/la-perla-de-caminito", lat: -34.6353, lng: -58.3635 },
+  { id: "gran-paraiso", name: "El Gran Paraíso", categoryKey: "restCatParrilla", address: "Garibaldi 1428, La Boca, CABA", descKey: "restGranParaisoDesc", whyKey: "restGranParaisoWhy", placeIds: ["caminito", "bombonera"], itineraryIds: ["futbolera"], url: "https://granparaiso.com.ar/", lat: -34.6344, lng: -58.3637 },
   { id: "preferido", name: "El Preferido de Palermo", categoryKey: "restCatClassic", address: "Jorge Luis Borges 2108, Palermo, CABA", descKey: "restPreferidoDesc", whyKey: "restPreferidoWhy", placeIds: ["palermo"], itineraryIds: ["clasica", "gastronomica"], instagramUrl: "https://www.instagram.com/elpreferidodepalermo/", lat: -34.5857, lng: -58.4306 },
   { id: "cabrera", name: "La Cabrera", categoryKey: "restCatParrilla", address: "José Antonio Cabrera 5099, Palermo, CABA", descKey: "restCabreraDesc", whyKey: "restCabreraWhy", placeIds: ["palermo"], itineraryIds: ["gastronomica", "clasica"], url: "https://www.lacabrera.com.ar/", instagramUrl: "https://www.instagram.com/lacabrera_bsas/", lat: -34.5871, lng: -58.4373 },
+  { id: "los-galgos", name: "Bar Los Galgos", categoryKey: "restCatClassic", address: "Callao 501, San Nicolás, CABA", descKey: "restLosGalgosDesc", whyKey: "restLosGalgosWhy", placeIds: ["obelisco-colon"], itineraryIds: ["clasica"], url: "https://www.losgalgos.com.ar/menu/", lat: -34.6045, lng: -58.3945 },
   { id: "puerto-frutos", name: "Puerto de Frutos", categoryKey: "restCatMarket", address: "Sarmiento 160, Tigre", descKey: "restFrutosDesc", whyKey: "restFrutosWhy", placeIds: ["tigre"], itineraryIds: ["tigre-delta"], url: "https://vivitigre.gob.ar/actividades/puerto-de-frutos/", instagramUrl: "https://www.instagram.com/puertodefrutosok/", lat: -34.4183, lng: -58.5806 },
+  { id: "chapaleo", name: "Chapaleo", categoryKey: "restCatParrilla", address: "Paseo Victorica 50, Tigre", descKey: "restChapaleoDesc", whyKey: "restChapaleoWhy", placeIds: ["tigre"], itineraryIds: ["tigre-delta"], url: "https://chapaleo.com/", lat: -34.4257, lng: -58.5792 },
 ]
 
 export const RESTAURANTS: Restaurant[] = RESTAURANTS_BASE.map((r) => {
@@ -333,11 +337,11 @@ export const RESTAURANTS: Restaurant[] = RESTAURANTS_BASE.map((r) => {
 })
 
 export const ITINERARIES: Itinerary[] = [
-  { id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur", placeIds: ["san-telmo-plaza", "caminito", "bombonera"], restaurantIds: ["tortoni"], image: commons("San_Telmo_Plaza_Dorrego.JPG") },
-  { id: "clasica", nameKey: "itinClasicaName", descKey: "itinClasicaDesc", durationKey: "itinClasicaDur", placeIds: ["obelisco-colon", "recoleta", "palermo"], restaurantIds: ["tortoni", "preferido"], image: commons("Obelisco_Buenos_Aires.jpg") },
+  { id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur", placeIds: ["san-telmo-plaza", "caminito", "puerto-madero"], restaurantIds: ["tortoni", "la-perla"], image: commons("San_Telmo_Plaza_Dorrego.JPG") },
+  { id: "clasica", nameKey: "itinClasicaName", descKey: "itinClasicaDesc", durationKey: "itinClasicaDur", placeIds: ["obelisco-colon", "recoleta", "palermo"], restaurantIds: ["tortoni", "los-galgos"], image: commons("Obelisco_Buenos_Aires.jpg") },
   { id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur", placeIds: ["san-telmo-plaza", "palermo"], restaurantIds: ["tortoni", "preferido", "cabrera"], image: commons("Don_Julio_Grill_dining_room_Buenos_Aires_Argentina.jpg") },
-  { id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur", placeIds: ["caminito", "bombonera"], image: commons("Estadio_Alberto_J._Armando_field_view.jpg") },
-  { id: "tigre-delta", nameKey: "itinTigreName", descKey: "itinTigreDesc", durationKey: "itinTigreDur", placeIds: ["tigre"], restaurantIds: ["puerto-frutos"], image: commons("El_maravilloso_Delta_en_Tigre.jpg") },
+  { id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur", placeIds: ["caminito", "bombonera"], restaurantIds: ["tortoni", "gran-paraiso"], image: commons("Estadio_Alberto_J._Armando_field_view.jpg") },
+  { id: "tigre-delta", nameKey: "itinTigreName", descKey: "itinTigreDesc", durationKey: "itinTigreDur", placeIds: ["tigre"], restaurantIds: ["puerto-frutos", "chapaleo"], image: commons("El_maravilloso_Delta_en_Tigre.jpg") },
 ]
 
 export const HERO_IMAGE = "https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1920"

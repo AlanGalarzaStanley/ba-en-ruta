@@ -1,6 +1,6 @@
 /**
- * Día porteño genuino por experiencia: ritmo local + comida según la hora.
- * Consumos aparte; no se inventan locales sin verificación.
+ * Días porteños diseñados como experiencias reales: ritmo local + comida según la hora.
+ * Los consumos, entradas y navegación son aparte; no se inventa que el chofer provea comida.
  */
 import type { ItineraryId } from "./ba-config"
 import type { Lang } from "./ba-copy"
@@ -10,318 +10,179 @@ export type DayBeat = {
   what: string
 }
 
-const daysEs: Record<ItineraryId, { lead: string; beats: DayBeat[]; foodNote: string }> = {
+type Day = { lead: string; beats: DayBeat[]; foodNote: string }
+
+const daysEs: Record<ItineraryId, Day> = {
   historica: {
-    lead: "Un sur con ritmo de barrio: caminar, charlar y comer a la hora en que come la ciudad.",
+    lead: "La ciudad se entiende caminándola y comiéndola a su hora: café temprano, adoquines, color y un cierre junto al río.",
     beats: [
-      {
-        when: "9–11 · desayuno",
-        what: "En Argentina el desayuno vive a la mañana: café con leche, medialunas (dulce de leche o jamón y queso) o tostadas con manteca y mermelada. Si arrancamos temprano por el casco, Café Tortoni o un café de barrio antes de Plaza de Mayo.",
-      },
-      {
-        when: "Casco + San Telmo",
-        what: "Plaza de Mayo con calma, después San Telmo: adoquines, Defensa, y si hay ganas el mercado o una empanada a media mañana. El recorrido de historietas o las calles a pie, sin apuro.",
-      },
-      {
-        when: "~10–15 min en auto",
-        what: "Subimos y vamos a Caminito. Tráfico real, charla en el auto.",
-      },
-      {
-        when: "Caminito + La Boca",
-        what: "Bajamos, vueltita por las fachadas. Choripán si hace falta un antojo de calle. La Bombonera si el tiempo y las ganas dan; museo solo con entrada oficial.",
-      },
-      {
-        when: "13–15 · almuerzo",
-        what: "Almuerzo porteño más tarde que en muchos países: parrilla de barrio (por ejemplo zona La Boca) o lo que armamos según el día. La mesa la pagan ustedes; yo coordinamos tiempos y el lugar.",
-      },
+      { when: "09:00 · desayuno porteño", what: "Café con leche y medialunas, tostadas con dulce de leche o un alfajor en Café Tortoni, según carta y disponibilidad. La mesa la paga el viajero." },
+      { when: "09:45 · Plaza de Mayo", what: "Casa Rosada, Cabildo y Catedral desde el exterior: el centro político de la ciudad contado sin apuro, con espacio para conversar sobre cómo se vive Buenos Aires hoy." },
+      { when: "10:40 · San Telmo", what: "Defensa, Plaza Dorrego y adoquines. Mate como costumbre social: cómo se ceba, por qué se comparte y por qué no hace falta convertirlo en una degustación armada." },
+      { when: "11:45 · Caminito y La Boca", what: "Caminata por la calle museo, Vuelta de Rocha y la historia de Quinquela Martín. Pausa opcional en La Perla de Caminito para café, empanada o bebida." },
+      { when: "13:00 · almuerzo y cierre", what: "Almuerzo opcional en La Boca o regreso por Puerto Madero, según energía y horario. La variante corta termina tras Caminito; la larga suma mesa y margen de tráfico." },
     ],
-    foodNote: "Comidas y bebidas no están incluidas. La hora de salida define desayuno, picada o almuerzo.",
+    foodNote: "Incluye el traslado y la coordinación del tiempo, no comidas, propinas, entradas ni reservas. La Perla y cualquier parrilla se confirman según el día.",
   },
   clasica: {
-    lead: "La postal de Buenos Aires con pausas para bajar del auto y comer como acá.",
+    lead: "La postal clásica funciona mejor cuando deja de correr: café, patrimonio, una mesa de bodegón y el verde del Rosedal.",
     beats: [
-      {
-        when: "9–11 · desayuno",
-        what: "Café y medialunas o tostadas antes o entre Obelisco y Colón. Si el día arranca temprano, desayuno primero; después fachadas y fotos sin correr.",
-      },
-      {
-        when: "Centro → Recoleta",
-        what: "Obelisco y entorno del Colón (visita interior solo con entrada). Cementerio de la Recoleta con respeto y horario oficial.",
-      },
-      {
-        when: "Palermo",
-        what: "Cierre en verdes o Soho según energía. Tiempo para caminar o una mesa cerca.",
-      },
-      {
-        when: "13–15 · almuerzo",
-        what: "Parrilla o café en Palermo cuando toca almorzar. Reserva y consumo aparte.",
-      },
+      { when: "09:00 · desayuno", what: "Café con leche y medialunas o tostadas en Café Tortoni, si el punto de salida y la disponibilidad lo permiten. Alternativa: comenzar directo por el centro." },
+      { when: "09:45 · Obelisco y Colón", what: "Corrientes, 9 de Julio y Teatro Colón: escala urbana, vida porteña y una visita interior solo si existe entrada y cupo oficial para ese día." },
+      { when: "11:30 · Recoleta", what: "Cementerio de la Recoleta con respeto, arquitectura y la historia de Eva Perón. No se promete visita guiada ni horario especial: se confirma antes de salir." },
+      { when: "13:00 · almuerzo de bodegón", what: "Bar Los Galgos como mesa concreta para empanadas, carne, café y flan con dulce de leche, siempre sujeto a carta, reserva y disponibilidad." },
+      { when: "14:15 · Rosedal y lagos", what: "Caminata digestiva por los Bosques de Palermo, el lago y el Rosedal. Es el cierre verde que diferencia esta ruta de las del sur y de la gastronómica." },
     ],
-    foodNote: "Entradas (Colón, cementerio guiado) y comidas no incluidas.",
+    foodNote: "Comidas, entradas y propinas no están incluidas. El Rosedal es un paseo público; Colón y Recoleta dependen de horarios y condiciones oficiales.",
   },
   gastronomica: {
-    lead: "El eje es la mesa: el auto une barrios y horarios reales de desayuno y almuerzo.",
+    lead: "No es una lista de restaurantes: es un día alrededor de sabores que explican Argentina, del café y la medialuna al asado y el dulce de leche.",
     beats: [
-      {
-        when: "9–11",
-        what: "Desayuno porteño fuerte: café con leche, medialunas, tostadas. San Telmo o un café de confianza según pick-up.",
-      },
-      {
-        when: "Entre mesas",
-        what: "Tramos cortos a pie o en auto. Empanada o picada si hace falta puente hasta el almuerzo.",
-      },
-      {
-        when: "13–15",
-        what: "Almuerzo en parrilla o lugar acordado (consumo aparte). Después, tiempo para digerir y seguir o volver.",
-      },
+      { when: "09:00 · café y medialunas", what: "Desayuno porteño en Café Tortoni: café con leche, medialunas, tostadas con dulce de leche o chocolate con churros, según carta vigente." },
+      { when: "10:00 · San Telmo y el mate", what: "Plaza Dorrego, Defensa y Mercado de San Telmo. El mate aparece como conversación y ritual social; el viajero compra o lleva lo que quiera consumir." },
+      { when: "11:45 · puente salado", what: "Empanada opcional para llegar al almuerzo con el ritmo local, sin convertir cada parada en una obligación gastronómica." },
+      { when: "12:30 · Palermo de barrio", what: "Plaza Cortázar, calles de Palermo Soho y después una mesa en El Preferido de Palermo o una parrilla como La Cabrera, elegida según presupuesto, disponibilidad y reserva." },
+      { when: "15:00 · verde y cierre dulce", what: "Bosques de Palermo/Rosedal para caminar y un alfajor de dulce de leche o merienda pequeña para llevar. La marca, el precio y el local se eligen el día del servicio." },
     ],
-    foodNote: "Yo llevo y armo tiempos; la cuenta de cada mesa es de ustedes.",
+    foodNote: "El precio del recorrido es el trabajo del chofer y la coordinación. Cada consumo, reserva, propina y entrada se paga aparte; no se promete comida ni mate incluidos.",
   },
   futbolera: {
-    lead: "Caminito, el entorno de la Bombonera y el barrio con algo para picar.",
+    lead: "Un solo núcleo futbolero, bien contado: Boca, barrio, inmigración, camiseta, Messi y una mesa real en La Boca.",
     beats: [
-      {
-        when: "Llegada",
-        what: "Caminito a pie; choripán o algo de calle si hay hambre. No dejar cosas a la vista en el auto.",
-      },
-      {
-        when: "Bombonera",
-        what: "Fachada y entorno. Museo o visita solo con disponibilidad oficial del club.",
-      },
-      {
-        when: "Comida",
-        what: "Si coincide con almuerzo, parrilla de zona o vuelta al hotel con tiempo.",
-      },
+      { when: "09:00 · desayuno", what: "Café con leche, medialunas, tostadas, alfajor o dulce de leche antes de ir al sur. Es una experiencia de desayuno, no una vianda provista por el chofer." },
+      { when: "10:15 · Caminito y Vuelta de Rocha", what: "Chapa, color, Quinquela Martín, inmigración genovesa y el tango Caminito. Mirar el barrio antes de hablar del estadio evita reducir La Boca a una foto." },
+      { when: "11:15 · La Bombonera", what: "Museo de la Pasión Boquense y Estadio Tour o Visita Express solo con entrada oficial disponible. Si no hay cupo, se hace el entorno exterior sin prometer acceso a tribunas, vestuarios o jugadores." },
+      { when: "13:00 · conversación de fútbol", what: "Boca como identidad de barrio, camisetas, cantos, días de partido y la conversación argentina sobre Messi. No se vende partido, hinchada ni encuentro con futbolistas." },
+      { when: "13:30 · almuerzo en conventillo", what: "El Gran Paraíso, frente a Caminito: empanadas, achuras, provoleta o parrilla según carta y disponibilidad. Después, regreso con margen de tráfico." },
     ],
-    foodNote: "Día de partido cambia todo: horarios, accesos y comidas se replanifican.",
+    foodNote: "Entradas, comida y propinas son aparte. Los días de partido, entrenamiento o corte pueden cambiar por completo el recorrido y se replanifica antes de confirmarlo.",
   },
   "tigre-delta": {
-    lead: "Salida de la ciudad: otro paisaje, mismo criterio de horarios y mesa.",
+    lead: "Tigre no es una excursión genérica: es río, clubes de remo, casas isleñas, mercado y la logística de una ciudad que también se mueve en lancha.",
     beats: [
-      {
-        when: "Ida",
-        what: "Salida con margen. Desayuno en la ciudad o algo simple en el camino según horario.",
-      },
-      {
-        when: "Tigre",
-        what: "Puerto de Frutos, paseo, navegación si la coordinan aparte.",
-      },
-      {
-        when: "Almuerzo",
-        what: "Comer en Tigre o al volver; lo definimos con el reloj y el clima.",
-      },
+      { when: "09:00 · salida con margen", what: "Desayuno en la ciudad o en Tigre, con café, medialunas o tostadas según hora. La navegación depende del prestador, clima y cupo del día." },
+      { when: "10:00 · Delta y clubes de remo", what: "Paseo de 5, 3 o 6 ríos según la duración elegida. Se conversa sobre arroyos, muelles, casas isleñas, escuelas y supermercados que funcionan con lanchas." },
+      { when: "12:30 · historia o mercado", what: "Elegir una identidad: MAT/Casa Museo Sarmiento y vida isleña, o Puerto de Frutos para artesanías, dulce de leche y alfajores. No se suman todas las paradas por inercia." },
+      { when: "14:00 · mesa junto al río", what: "Chapaleo en Paseo Victorica para empanadas, provoleta, carnes, pacú o café, si la carta y el horario encajan. Navegación y comida tienen presupuesto separado." },
+      { when: "15:30 · regreso", what: "Tiempo de muelle, compras o merienda y vuelta con margen. Si hay vuelo el mismo día, esta ruta se vende solo con una ventana horaria segura." },
     ],
-    foodNote: "Navegación y comidas aparte. Volver con holgura si hay vuelo.",
+    foodNote: "La navegación, museos, comidas, compras y propinas no están incluidas. El prestador, la tarifa y la política climática se confirman antes de ofrecer una variante.",
   },
 }
 
-const daysEn: typeof daysEs = {
+const daysEn: Record<ItineraryId, Day> = {
   historica: {
-    lead: "A south-side day at city pace: walk, talk, eat when Buenos Aires eats.",
+    lead: "Read the city by walking and eating on local time: early coffee, cobbles, colour and a riverfront finish.",
     beats: [
-      {
-        when: "9–11 · breakfast",
-        what: "Local breakfast is a morning thing: café con leche, medialunas (dulce de leche or ham & cheese) or toast with butter and jam. Early start near the centre? Tortoni or a neighbourhood café before Plaza de Mayo.",
-      },
-      {
-        when: "Centre + San Telmo",
-        what: "Plaza de Mayo at ease, then San Telmo streets. Market or an empanada mid-morning if you want. Comic-strip walk or cobbles on foot—no rush.",
-      },
-      {
-        when: "~10–15 min by car",
-        what: "To Caminito with real traffic and time to talk.",
-      },
-      {
-        when: "Caminito + La Boca",
-        what: "Facades, a short stroll, choripán if street food calls. Bombonera if time allows; museum only with official tickets.",
-      },
-      {
-        when: "13–15 · lunch",
-        what: "Lunch runs later here. Neighbourhood grill or whatever fits the day—you pay the table; I handle timing.",
-      },
+      { when: "09:00 · porteño breakfast", what: "Café con leche and medialunas, toast with dulce de leche or an alfajor at Café Tortoni, subject to the current menu. The traveller pays the table." },
+      { when: "09:45 · Plaza de Mayo", what: "Casa Rosada, Cabildo and Cathedral from outside, with a local conversation about the city today." },
+      { when: "10:40 · San Telmo", what: "Defensa, Plaza Dorrego and cobbles. Mate as a social ritual, explained without pretending it is included as a tasting." },
+      { when: "11:45 · Caminito and La Boca", what: "The open-air museum, Vuelta de Rocha and Quinquela Martín. Optional coffee, empanada or drink at La Perla de Caminito." },
+      { when: "13:00 · lunch and close", what: "Optional La Boca lunch or Puerto Madero return, depending on time and energy. Short and long versions are possible." },
     ],
-    foodNote: "Food and drinks not included. Start time decides breakfast, snack or lunch.",
+    foodNote: "Transport and timing are included; food, tips, tickets and reservations are not. La Perla and any grill are confirmed for the day.",
   },
   clasica: {
-    lead: "Postcard Buenos Aires with time to step out and eat on local hours.",
+    lead: "The classic postcard works better without rushing: coffee, heritage, a bodegón table and the Rosedal.",
     beats: [
-      {
-        when: "9–11 · breakfast",
-        what: "Coffee and medialunas or toast before or between Obelisk and Colón.",
-      },
-      {
-        when: "Centre → Recoleta",
-        what: "Obelisk and Colón exterior (inside only with tickets). Recoleta Cemetery on official hours.",
-      },
-      {
-        when: "Palermo",
-        what: "Parks or Soho to close. Walk or a table nearby.",
-      },
-      {
-        when: "13–15 · lunch",
-        what: "Grill or café in Palermo when it’s lunchtime. Table separate.",
-      },
+      { when: "09:00 · breakfast", what: "Coffee and medialunas or toast at Café Tortoni when pickup and availability fit." },
+      { when: "09:45 · Obelisk and Colón", what: "Corrientes, 9 de Julio and Teatro Colón. Interior visits require official tickets and availability." },
+      { when: "11:30 · Recoleta", what: "Recoleta Cemetery, architecture and Eva Perón's story, with respect and no invented special access." },
+      { when: "13:00 · bodegón lunch", what: "Bar Los Galgos for empanadas, meat, coffee and flan with dulce de leche, subject to menu and availability." },
+      { when: "14:15 · Rosedal and lakes", what: "A digestive walk through Palermo's parks and lake: the green ending that distinguishes this route." },
     ],
-    foodNote: "Tickets and meals not included.",
+    foodNote: "Meals, tickets and tips are separate. Rosedal is a public park; Colón and Recoleta depend on official schedules.",
   },
   gastronomica: {
-    lead: "The table is the point; the car links neighbourhoods and real meal times.",
+    lead: "Not a restaurant list: a day built around flavours that explain Argentina, from coffee and medialunas to grill and dulce de leche.",
     beats: [
-      {
-        when: "9–11",
-        what: "Proper porteño breakfast, then short hops between stops.",
-      },
-      {
-        when: "Between tables",
-        what: "Empanada or light bite if you need a bridge to lunch.",
-      },
-      {
-        when: "13–15",
-        what: "Lunch at an agreed spot (you pay). Time to digest after.",
-      },
+      { when: "09:00 · coffee and medialunas", what: "Porteño breakfast at Café Tortoni, subject to the current menu." },
+      { when: "10:00 · San Telmo and mate", what: "Plaza Dorrego, Defensa and the market. Mate is explained as a social ritual; travellers buy or bring what they want to drink." },
+      { when: "11:45 · savoury bridge", what: "Optional empanada before lunch, keeping a local rhythm without making every stop compulsory." },
+      { when: "12:30 · Palermo", what: "Palermo Soho and lunch at El Preferido or a grill such as La Cabrera, chosen around budget, availability and reservations." },
+      { when: "15:00 · green and sweet close", what: "Palermo parks and an alfajor or small sweet stop to take away." },
     ],
-    foodNote: "I drive and time the day; each bill is yours.",
+    foodNote: "The route price covers the driver's work and timing. Every meal, reservation, tip and ticket is separate; food and mate are not provided.",
   },
   futbolera: {
-    lead: "Caminito, the Bombonera area, and something to bite on.",
+    lead: "One football core, properly told: Boca, neighbourhood, immigration, shirts, Messi and a real La Boca table.",
     beats: [
-      {
-        when: "Arrival",
-        what: "Caminito on foot; choripán if you’re hungry. Nothing visible left in the car.",
-      },
-      {
-        when: "Bombonera",
-        what: "Outside and neighbourhood. Museum only with official availability.",
-      },
-      {
-        when: "Food",
-        what: "If it’s lunchtime, a local grill or back with time to spare.",
-      },
+      { when: "09:00 · breakfast", what: "Coffee, medialunas, toast, alfajor or dulce de leche before heading south. No food is provided by the driver." },
+      { when: "10:15 · Caminito and Vuelta de Rocha", what: "Colour, Quinquela Martín, Genoese immigration and the tango Caminito." },
+      { when: "11:15 · La Bombonera", what: "Museum and stadium visit only with official availability. Otherwise we keep the exterior route; no stands, dressing rooms or players are promised." },
+      { when: "13:00 · football conversation", what: "Boca as neighbourhood identity, shirts, chants, match days and the Argentine conversation about Messi." },
+      { when: "13:30 · conventillo lunch", what: "El Gran Paraíso opposite Caminito: empanadas, achuras, provoleta or grill according to menu and availability." },
     ],
-    foodNote: "Match days change access, timing and food plans.",
+    foodNote: "Tickets, food and tips are separate. Match and training days can change access and timing.",
   },
   "tigre-delta": {
-    lead: "Out of the city: different landscape, same sense of timing.",
+    lead: "Tigre is river, rowing clubs, island homes, market and the logistics of a city that also moves by boat.",
     beats: [
-      {
-        when: "Outbound",
-        what: "Leave with margin. Breakfast in town or something simple on the way.",
-      },
-      {
-        when: "Tigre",
-        what: "Puerto de Frutos, walk, boat only if arranged separately.",
-      },
-      {
-        when: "Lunch",
-        what: "Eat in Tigre or on the way back—clock and weather decide.",
-      },
+      { when: "09:00 · leave with margin", what: "Breakfast in the city or Tigre. Boating depends on the operator, weather and capacity." },
+      { when: "10:00 · Delta and rowing clubs", what: "Choose a 5-, 3- or 6-river ride according to the time available, with a local explanation of island life." },
+      { when: "12:30 · history or market", what: "Choose MAT/Casa Sarmiento and island history, or Puerto de Frutos for crafts, dulce de leche and alfajores." },
+      { when: "14:00 · riverside table", what: "Chapaleo for empanadas, provoleta, meat, pacú or coffee when menu and timing fit." },
+      { when: "15:30 · return", what: "Dock time, shopping or a snack, then return with margin. Same-day flights require a safe window." },
     ],
-    foodNote: "Boats and meals separate. Buffer time if you have a flight.",
+    foodNote: "Boating, museums, food, shopping and tips are separate. Operator, fare and weather policy are confirmed before selling a variant.",
   },
 }
 
-const daysPt: typeof daysEs = {
+const daysPt: Record<ItineraryId, Day> = {
   historica: {
-    lead: "O sul no ritmo do bairro: caminhar, conversar e comer na hora em que a cidade come.",
+    lead: "A cidade se entende caminhando e comendo no horário local: café cedo, paralelepípedos, cores e um final junto ao rio.",
     beats: [
-      {
-        when: "9–11 · café da manhã",
-        what: "Aqui o café da manhã é de manhã: café com leite, medialunas (doce de leite ou presunto e queijo) ou torradas. Saída cedo no centro? Tortoni ou um café de bairro antes da Plaza de Mayo.",
-      },
-      {
-        when: "Centro + San Telmo",
-        what: "Plaza de Mayo com calma, depois San Telmo. Mercado ou empanada no meio da manhã. Ruas a pé, sem pressa.",
-      },
-      {
-        when: "~10–15 min de carro",
-        what: "Até o Caminito, com trânsito real e papo no caminho.",
-      },
-      {
-        when: "Caminito + La Boca",
-        what: "Fachadas, volta a pé, choripán se der vontade. Bombonera se der tempo; museu só com ingresso oficial.",
-      },
-      {
-        when: "13–15 · almoço",
-        what: "Almoço mais tarde. Parrilla de bairro ou o que combinarmos—a mesa é de vocês; eu cuido dos horários.",
-      },
+      { when: "09:00 · café da manhã", what: "Café com leite e medialunas, torradas com doce de leite ou alfajor no Café Tortoni, conforme o cardápio. A mesa é paga pelo viajante." },
+      { when: "09:45 · Plaza de Mayo", what: "Casa Rosada, Cabildo e Catedral por fora, com conversa sobre a cidade atual." },
+      { when: "10:40 · San Telmo", what: "Defensa, Plaza Dorrego e paralelepípedos. Mate como ritual social, sem fingir que é degustação incluída." },
+      { when: "11:45 · Caminito e La Boca", what: "Museu a céu aberto, Vuelta de Rocha e Quinquela Martín. Café, empanada ou bebida opcional na La Perla de Caminito." },
+      { when: "13:00 · almoço e final", what: "Almoço opcional em La Boca ou retorno por Puerto Madero, conforme tempo e energia." },
     ],
-    foodNote: "Comidas não inclusas. O horário de saída define café, lanche ou almoço.",
+    foodNote: "Transporte e organização do tempo incluídos; comida, gorjetas, ingressos e reservas não. La Perla e qualquer parrilla devem ser confirmadas.",
   },
   clasica: {
-    lead: "O cartão-postal com tempo para descer e comer no horário local.",
+    lead: "O cartão-postal funciona melhor sem pressa: café, patrimônio, bodegón e o Rosedal.",
     beats: [
-      {
-        when: "9–11 · café da manhã",
-        what: "Café e medialunas ou torradas antes ou entre Obelisco e Colón.",
-      },
-      {
-        when: "Centro → Recoleta",
-        what: "Obelisco e Colón por fora (dentro só com ingresso). Cemitério no horário oficial.",
-      },
-      {
-        when: "Palermo",
-        what: "Parques ou Soho. Caminhada ou mesa perto.",
-      },
-      {
-        when: "13–15 · almoço",
-        what: "Parrilla ou café em Palermo na hora do almoço. Conta à parte.",
-      },
+      { when: "09:00 · café da manhã", what: "Café com leite e medialunas ou torradas no Café Tortoni, quando o horário e a disponibilidade permitirem." },
+      { when: "09:45 · Obelisco e Colón", what: "Corrientes, 9 de Julio e Teatro Colón. A visita interna exige ingresso e disponibilidade oficial." },
+      { when: "11:30 · Recoleta", what: "Cemitério da Recoleta, arquitetura e a história de Eva Perón, com respeito." },
+      { when: "13:00 · almoço de bodegón", what: "Bar Los Galgos para empanadas, carne, café e flan com doce de leite, conforme cardápio e disponibilidade." },
+      { when: "14:15 · Rosedal e lagos", what: "Caminhada digestiva pelos Bosques de Palermo e pelo lago." },
     ],
-    foodNote: "Ingressos e refeições não inclusos.",
+    foodNote: "Refeições, ingressos e gorjetas à parte. Rosedal é parque público; Colón e Recoleta dependem dos horários oficiais.",
   },
   gastronomica: {
-    lead: "O eixo é a mesa; o carro liga bairros e horários reais.",
+    lead: "Não é uma lista de restaurantes: é um dia em torno dos sabores que explicam a Argentina.",
     beats: [
-      {
-        when: "9–11",
-        what: "Café da manhã porteño de verdade, depois trechos curtos.",
-      },
-      {
-        when: "Entre mesas",
-        what: "Empanada ou algo leve até o almoço.",
-      },
-      {
-        when: "13–15",
-        what: "Almoço no lugar combinado (vocês pagam). Tempo para digerir depois.",
-      },
+      { when: "09:00 · café e medialunas", what: "Café da manhã porteño no Café Tortoni, conforme o cardápio vigente." },
+      { when: "10:00 · San Telmo e mate", what: "Plaza Dorrego, Defensa e Mercado. Mate como ritual social; o viajante compra ou leva o que quiser beber." },
+      { when: "11:45 · ponte salgada", what: "Empanada opcional antes do almoço, mantendo o ritmo local." },
+      { when: "12:30 · Palermo", what: "Palermo Soho e almoço no El Preferido ou em uma parrilla como La Cabrera, escolhidos por orçamento e disponibilidade." },
+      { when: "15:00 · verde e doce", what: "Bosques de Palermo e um alfajor ou pequena merenda para levar." },
     ],
-    foodNote: "Eu levo e marco o tempo; cada conta é de vocês.",
+    foodNote: "O preço do roteiro cobre o trabalho do motorista e a coordenação. Cada consumo, reserva, gorjeta e ingresso é separado.",
   },
   futbolera: {
-    lead: "Caminito, entorno da Bombonera e algo para petiscar.",
+    lead: "Um núcleo de futebol bem contado: Boca, bairro, imigração, camisa, Messi e uma mesa real em La Boca.",
     beats: [
-      {
-        when: "Chegada",
-        what: "Caminito a pé; choripán se houver fome. Nada à vista no carro.",
-      },
-      {
-        when: "Bombonera",
-        what: "Fachada e bairro. Museu só com disponibilidade oficial.",
-      },
-      {
-        when: "Comida",
-        what: "Se for hora de almoço, parrilla da zona ou volta com folga.",
-      },
+      { when: "09:00 · café da manhã", what: "Café, medialunas, torradas, alfajor ou doce de leite antes de ir ao sul. O motorista não fornece comida." },
+      { when: "10:15 · Caminito e Vuelta de Rocha", what: "Cores, Quinquela Martín, imigração genovesa e o tango Caminito." },
+      { when: "11:15 · La Bombonera", what: "Museu e visita ao estádio apenas com disponibilidade oficial. Sem prometer arquibancada, vestiário ou jogadores." },
+      { when: "13:00 · conversa de futebol", what: "Boca como identidade de bairro, camisas, cantos, dias de jogo e a conversa argentina sobre Messi." },
+      { when: "13:30 · almoço em conventillo", what: "El Gran Paraíso: empanadas, achuras, provoleta ou parrilla conforme cardápio e disponibilidade." },
     ],
-    foodNote: "Dia de jogo muda acesso, horários e comida.",
+    foodNote: "Ingressos, comida e gorjetas à parte. Dias de jogo e treino podem mudar acessos e horários.",
   },
   "tigre-delta": {
-    lead: "Fora da capital: outra paisagem, mesmo critério de horário.",
+    lead: "Tigre é rio, clubes de remo, casas nas ilhas, mercado e a logística de uma cidade que também se move de barco.",
     beats: [
-      {
-        when: "Ida",
-        what: "Sair com margem. Café na cidade ou algo simples no caminho.",
-      },
-      {
-        when: "Tigre",
-        what: "Puerto de Frutos, passeio; navegação só se combinada à parte.",
-      },
-      {
-        when: "Almoço",
-        what: "Comer em Tigre ou na volta—relógio e clima decidem.",
-      },
+      { when: "09:00 · saída com margem", what: "Café na cidade ou em Tigre. A navegação depende do operador, clima e lotação." },
+      { when: "10:00 · Delta e remo", what: "Passeio de 5, 3 ou 6 rios conforme o tempo, com conversa sobre a vida nas ilhas." },
+      { when: "12:30 · história ou mercado", what: "Escolher MAT/Casa Sarmiento e história das ilhas, ou Puerto de Frutos para artesanato, doce de leite e alfajores." },
+      { when: "14:00 · mesa junto ao rio", what: "Chapaleo para empanadas, provoleta, carnes, pacu ou café, conforme cardápio e horário." },
+      { when: "15:30 · retorno", what: "Tempo de cais, compras ou merenda e volta com margem. Voos no mesmo dia exigem janela segura." },
     ],
-    foodNote: "Navegação e refeições à parte. Folga se houver voo.",
+    foodNote: "Navegação, museus, comida, compras e gorjetas não estão incluídos. Operador, tarifa e política de clima são confirmados antes.",
   },
 }
 
