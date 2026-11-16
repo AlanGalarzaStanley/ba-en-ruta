@@ -6,7 +6,7 @@ BA en Ruta no vende kilómetros ni un asiento dentro de un auto. Vende **acceso 
 
 El vehículo es la base operativa de esa promesa. No es el producto completo ni debe presentarse como una app de turismo. El auto traslada; el valor diferencial está en la relación, la lectura del contexto y la capacidad de convertir un traslado en una experiencia local controlada.
 
-> El auto te mueve. La mirada local te abre la ciudad.
+> Tu destino. Tu ritmo. Mi Buenos Aires.
 
 ## Dolor que resolvemos
 
@@ -33,15 +33,21 @@ Del lado del oficio, competir solo por precio deja al chofer expuesto a la comod
 
 ### Hero
 
-La primera pantalla debe dejar claro que no se está comprando solo un asiento. La formulación vigente es:
+La primera pantalla debe sentirse cercana, como una explicación del propio dueño. No debe sonar a slogan abstracto ni a tour premium genérico. La formulación vigente es:
 
-> **Buenos Aires, con alguien adentro.**
+> **Tu destino. Tu ritmo. Mi Buenos Aires.**
 >
-> No comprás solo un asiento. Comprás acceso a la ciudad con criterio local: te llevo, leo el día y ajusto el camino cuando hace falta.
+> Yo no te vendo un asiento. Te llevo, te cuento y te armo el día con criterio de local.
+
+La sección inmediata de identidad debe sostener la puerta de entrada argentina:
+
+> El fútbol se vive, el asado se comparte y el tango se siente.
+
+No como decoración, sino como la forma de explicar que el pasajero va a encontrarse con una ciudad vivida por alguien que la conoce.
 
 ### Recorridos
 
-Cada recorrido tiene una identidad, una secuencia horaria y una lógica gastronómica propia. No se deben listar los mismos lugares como decoración.
+Cada recorrido tiene una identidad, una secuencia horaria y una lógica gastronómica propia. No se deben listar los mismos lugares como decoración. El criterio local puede llevar a un bodegón como Los Bohemios en Villa Crespo en vez de una postal repetida, o a una variante de parrilla de barrio como El Tano en Sarandí cuando el tiempo, el tráfico y el grupo lo justifican.
 
 - **Historia, café y el sur porteño:** desayuno, Plaza de Mayo, San Telmo, Caminito, La Perla y cierre adaptable.
 - **Historia clásica, parques y cafés:** Obelisco, Colón, Recoleta, bodegón y Rosedal.
@@ -55,7 +61,7 @@ La página debe distinguir siempre:
 
 **Servicio del chofer:** conducción, coordinación del tiempo, orientación local, ajuste por tránsito/clima/energía y acompañamiento logístico exterior, todo sujeto a la cotización y política del dueño.
 
-**A cargo del pasajero:** comidas, bebidas, mate, alfajores, propinas, entradas, navegación, reservas, ticket de partido y cualquier consumo, salvo acuerdo escrito distinto.
+**A cargo del pasajero:** comidas, bebidas, mate, alfajores, propinas, entradas, navegación, reservas, ticket de partido y cualquier consumo, salvo acuerdo escrito distinto. Cuando se pueda operar de verdad, esos elementos pueden convertirse en adicionales o paquetes acordados: el cliente debe saber antes qué entra y qué no.
 
 Esta separación no enfría la venta; aumenta la confianza porque elimina sorpresas.
 
@@ -85,6 +91,8 @@ La guía interactiva y el simulador existen para preparar y amplificar esta conv
 - Mantener un “plan B” por clima, tráfico, partido, museo cerrado o restaurante sin mesa.
 - Definir qué significa acompañar: solo conducir, acompañar a pie, esperar en el auto o ingresar a una visita.
 - Registrar local favorito y local alternativo sin presentar ninguno como reserva confirmada.
+- Diseñar paquetes que resuelvan el día: traslado, secuencia, comida, lancha o entrada solo cuando el proveedor, el precio y la disponibilidad estén confirmados.
+- Mantener variantes de barrio para no repetir el circuito de Instagram: bodegón, tango en Caminito o cruce al sur cuando tenga sentido operativo.
 
 ### P2 — Amplificar sin reemplazar
 
