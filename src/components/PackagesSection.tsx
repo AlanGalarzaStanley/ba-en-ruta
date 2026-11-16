@@ -22,7 +22,7 @@ function PackageCard({ lang, pack }: { lang: Lang; pack: PackageDef }) {
     <article className="ba-card bg-cream rounded-2xl border border-navy/5 p-5 sm:p-6 flex flex-col h-full">
       <div className="flex items-start justify-between gap-3 mb-3">
         <Icon className="w-6 h-6 text-sky shrink-0" aria-hidden />
-        <span className="text-[10px] font-mono uppercase tracking-wider text-navy/45">{pack.code}</span>
+        <span className="text-[10px] font-mono uppercase tracking-wider text-navy/60">{pack.code}</span>
       </div>
       <h3 className="font-display text-lg sm:text-xl text-navy mb-2">{t(lang, pack.titleKey as CopyKey)}</h3>
       <p className="text-sm text-navy/60 leading-relaxed mb-3 flex-1">{t(lang, pack.descKey as CopyKey)}</p>
@@ -113,7 +113,7 @@ export function Packages({ lang }: { lang: Lang }) {
             <PackageCard key={p.id} lang={lang} pack={p} />
           ))}
         </div>
-        <p className="mt-8 text-xs text-navy/50 max-w-xl">{t(lang, "packsNote")}</p>
+        <p className="mt-8 text-xs text-navy/65 max-w-xl">{t(lang, "packsNote")}</p>
       </div>
     </section>
   )
