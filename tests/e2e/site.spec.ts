@@ -6,9 +6,10 @@ test.describe("portada", () => {
     await expect(page.locator("h1")).toContainText("Buenos Aires")
     await expect(page).toHaveTitle(/BA en Ruta/)
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
-    for (const id of ["recorridos", "quien", "faq"]) {
+    for (const id of ["recorridos", "paquetes", "quien", "faq"]) {
       await expect(page.locator(`#${id}`), id).toHaveCount(1)
     }
+    await expect(page.locator("#paquetes")).toContainText("City tour")
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /og-image\.jpg$/)
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://ba-en-ruta.vercel.app/?lang=es")
   })

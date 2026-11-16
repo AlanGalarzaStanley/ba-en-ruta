@@ -85,6 +85,7 @@ export function Header({
   /** Nav mínima: experiencias + quién + contacto */
   const nav: { id: string; key?: CopyKey }[] = [
     { id: "recorridos", key: "heroCtaLive" },
+    { id: "paquetes", key: "packsLabel" },
     { id: "quien", key: "aboutLabel" },
     { id: "faq", key: "navCta" },
   ]
