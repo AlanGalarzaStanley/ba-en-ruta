@@ -2,11 +2,11 @@
 
 ## Propósito y estado
 
-Este documento sintetiza la evidencia reunida para las cinco experiencias actuales de BA en Ruta: `historica`, `clasica`, `gastronomica`, `futbolera` y `tigre-delta`. Busca proponer una identidad editorial más clara para cada recorrido, reducir la repetición entre rutas y dejar explícito qué datos y decisiones aún necesitan confirmación.
+Este documento sintetiza la evidencia reunida para las cinco experiencias actuales de BA en Ruta: `historica`, `clasica`, `gastronomica`, `futbolera` y `tigre-delta`. Define una identidad editorial más clara para cada recorrido, reduce la repetición entre rutas y deja explícito qué datos y decisiones aún necesitan confirmación.
 
-**Estado: propuesta de producto pendiente de validación del dueño; no es una decisión pública aprobada ni una confirmación de servicio.** Las secuencias son orientativas. La evidencia citada respalda ciertos lugares, contextos y datos publicados por fuentes oficiales o directas; no demuestra que el recorrido completo esté disponible, que el chofer lo opere en una fecha determinada, ni que haya accesos, mesas, navegación, entradas o reservas. No se modificó código ni contenido del sitio.
+**Estado: dirección editorial aprobada por el dueño el 17-11-2026; implementación de copy y secuencias en curso.** Las secuencias son orientativas. La evidencia citada respalda ciertos lugares, contextos y datos publicados por fuentes oficiales o directas; no demuestra que el recorrido completo esté disponible, que el chofer lo opere en una fecha determinada, ni que haya accesos, mesas, navegación, entradas o reservas. La aprobación no modifica tarifas, inclusiones o políticas comerciales.
 
-La expresión «un amigo local en Buenos Aires» y cualquier frase de marca nueva se consideran aquí orientación/propuesta editorial, no texto adoptado. La promesa vigente del producto y el alcance comercial no cambian por efecto de este informe. Comidas, bebidas, entradas, navegación, propinas, estacionamiento, peajes, reservas y esperas adicionales no se presuponen incluidos; el dueño debe confirmar toda condición comercial.
+La expresión «un amigo local en Buenos Aires» está definida en `AGENTS.md`; no se añade una nueva frase de marca en este informe. La promesa vigente y el alcance comercial no cambian por este documento. Comidas, bebidas, entradas, navegación, propinas, estacionamiento, peajes, reservas y esperas adicionales no se presuponen incluidos; confirmar cualquier condición comercial antes de anunciarla.
 
 ## 1. `historica`
 
@@ -144,7 +144,7 @@ El sitio del Club Atlético Atlanta publica para Los Bohemios horarios de lunes 
 
 ### Dudas y confirmaciones humanas
 
-- Aprobar o no Villa Crespo/Los Bohemios como eje y decidir si puede ofrecerse bajo esa promesa; no es copy público aprobado.
+- La dirección editorial de Villa Crespo/Los Bohemios fue aprobada por el dueño el 17-11-2026. Esta aprobación no convierte al restaurante en proveedor ni confirma que pueda operarse como servicio en una fecha concreta.
 - Confirmar operación, horario, menú vigente, precios, reserva y disponibilidad de Los Bohemios para el día elegido. No se verificó una mesa.
 - Confirmar si existe algún acuerdo, comisión, coordinación o prestación vinculada al restaurante o al club; no se verificó ninguno.
 - Definir si el pasajero podrá elegir entre Palermo pausado, San Telmo/mercado o pausa verde, y cómo se implementará sin garantizar duración o traslados.
@@ -153,7 +153,7 @@ El sitio del Club Atlético Atlanta publica para Los Bohemios horarios de lunes 
 
 ### Alcance de la evidencia
 
-Hay evidencia oficial de contexto para el barrio, el Mercado de San Telmo y la ubicación/horarios publicados por Atlanta para Los Bohemios, pero **no hay evidencia suficiente para presentar el recorrido gastronómico como producto operable**: faltan confirmaciones directas de restaurante, reserva, carta, precios, traslados, proveedor y condiciones del chofer. El Tano carece de verificación específica para esta propuesta. Los atributos de servicio y la selección final siguen pendientes del dueño.
+Hay evidencia oficial de contexto para el barrio, el Mercado de San Telmo y la ubicación/horarios publicados por Atlanta para Los Bohemios, pero **no hay evidencia suficiente para presentar el recorrido gastronómico como producto operable en una fecha concreta**: faltan confirmaciones directas de restaurante, reserva, carta, precios, traslados, proveedor y condiciones del chofer. El Tano carece de verificación específica para esta propuesta. La identidad editorial está aprobada; el alcance del servicio y sus dependencias externas siguen pendientes.
 
 ## 4. `futbolera`
 
@@ -255,24 +255,24 @@ La página de Catamaranes Tigre anuncia navegación de aproximadamente una hora,
 
 Hay evidencia municipal sobre Tigre, remo y atractivos, y evidencia directa del operador para una navegación anunciada y del museo para sus horarios publicados. **No hay evidencia suficiente sobre la operación de la experiencia completa**: faltan confirmaciones de fecha/cupo de navegación, transporte, comida, tiempos, política de cambios y condiciones del chofer. La ruta acuática publicada tiene una inconsistencia que impide resumir con seguridad qué ríos incluye sin respuesta directa del operador.
 
-## Propuestas transversales y elementos sin aprobación
+## Decisiones editoriales aprobadas y límites pendientes
 
-- **Los Bohemios:** propuesta de eje gastronómico en Villa Crespo, no destino ni acuerdo comercial aprobado. Su inclusión depende de validación del dueño y confirmación directa del restaurante.
+- **Los Bohemios:** eje editorial aprobado para `gastronomica`; no implica acuerdo comercial, reserva, mesa ni disponibilidad. Confirmar directamente para cada fecha.
 - **El Tano:** propuesta de variante de zona sur/Avellaneda separada; no parada automática de `gastronomica` ni `futbolera`. Faltan proveedor/sucursal, dirección, operación y logística.
-- **«Palermo lento» / Palermo sin apuro:** criterio de ritmo o extensión posible en `clasica` y, si se decide, en otra propuesta; no implica picnic, mate, comida, actividades ni servicio provisto. No es una sexta ruta ni promesa adoptada.
+- **Palermo sin apuro:** cierre/pausa opcional de `clasica`; no implica picnic, mate, comida, actividades ni servicio provisto. No es una sexta ruta.
 - **Ruta nocturna:** idea futura, no operación vigente. No trasladar promesas de cena, bares o regreso nocturno a las rutas actuales sin definición operativa.
-- **Tortoni:** propuesta de asignarle el papel principal de café en `historica` y retirarlo de otras rutas para evitar repetición; requiere decisión del dueño.
+- **Tortoni:** café distintivo editorial de `historica`; no es una parada automática de las otras rutas y su apertura/mesa para la fecha debe comprobarse.
 - **Interiores y experiencias externas:** Museo/Estadio de Boca, Colón, visitas del Cementerio, navegación, restaurantes y demás servicios dependen de condiciones y disponibilidad externas; no equivale a inclusión en la cotización ni a reserva.
 
 ## Decisiones que debe tomar el dueño y próximos pasos
 
-1. **Validar identidades y diferencias editoriales** de las cinco rutas, incluyendo si el eje de `gastronomica` pasa a Villa Crespo/Los Bohemios, si `historica` reserva Tortoni como café principal y cómo se distingue `futbolera` de `historica`.
-2. **Aprobar, editar o descartar** cada secuencia orientativa y elegir qué alternativas se ofrecen como reemplazos frente a qué elementos quedan opcionales. Confirmar si “Palermo lento” será criterio interno, opción verbal o propuesta de producto; no publicarlo como promesa por inferencia.
+1. **Dirección editorial:** identidades y secuencias de los cinco recorridos aprobadas por el dueño el 17-11-2026; el copy público puede reflejarlas como orientativas y con las exclusiones aquí documentadas.
+2. **Condiciones operativas aún a definir:** qué alternativas se ofrecen según fecha y grupo, qué significa el paseo de Palermo en la práctica y qué servicio presta el chofer; no inferir acompañamiento, comida, accesos o duración.
 3. **Definir el alcance operativo y comercial del chofer:** zonas, recogida/regreso, duración orientativa, vehículo/capacidad, acompañamiento a pie, espera, cotización, estacionamiento, peajes, suplementos, accesibilidad y qué está incluido. Mantener como no incluidos comidas, bebidas, entradas, navegación, propinas y reservas hasta decisión explícita.
 4. **Verificar proveedores para fecha concreta:** horarios, reservas, menú, precios y condiciones con Tortoni, La Perla, Los Galgos, Los Bohemios, El Gran Paraíso y cualquier almuerzo; modalidad/cupo oficial de Boca y Colón; operación de MAT/Rosedal; salida, ruta, cupo y política de cambios de la navegación de Tigre.
 5. **Resolver las lagunas críticas antes de ofrecer opciones:** confirmar sucursal/dirección y logística de El Tano; aclarar al operador de Catamaranes Tigre el itinerario de cinco/seis ríos; no cotizar extensiones sin ruta y tráfico reales.
 6. **Definir una regla de comunicación:** presentar itinerarios como orientativos y toda parada externa como sujeta a consulta; distinguir con claridad servicio de traslado, acompañamiento, entradas y consumos. Una recomendación no significa reserva.
-7. **Revisar por separado cualquier eventual publicación.** Este informe no autoriza cambios en la web ni en el copy público. Si el dueño aprueba cambios, reflejar las decisiones operativas confirmadas y mantener paridad idiomática, enlaces y condiciones en las superficies correspondientes.
+7. **Publicación:** el dueño aprobó la dirección editorial el 17-11-2026 y el copy/secuencias pueden reflejarla en la web con paridad idiomática. Esa autorización no confirma precios, inclusiones, disponibilidad, reservas, horarios ni condiciones comerciales; verificarlos por separado antes de comunicarlos como garantizados.
 
 ### Resumen de suficiencia de evidencia
 

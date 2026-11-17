@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { ITINERARIES, PLACES } from "../../src/lib/ba-config"
 import { buildRoute, estimateDrive, formatClock, haversineKm, placeVideo, routeTotals, youtubeId } from "../../src/lib/route"
+import { getGenuineDay } from "../../src/lib/genuine-day"
 
 describe("motor del simulador de recorrido", () => {
   it("cada itinerario empieza con el punto de encuentro y termina con el cierre", () => {
@@ -10,6 +11,44 @@ describe("motor del simulador de recorrido", () => {
       expect(steps.at(-1)!.kind, itin.id).toBe("end")
       const places = steps.filter((s) => s.kind === "place")
       expect(places.length, itin.id).toBe(itin.placeIds.length)
+    }
+  })
+
+  it("conserva el orden explícito aprobado en tarjetas y simulador", () => {
+    for (const itin of ITINERARIES) {
+      expect(itin.sequence, itin.id).toBeDefined()
+      const expected = itin.sequence!.map((stop) =>
+        stop.kind === "place" ? stop.id : `food-${stop.id}`,
+      )
+      const actual = buildRoute(itin)
+        .filter((step) => step.kind === "place" || step.kind === "food")
+        .map((step) => step.key)
+      expect(actual, itin.id).toEqual(expected)
+    }
+  })
+
+  it("mantiene diferenciadas las paradas gastronómicas de las cinco experiencias", () => {
+    const byId = Object.fromEntries(ITINERARIES.map((itin) => [itin.id, itin]))
+    expect(byId.historica.restaurantIds).toEqual(["tortoni"])
+    expect(byId.clasica.restaurantIds).toEqual([])
+    expect(byId.gastronomica.restaurantIds).toEqual(["los-bohemios"])
+    expect(byId.futbolera.restaurantIds).toEqual([])
+    expect(byId["tigre-delta"].restaurantIds).toEqual([])
+  })
+
+  it("publica una secuencia en ES/EN/PT sin horas fijas", () => {
+    for (const itin of ITINERARIES) {
+      for (const lang of ["es", "en", "pt"] as const) {
+        const day = getGenuineDay(lang, itin.id)
+        expect(day.lead.trim(), `${itin.id}/${lang} lead`).toBeTruthy()
+        expect(day.beats.length, `${itin.id}/${lang} beats`).toBeGreaterThanOrEqual(4)
+        expect(day.foodNote.trim(), `${itin.id}/${lang} limits`).toBeTruthy()
+        for (const beat of day.beats) {
+          expect(beat.when.trim(), `${itin.id}/${lang} label`).toBeTruthy()
+          expect(beat.what.trim(), `${itin.id}/${lang} text`).toBeTruthy()
+          expect(beat.when, `${itin.id}/${lang} fixed time`).not.toMatch(/^\d{1,2}:\d{2}/)
+        }
+      }
     }
   })
 

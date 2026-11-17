@@ -84,20 +84,31 @@ export function buildRoute(itin: Itinerary): RouteStep[] {
     .map((id) => RESTAURANTS.find((r) => r.id === id))
     .filter((r): r is Restaurant => !!r && r.lat != null && r.lng != null)
 
-  // Ordenar: cada parada gastronómica va después del primer lugar con el que se vincula;
-  // las que no se vinculan quedan al final.
-  const used = new Set<string>()
   const seq: ({ t: "place"; p: Place } | { t: "food"; r: Restaurant })[] = []
-  for (const p of places) {
-    seq.push({ t: "place", p })
-    for (const r of rests) {
-      if (!used.has(r.id) && r.placeIds.includes(p.id)) {
-        seq.push({ t: "food", r })
-        used.add(r.id)
+  if (itin.sequence) {
+    for (const stop of itin.sequence) {
+      if (stop.kind === "place") {
+        const p = places.find((item) => item.id === stop.id)
+        if (p) seq.push({ t: "place", p })
+      } else {
+        const r = rests.find((item) => item.id === stop.id)
+        if (r) seq.push({ t: "food", r })
       }
     }
+  } else {
+    // Compatibilidad con itinerarios antiguos: las comidas ligadas a un lugar van después de este.
+    const used = new Set<string>()
+    for (const p of places) {
+      seq.push({ t: "place", p })
+      for (const r of rests) {
+        if (!used.has(r.id) && r.placeIds.includes(p.id)) {
+          seq.push({ t: "food", r })
+          used.add(r.id)
+        }
+      }
+    }
+    for (const r of rests) if (!used.has(r.id)) seq.push({ t: "food", r })
   }
-  for (const r of rests) if (!used.has(r.id)) seq.push({ t: "food", r })
 
   const steps: RouteStep[] = [{ kind: "pickup", key: "pickup" }]
   let clock = START_MIN[itin.id] ?? 9 * 60 + 30

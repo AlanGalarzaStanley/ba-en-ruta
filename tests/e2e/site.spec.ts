@@ -16,7 +16,7 @@ test.describe("portada", () => {
   test("idiomas por URL: inglés y portugués", async ({ page }) => {
     await page.goto("/?lang=en")
     await expect(page.locator("html")).toHaveAttribute("lang", "en")
-    await expect(page.locator("#recorridos")).toContainText("Feel the route before you book it")
+    await expect(page.locator("#recorridos")).toContainText("Preview the route before enquiring.")
     await page.goto("/?lang=pt")
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR")
     await expect(page.locator("#recorridos h2")).not.toHaveText("")
@@ -33,12 +33,12 @@ test.describe("portada", () => {
 test.describe("simulador de recorrido", () => {
   test("enlace directo ?recorrido=historica, avance, retroceso y cierre", async ({ page }) => {
     await page.goto("/?recorrido=historica&lang=es")
-    const dialog = page.getByRole("dialog", { name: /Historia, café y el sur porteño/ })
+    const dialog = page.getByRole("dialog", { name: /Historia, café y barrios del sur/ })
     await expect(dialog).toBeVisible()
-    await expect(dialog).toContainText("Te paso a buscar")
+    await expect(dialog).toContainText("Punto de partida")
     await dialog.getByRole("button", { name: "Siguiente" }).click()
     await expect(page).toHaveURL(/parada=1/)
-    await expect(dialog.locator("h2, h3").first()).not.toContainText("Te paso a buscar")
+    await expect(dialog.locator("h2, h3").first()).not.toContainText("Punto de partida")
     await dialog.getByRole("button", { name: "Siguiente" }).click()
     await expect(page).toHaveURL(/parada=2/)
     await dialog.getByRole("button", { name: "Anterior" }).click()
@@ -98,10 +98,10 @@ test.describe("simulador de recorrido", () => {
     await expect(page.getByRole("dialog")).toHaveCount(0)
   })
 
-  test("reservar desde el simulador abre WhatsApp con el mensaje", async ({ page }) => {
+  test("consultar desde el simulador abre WhatsApp con el mensaje", async ({ page }) => {
     const opened = await trapWindowOpen(page)
     await page.goto("/?recorrido=futbolera&lang=es")
-    await page.getByRole("dialog").getByRole("button", { name: "Quiero este recorrido" }).last().click()
+    await page.getByRole("dialog").getByRole("button", { name: "Consultar este recorrido" }).last().click()
     const urls = await opened()
     expect(urls.at(-1)).toMatch(/^https:\/\/wa\.me\/5491151448632\?text=.+/)
   })
