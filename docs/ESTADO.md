@@ -1,13 +1,16 @@
 # Estado verificado de BA en Ruta
 
-Última actualización: 2026-11-14.
+Última actualización: 2026-11-17.
 
 ## Producción
 - URL: https://ba-en-ruta.vercel.app (Vercel Free, despliegue automático desde `main`).
-- Commit de la aplicación verificado en producción: `e5d5a6c524a958a6d0128750ff465ef3628a254f`.
-  El producto vigente es una página corta orientada a consulta por WhatsApp: hero, recorridos, quién te lleva, FAQ y cierre.
-- Verificación: cabeceras de seguridad presentes (CSP, HSTS, nosniff, Referrer/Permissions-Policy, X-Frame-Options), `og-image.jpg` responde 200
-  y `E2E_BASE_URL=https://ba-en-ruta.vercel.app npx playwright test` dio 30/30 en Chromium escritorio y Pixel 7 emulado.
+- Último deployment de producción confirmado `READY`: commit `e7cb026d9fed8311af075a6c372d019fde0e9539` (ajuste del runner CI; el código de la home sigue en `315433981812391cf5175df059724ce5dc6f4caf`).
+- El producto vigente es una página corta orientada a consulta por WhatsApp: hero, manifiesto, cinco recorridos, quién conduce, FAQ y cierre; no muestra la grilla del catálogo de paquetes.
+- En `2026-11-17`, el deployment de producción quedó `READY` y el CI de `main` sobre `e7cb026` pasó typecheck, unitarias, build y E2E en la ejecución `44024025261`.
+- En validación local sobre Ubuntu 24.04, `npm run test:e2e` dio 30/30. La solución fijó el job E2E en `ubuntu-24.04` por incompatibilidad de Playwright 1.59.1 con el runner anterior Ubuntu 26.04.
+- Verificaciones previas de cabeceras de seguridad (CSP, HSTS, nosniff, Referrer/Permissions-Policy, X-Frame-Options) y `og-image.jpg` respondieron correctamente; repetir si se modifican las reglas o los metadatos.
+
+Los resultados Lighthouse y las auditorías de abajo son mediciones históricas de 2026-11-14, no una nueva medición de esta actualización.
 
 ## Lighthouse (producción, perfil móvil con 4G lenta simulada)
 | Métrica | Antes (4a7cd40) | Ahora (0a30165) |
