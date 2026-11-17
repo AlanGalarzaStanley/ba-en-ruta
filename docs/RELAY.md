@@ -33,7 +33,7 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ## Estado actual (2026-11-17)
 
 ### Bloqueante activo
-- **CI en main**: verde. Confirmado en run 44026330334 (commit e440b17 docs blueprint).
+- **CI en main**: verde. Confirmado en run 44026747416 (commit bc5be41 docs update RELAY).
 - No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
@@ -70,20 +70,21 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- CI en main verde confirmado: workflow run 44026330334 success on commit e440b17e9d0c45a1158b9d76d1c3c3d8bd7eaa5c ("docs: add canonical BA en Ruta agent blueprint (#7)").
-- Avance comercial: branch `feat/surface-packages-catalog` creado desde main. App.tsx actualizado para renderizar el componente Packages (catálogo core+theme con precios, CTAs WhatsApp) después de itinerarios. Component y datos ya existían; ahora visibles.
-- PR form listo para abrir (head: feat/surface-packages-catalog).
+- CI main verde confirmado en run 44026747416 (commit bc5be41).
+- Branch feat/surface-packages-catalog verificado (commit a525f65): App.tsx renderiza Packages después de itinerarios.
+- Formulario de creación de PR preparado (card interactivo listo para submit). Título: feat: surface packages catalog on homepage. Head: feat/surface-packages-catalog.
 
 **Next Action**:
-Abrir/mergear el PR de feat/surface-packages-catalog (feat: surface packages catalog on homepage). Verificar CI verde. Luego actualizar docs/ESTADO.md y roadmap.md con estado comercial (WhatsApp set, paquetes visibles, pendientes dominio/videos).
+Confirmar/submit el PR de feat/surface-packages-catalog (o verificar si se creó). Esperar CI verde en el PR. Luego mergear y actualizar docs/ESTADO.md + roadmap.md con paquetes visibles.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- CI success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44026330334
+- CI success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44026747416
 - Branch: feat/surface-packages-catalog @ a525f65a8b909ddf0948cfca833b924676625162
 - Producción: https://ba-en-ruta.vercel.app
 - Paquetes: src/lib/packages.ts (TOUR-4 USD50, TOUR-8 USD100), src/components/PackagesSection.tsx
 - WhatsApp: 5491151448632 ya configurado
+- PR form card_id: yLTQ0 (si aplica)
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -101,4 +102,4 @@ Abrir/mergear el PR de feat/surface-packages-catalog (feat: surface packages cat
 
 ---
 
-*Última actualización del handoff: 2026-11-17 (CI main verde, branch paquetes listo)*
+*Última actualización del handoff: 2026-11-17 (CI green, PR form for packages ready)*
