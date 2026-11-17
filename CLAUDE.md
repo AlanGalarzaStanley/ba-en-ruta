@@ -3,6 +3,8 @@
 Sitio de chofer privado y experiencias turísticas en Buenos Aires.
 Producción: https://ba-en-ruta.vercel.app · Repo: AlanGalarzaStanley/ba-en-ruta (público).
 
+Antes de cualquier tarea, leer completo el [blueprint canónico de agentes](AGENTS.md). Define la intención del producto, las decisiones vigentes y cómo interpretar documentos históricos; esta guía es su complemento técnico, no un reemplazo.
+
 ## Stack y despliegue
 - Vite 7 + React 19 + TypeScript 5.8 (strict) + Tailwind v4 + Leaflet (OSM) + lucide-react.
 - Vercel (plan Free) despliega `main` a producción y cada rama a una preview. Sin backend, sin base de datos.
