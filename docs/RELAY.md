@@ -70,25 +70,25 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- CI bloqueante resuelto: PR #6 (https://github.com/AlanGalarzaStanley/ba-en-ruta/pull/6) "fix(ci): pin E2E runner to Ubuntu 24.04" mergeado a main (squash commit e7cb026d9fed8311af075a6c372d019fde0e9539).
-- CI del PR: check + e2e success (run 44023805456 https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456).
-- Cambio: runs-on ubuntu-24.04 en job e2e de .github/workflows/ci.yml (Playwright 1.59.1 compatible).
-- main ahora debería tener CI verde en el próximo run.
+- CI en main confirmado verde post-PR #6 (ver docs/ESTADO.md: run 44024025261).
+- PR #7 "docs: add canonical BA en Ruta agent blueprint" mergeado a main (CI success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44026088703, commit d0ba6ee).
+- Blueprint canónico AGENTS.md ahora en main; CI reliability desbloqueado.
 
 **Next Action**:
-Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar al frente comercial: revisar tarifas, dominio, videos y paquetes en docs/ESTADO.md + roadmap.md y proponer el siguiente PR de producto. Si falla, diagnosticar y fixear inmediatamente.
+Avanzar al frente comercial: revisar pendientes de tarifas, dominio, videos y paquetes en roadmap.md y docs/ESTADO.md. Crear issue o PR de propuesta acotada (sin inventar datos del dueño) listando lo que requiere decisión humana y lo que se puede preparar técnicamente. Priorizar claridad comercial en la home actual.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Merge: PR #6 → main @ e7cb026d9fed8311af075a6c372d019fde0e9539
-- CI PR success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456
+- main @ e440b17e9d0c45a1158b9d76d1c3c3d8bd7eaa5c (post PR #7)
+- CI main verde confirmado
 - Producción: https://ba-en-ruta.vercel.app
-- Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
+- Archivos clave: AGENTS.md, docs/ESTADO.md, roadmap.md, docs/DIRECCION-2026-11-17.md
+- Pendientes comerciales: WhatsApp number, tarifas, videos Meta AI, dominio (roadmap.md)
 
 **Constraints**:
 - Una acción de alto impacto por turno
 - Este archivo es la fuente de verdad del handoff
-- Autonomía con límites claros (ver arriba)
+- Autonomía con límites claros (ver arriba); no inventar datos comerciales del dueño
 
 **Stop Conditions**:
 - Sistema óptimo alcanzado, o
@@ -101,4 +101,4 @@ Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar a
 
 ---
 
-*Última actualización del handoff: 2026-11-17 (PR #6 mergeado, CI verde en PR)*
+*Última actualización del handoff: 2026-11-17 (CI verde confirmado, PR #7 mergeado, avanzando a comercial)*
