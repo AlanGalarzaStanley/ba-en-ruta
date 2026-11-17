@@ -110,6 +110,9 @@ Usar los documentos por función y fecha; no mezclarlos como si todos fueran ór
 - `docs/DIRECCION-2026-11-17.md`: decisión más reciente sobre la home corta y el criterio editorial actual.
 - `docs/POSICIONAMIENTO-VALOR-HUMANO.md`: tesis de diferenciación y experiencia del servicio; contexto estratégico.
 - `docs/INVESTIGACION-RECORRIDOS-2026-11-15.md`: propuesta detallada de recorridos, fuentes y límites; revisar vigencia, permisos y datos antes de publicar.
+- `docs/PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`: propuesta investigada para diferenciar las cinco rutas; no es aprobación del dueño ni copy público.
+- `docs/SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`: formato sugerido y seis guiones en borrador; no implica audio o controles implementados ni autorización de grabar.
+- `docs/OPERACION-Y-ROADMAP-2026-11-17.md`: separación entre precios externos observados, decisiones del dueño y etapas de trabajo; los importes allí citados requieren revalidación antes de usarse.
 - `docs/ESTADO.md`: fotografía verificable de producción y pruebas a la fecha indicada; al cambiar la fecha, actualización, deployment o CI, actualizarlo.
 - `docs/RELAY.md`: handoff de un loop de agentes/automatización. Sirve para saber cuál tarea estaba en curso; no define el producto ni sustituye instrucciones del dueño. Verificar el estado real en GitHub/Vercel.
 - `docs/PRODUCTO-END-TO-END.md`, `docs/ARQUITECTURA-INFO.md` y `roadmap.md`: documentos anteriores/propuestas con partes que pueden contradecir la dirección de noviembre de 2026. Son archivo de contexto, no backlog ejecutable. Revalidar cada idea con este blueprint y la petición actual.
