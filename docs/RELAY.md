@@ -33,12 +33,12 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ## Estado actual (2026-11-17)
 
 ### Bloqueante activo
-- **CI en main**: resuelto. PR #6 (fix/ci-playwright-ubuntu-24) mergeado con CI verde. Job e2e ahora usa ubuntu-24.04.
+- **CI en main**: resuelto. PR #6 mergeado, CI verde en main (run 44024025261).
 - No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
 1. **CI reliability** — desbloqueado (pin OS)
-2. **Producto comercial** — tarifas, dominio, videos, paquetes
+2. **Producto comercial** — paquetes visibles en página, dominio, videos adicionales si hacen falta
 3. **Calidad técnica** — mantener y subir la vara
 4. **Contenido & assets** — fotos/licencias, multi-idioma, datos verificados
 5. **Operación** — este archivo + `docs/ESTADO.md` siempre al día
@@ -70,20 +70,21 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- CI bloqueante resuelto: PR #6 (https://github.com/AlanGalarzaStanley/ba-en-ruta/pull/6) "fix(ci): pin E2E runner to Ubuntu 24.04" mergeado a main (squash commit e7cb026d9fed8311af075a6c372d019fde0e9539).
-- CI del PR: check + e2e success (run 44023805456 https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456).
-- Cambio: runs-on ubuntu-24.04 en job e2e de .github/workflows/ci.yml (Playwright 1.59.1 compatible).
-- main ahora debería tener CI verde en el próximo run.
+- CI en main verde post-merge de PR #6 (commit e7cb026, run https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44024025261 success).
+- WhatsApp configurado (5491151448632).
+- Paquetes comerciales definidos con precios de referencia (TOUR-4 USD 50, TOUR-8 USD 100; resto a cotizar) y CTAs de WhatsApp.
+- PR abierto (o en proceso) en branch feat/show-commercial-packages: monta la sección Packages en la página corta para hacer las ofertas visibles.
 
 **Next Action**:
-Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar al frente comercial: revisar tarifas, dominio, videos y paquetes en docs/ESTADO.md + roadmap.md y proponer el siguiente PR de producto. Si falla, diagnosticar y fixear inmediatamente.
+Esperar CI del PR feat/show-commercial-packages. Si verde, mergear (humano o auto si está claro) y verificar en preview/producción que los paquetes se ven y los CTAs funcionan. Luego avanzar a dominio personalizado o actualización de docs/ESTADO.md + roadmap.md.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Merge: PR #6 → main @ e7cb026d9fed8311af075a6c372d019fde0e9539
-- CI PR success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456
+- CI main success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44024025261
+- Branch: feat/show-commercial-packages (commit c713d373)
 - Producción: https://ba-en-ruta.vercel.app
-- Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
+- Paquetes: src/lib/packages.ts, src/lib/packages-copy.ts, src/components/PackagesSection.tsx
+- Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -96,9 +97,9 @@ Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar a
 - El dueño detiene el loop
 
 **Suggested Trigger**:
-- Automation con `workflow_run_completed` en este repo (success o failure)
+- Automation con `workflow_run_completed` o `pull_request` en este repo
 - O cualquier agente que lea este archivo ahora
 
 ---
 
-*Última actualización del handoff: 2026-11-17 (PR #6 mergeado, CI verde en PR)*
+*Última actualización del handoff: 2026-11-17 (CI main verde, PR de paquetes comerciales en curso)*
