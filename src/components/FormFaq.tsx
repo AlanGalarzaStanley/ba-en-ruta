@@ -56,7 +56,6 @@ export function Footer({ lang, onNav }: { lang: Lang; onNav: (id: string) => voi
           </div>
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/60">
             <button type="button" onClick={() => onNav("recorridos")} className="hover:text-white transition-colors">{t(lang, "heroCtaLive")}</button>
-            <button type="button" onClick={() => onNav("paquetes")} className="hover:text-white transition-colors">{t(lang, "packsLabel")}</button>
             <button type="button" onClick={() => onNav("quien")} className="hover:text-white transition-colors">{t(lang, "aboutLabel")}</button>
             <button type="button" onClick={() => onNav("faq")} className="hover:text-white transition-colors">{t(lang, "navFaq")}</button>
           </nav>

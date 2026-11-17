@@ -7,7 +7,7 @@ import {
   type TenantConfig,
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
-import { AboutDriver, Packages } from "./components/PackagesSection"
+import { AboutDriver } from "./components/PackagesSection"
 import { Itineraries } from "./components/Itineraries"
 import { FAQ, Footer } from "./components/FormFaq"
 import { ITINERARIES } from "./lib/ba-config"
@@ -157,7 +157,6 @@ export default function App() {
             onPlay={openPlayer}
           />
         )}
-        <Packages lang={lang} />
         <AboutDriver lang={lang} />
         <FAQ lang={lang} />
       </main>
