@@ -30,15 +30,14 @@ Llevar BA en Ruta a un **sistema óptimo**:
 - Calidad técnica alta (tests, a11y, performance, SEO)
 - Deuda conocida, priorizada y controlada
 
-## Estado actual (2026-11-16)
+## Estado actual (2026-11-17)
 
 ### Bloqueante activo
-- **CI roto en `main`**: job `e2e` falla porque `ubuntu-latest` = Ubuntu 26.04 y Playwright **1.59.1** no soporta chromium (`ERROR: Playwright does not support chromium on ubuntu26.04-x64`).
-- Branch lista: `fix/ci-ubuntu-playwright` (commit `66aa27c`) con pin a `ubuntu-24.04` en el job e2e.
-- Formulario de creación de PR re-disparado (card USYB1); esperando confirmación humana para crear el PR.
+- **CI en main**: resuelto. PR #6 (fix/ci-playwright-ubuntu-24) mergeado con CI verde. Job e2e ahora usa ubuntu-24.04.
+- No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
-1. **CI reliability** — desbloquear (pin OS)
+1. **CI reliability** — desbloqueado (pin OS)
 2. **Producto comercial** — tarifas, dominio, videos, paquetes
 3. **Calidad técnica** — mantener y subir la vara
 4. **Contenido & assets** — fotos/licencias, multi-idioma, datos verificados
@@ -71,20 +70,18 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- Nuevo fallo de CI confirmado en run 43803852160 (https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/43803852160) commit 9bd1f4811ba51bf4f6ec9861660cc3f6f6812568 "docs: update RELAY handoff after new CI fail and PR form trigger": mismo error Playwright + Ubuntu 26.04 en job e2e
-- Job `check` pasa; solo `e2e` falla en `npx playwright install --with-deps chromium`
-- Branch `fix/ci-ubuntu-playwright` @ 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b verificada (pin a ubuntu-24.04 en .github/workflows/ci.yml)
-- Intentado crear PR nuevamente: formulario interactivo mostrado (card_id USYB1), pendiente de confirmación humana. No hay PR abierto aún para el fix.
-- Otras PRs abiertas son drafts no relacionados (modo-en-ruta, SEO).
+- CI bloqueante resuelto: PR #6 (https://github.com/AlanGalarzaStanley/ba-en-ruta/pull/6) "fix(ci): pin E2E runner to Ubuntu 24.04" mergeado a main (squash commit e7cb026d9fed8311af075a6c372d019fde0e9539).
+- CI del PR: check + e2e success (run 44023805456 https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456).
+- Cambio: runs-on ubuntu-24.04 en job e2e de .github/workflows/ci.yml (Playwright 1.59.1 compatible).
+- main ahora debería tener CI verde en el próximo run.
 
 **Next Action**:
-Confirmar el formulario interactivo (card USYB1) para crear el PR de `fix/ci-ubuntu-playwright` → `main`. Una vez creado y CI verde en el PR, mergear a main. Si el formulario no se confirma, el siguiente agente puede intentar crear el PR por otros medios (o verificar si hay bloqueo de permisos) o avanzar en el frente comercial en paralelo mientras se resuelve el CI.
+Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar al frente comercial: revisar tarifas, dominio, videos y paquetes en docs/ESTADO.md + roadmap.md y proponer el siguiente PR de producto. Si falla, diagnosticar y fixear inmediatamente.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Branch fix: fix/ci-ubuntu-playwright @ 66aa27ccd5aca4be690cf3b1a8d3a4014b0bad6b
-- Último CI fail: run 43803852160 (https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/43803852160) commit 9bd1f4811ba51bf4f6ec9861660cc3f6f6812568
-- Error exacto: ERROR: Playwright does not support chromium on ubuntu26.04-x64 (Playwright 1.59.1)
+- Merge: PR #6 → main @ e7cb026d9fed8311af075a6c372d019fde0e9539
+- CI PR success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456
 - Producción: https://ba-en-ruta.vercel.app
 - Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
 
@@ -99,10 +96,9 @@ Confirmar el formulario interactivo (card USYB1) para crear el PR de `fix/ci-ubu
 - El dueño detiene el loop
 
 **Suggested Trigger**:
-- Automation con `workflow_run_completed` (conclusion=failure) en este repo
-- O confirmación del formulario de PR
+- Automation con `workflow_run_completed` en este repo (success o failure)
 - O cualquier agente que lea este archivo ahora
 
 ---
 
-*Última actualización del handoff: 2026-11-16 (CI fail 43803852160 + PR form triggered with card USYB1)*
+*Última actualización del handoff: 2026-11-17 (PR #6 mergeado, CI verde en PR)*
