@@ -33,12 +33,12 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ## Estado actual (2026-11-17)
 
 ### Bloqueante activo
-- **CI en main**: resuelto. PR #6 (fix/ci-playwright-ubuntu-24) mergeado con CI verde. Job e2e ahora usa ubuntu-24.04.
+- **CI en main**: verde. Confirmado en run 44026330334 (commit e440b17 docs blueprint).
 - No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
 1. **CI reliability** — desbloqueado (pin OS)
-2. **Producto comercial** — tarifas, dominio, videos, paquetes
+2. **Producto comercial** — tarifas visibles (paquetes), dominio, videos
 3. **Calidad técnica** — mantener y subir la vara
 4. **Contenido & assets** — fotos/licencias, multi-idioma, datos verificados
 5. **Operación** — este archivo + `docs/ESTADO.md` siempre al día
@@ -70,20 +70,20 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- CI bloqueante resuelto: PR #6 (https://github.com/AlanGalarzaStanley/ba-en-ruta/pull/6) "fix(ci): pin E2E runner to Ubuntu 24.04" mergeado a main (squash commit e7cb026d9fed8311af075a6c372d019fde0e9539).
-- CI del PR: check + e2e success (run 44023805456 https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456).
-- Cambio: runs-on ubuntu-24.04 en job e2e de .github/workflows/ci.yml (Playwright 1.59.1 compatible).
-- main ahora debería tener CI verde en el próximo run.
+- CI en main verde confirmado: workflow run 44026330334 success on commit e440b17e9d0c45a1158b9d76d1c3c3d8bd7eaa5c ("docs: add canonical BA en Ruta agent blueprint (#7)").
+- Avance comercial: branch `feat/surface-packages-catalog` creado desde main. App.tsx actualizado para renderizar el componente Packages (catálogo core+theme con precios, CTAs WhatsApp) después de itinerarios. Component y datos ya existían; ahora visibles.
+- PR form listo para abrir (head: feat/surface-packages-catalog).
 
 **Next Action**:
-Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar al frente comercial: revisar tarifas, dominio, videos y paquetes en docs/ESTADO.md + roadmap.md y proponer el siguiente PR de producto. Si falla, diagnosticar y fixear inmediatamente.
+Abrir/mergear el PR de feat/surface-packages-catalog (feat: surface packages catalog on homepage). Verificar CI verde. Luego actualizar docs/ESTADO.md y roadmap.md con estado comercial (WhatsApp set, paquetes visibles, pendientes dominio/videos).
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Merge: PR #6 → main @ e7cb026d9fed8311af075a6c372d019fde0e9539
-- CI PR success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44023805456
+- CI success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44026330334
+- Branch: feat/surface-packages-catalog @ a525f65a8b909ddf0948cfca833b924676625162
 - Producción: https://ba-en-ruta.vercel.app
-- Archivos clave: docs/ESTADO.md, CLAUDE.md, roadmap.md, .github/workflows/ci.yml
+- Paquetes: src/lib/packages.ts (TOUR-4 USD50, TOUR-8 USD100), src/components/PackagesSection.tsx
+- WhatsApp: 5491151448632 ya configurado
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -96,9 +96,9 @@ Verificar que el CI en main (post-merge) pase completamente. Si verde, avanzar a
 - El dueño detiene el loop
 
 **Suggested Trigger**:
-- Automation con `workflow_run_completed` en este repo (success o failure)
+- Automation con `workflow_run_completed` o `pull_request` en este repo
 - O cualquier agente que lea este archivo ahora
 
 ---
 
-*Última actualización del handoff: 2026-11-17 (PR #6 mergeado, CI verde en PR)*
+*Última actualización del handoff: 2026-11-17 (CI main verde, branch paquetes listo)*
