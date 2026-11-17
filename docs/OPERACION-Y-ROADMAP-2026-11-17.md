@@ -32,13 +32,13 @@ Completar estas respuestas antes de vender o publicar condiciones de un recorrid
 
 1. **Servicio base:** ¿traslado punto a punto, chofer disponible por horas, recorrido con conversación local, acompañamiento a pie u otra combinación? Indicar exactamente qué está incluido.
 2. **Cobertura y vehículo:** zonas de recogida/regreso, capacidad real, equipaje, accesibilidad, sillas infantiles y restricciones del vehículo.
-3. **Tarifa:** monto o método de cotización, moneda, pasajeros incluidos, diferenciación por recorrido/horario/día, y quién aprueba el precio final. No reutilizar los importes externos como tarifa del conductor.
+3. **Tarifa:** el sitio conserva los valores de tarifa publicados `USD 50` (media jornada) y `USD 100` (día completo), registrados en `src/lib/packages.ts` como indicados por el dueño el 18-10-2026. Esta continuación no los cambia ni los extiende a extras o nuevas condiciones. Su vigencia y aplicabilidad a las cinco secuencias actuales no se revalidaron; confirmar alcance, moneda, pasajeros incluidos, diferenciación por fecha/recorrido y quién aprueba el precio final. No reutilizar importes externos como tarifa del conductor.
 4. **Tiempo y gastos:** espera incluida y costo adicional; tratamiento de peajes, estacionamiento, combustible, suplementos, desvíos, tiempo muerto y cambios de ruta.
 5. **Reserva y cancelación:** si existe anticipo, cómo se paga, plazo de confirmación, cambios, cancelaciones, demoras y qué ocurre si un proveedor externo no puede recibir al pasajero.
 6. **Proveedores:** cuáles son sugerencias neutrales y cuáles —si alguno— son proveedores preferidos, coordinados o comisionados. Declarar cualquier relación económica; no recomendar por una comisión oculta.
 7. **Comidas, entradas y navegación:** confirmar si siempre se pagan aparte o si el dueño desea ofrecer algún add-on con precio, responsable y condiciones explícitas. Hasta entonces, se consideran excluidos por defecto.
 8. **Adaptación y operación:** días/horarios reales, idiomas efectivamente disponibles, margen para cambiar por tráfico/clima/agenda, protocolos para partido o corte, y límites de acompañamiento.
-9. **Identidad editorial:** decidir si Tortoni es exclusivo/principal de `historica`, si `gastronomica` se centra en Villa Crespo/Los Bohemios y si El Tano puede existir como desvío separado. La recomendación no sustituye la decisión.
+9. **Identidad editorial:** dirección aprobada por el dueño el 17-11-2026: Tortoni es principal en `historica` y no una parada automática de las demás; `gastronomica` se centra en Villa Crespo/Los Bohemios; El Tano permanece como variante separada pendiente de validación operativa.
 10. **Audio:** decidir si se desea producir narraciones, quién aporta la voz, aprobar cada guion y autorizar explícitamente la grabación y uso de esa voz. No hay audio ni interfaz de reproducción aprobados o implementados.
 
 ## Qué falta confirmar con terceros
@@ -57,15 +57,15 @@ Estas comprobaciones son para una fecha, servicio y grupo concretos; no se resue
 
 - Se documentó una propuesta de identidad, secuencias orientativas, diferenciadores y dudas para los cinco itinerarios en [`PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`](PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md).
 - Se propuso un formato de narración a demanda y se prepararon seis guiones de muestra con texto equivalente y notas de accesibilidad en [`SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`](SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md).
-- Ninguno de esos documentos altera el copy público, tarifas, código, reservas o audio existente.
+- La PR #8 integró documentos solamente; esta continuación implementa el copy/secuencia aprobado en una rama de código aparte. No altera reservas, tarifas ni audio.
 
-### Fase 1 — Validación del dueño antes de implementar
+### Fase 1 — Dirección editorial aprobada; operación todavía pendiente
 
-- Aprobar, editar o descartar la identidad y secuencia de cada recorrido.
-- Resolver las decisiones del bloque anterior: alcance, cobertura, tarifa, gastos, inclusiones, proveedores, voz y guiones.
-- Mantener la promesa vigente hasta decidir explícitamente cualquier cambio de posicionamiento.
+- El dueño aprobó el 17-11-2026 la dirección editorial y los cambios documentales de la PR #8; se puede implementar copy/secuencia de los cinco recorridos en ES/EN/PT.
+- Resolver las decisiones comerciales del bloque anterior —alcance, cobertura, tarifa, gastos, inclusiones, proveedores— antes de anunciar condiciones no confirmadas.
+- La aprobación de borradores de narración no selecciona ni autoriza una voz concreta ni aprueba grabación/publicación de audio.
 
-**Puerta:** no publicar los nuevos nombres, lugares, guiones, precios o inclusiones como oferta hasta obtener las confirmaciones aplicables.
+**Puerta:** los nombres y enfoques editoriales aprobados pueden describir recorridos orientativos. No publicar precios de terceros, inclusiones, reservas, accesos, horarios o disponibilidad como garantizados sin confirmación para el caso aplicable.
 
 ### Fase 2 — Revalidación de información externa
 
@@ -77,9 +77,9 @@ Estas comprobaciones son para una fecha, servicio y grupo concretos; no se resue
 
 ### Fase 3 — Implementar el contenido aprobado
 
-- Cambiar las cinco tarjetas solo después de aprobar copy, secuencias y exclusiones.
-- Mantener paridad de significado en ES/EN/PT y actualizar tests de traducción, enlaces y recorrido.
-- Validar typecheck, unit tests, links, build, E2E y revisión móvil/accesible antes de pedir integración.
+- La rama `feat/approved-route-experiences` actualiza las cinco tarjetas y el orden del simulador, deja las alternativas externas condicionadas y no presenta horarios fijos.
+- Se mantuvo paridad semántica ES/EN/PT y se añadieron pruebas de orden y límites; typecheck, 25 unitarias, build y E2E (30/30 en Chromium escritorio/Android emulado) pasan localmente.
+- Pendiente antes de integración: abrir y revisar la PR, checks remotos y validación del Preview Vercel.
 
 ### Fase 4 — Prototipo de narraciones (opcional)
 

@@ -53,7 +53,7 @@ Los mensajes de la web deben describir el contacto como **consulta/cotización**
 
 Separar con claridad lo que aporta el servicio del chofer y lo que el pasajero consume o compra. Comidas, bebidas, mate, entradas, navegación, propinas, reservas, estacionamiento, peajes, esperas adicionales y suplementos **no están incluidos por defecto**; solo pueden describirse de otra manera cuando exista una política del dueño confirmada y aplicable. Una recomendación de restaurante no significa que haya reserva, mesa, precio o disponibilidad garantizados.
 
-La tarifa real del chofer, radio y horarios de operación, capacidad/equipaje, política de espera, peajes y estacionamiento, anticipo, cancelación, acompañamiento a pie y servicios adicionales son decisiones comerciales del dueño. Mantener vacíos o indicar «a confirmar» antes que inventar. No convertir precios observados de proveedores en precio del servicio, y fechar/etiquetar cualquier precio externo que se publique.
+La web conserva los precios `USD 50` para media jornada y `USD 100` para día completo, registrados en `src/lib/packages.ts` como indicados por el dueño el 18-10-2026. Esta continuación los mantiene sin cambios y no los extiende a otras duraciones o extras; su vigencia y aplicación exacta a las nuevas secuencias no se revalidaron. No alterarlos ni extrapolarlos sin decisión del dueño. Radio y horarios de operación, capacidad/equipaje, política de espera, peajes y estacionamiento, anticipo, cancelación, acompañamiento a pie y servicios adicionales siguen siendo decisiones comerciales del dueño. Mantener vacíos o indicar «a confirmar» antes que inventar. No convertir precios observados de proveedores en precio del servicio, y fechar/etiquetar cualquier precio externo que se publique.
 
 ## Verdad editorial, seguridad y confianza
 
@@ -110,9 +110,9 @@ Usar los documentos por función y fecha; no mezclarlos como si todos fueran ór
 - `docs/DIRECCION-2026-11-17.md`: decisión más reciente sobre la home corta y el criterio editorial actual.
 - `docs/POSICIONAMIENTO-VALOR-HUMANO.md`: tesis de diferenciación y experiencia del servicio; contexto estratégico.
 - `docs/INVESTIGACION-RECORRIDOS-2026-11-15.md`: propuesta detallada de recorridos, fuentes y límites; revisar vigencia, permisos y datos antes de publicar.
-- `docs/PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`: propuesta investigada para diferenciar las cinco rutas; no es aprobación del dueño ni copy público.
-- `docs/SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`: formato sugerido y seis guiones en borrador; no implica audio o controles implementados ni autorización de grabar.
-- `docs/OPERACION-Y-ROADMAP-2026-11-17.md`: separación entre precios externos observados, decisiones del dueño y etapas de trabajo; los importes allí citados requieren revalidación antes de usarse.
+- `docs/PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`: dirección editorial de los cinco recorridos aprobada por el dueño el 17-11-2026; es una guía para copy y secuencias, no confirma disponibilidad, reservas, accesos, precios ni operación de terceros.
+- `docs/SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`: formato y seis guiones aceptados como borradores por el dueño; no implica audio o controles implementados, autorización para grabar una voz específica ni aprobación de cada locución final.
+- `docs/OPERACION-Y-ROADMAP-2026-11-17.md`: separación entre precios externos observados, decisiones del dueño y etapas de trabajo; los importes allí citados requieren revalidación antes de usarse. La aprobación editorial no resuelve datos comerciales u operativos pendientes.
 - `docs/ESTADO.md`: fotografía verificable de producción y pruebas a la fecha indicada; al cambiar la fecha, actualización, deployment o CI, actualizarlo.
 - `docs/RELAY.md`: handoff de un loop de agentes/automatización. Sirve para saber cuál tarea estaba en curso; no define el producto ni sustituye instrucciones del dueño. Verificar el estado real en GitHub/Vercel.
 - `docs/PRODUCTO-END-TO-END.md`, `docs/ARQUITECTURA-INFO.md` y `roadmap.md`: documentos anteriores/propuestas con partes que pueden contradecir la dirección de noviembre de 2026. Son archivo de contexto, no backlog ejecutable. Revalidar cada idea con este blueprint y la petición actual.

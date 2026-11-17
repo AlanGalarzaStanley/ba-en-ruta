@@ -1,9 +1,9 @@
 # Sistema de narraciones — BA en Ruta
 
 **Fecha:** 17 de noviembre de 2026
-**Estado:** Borrador pendiente de revisión y aprobación del dueño. Cada guion es un borrador para que Alan revise y ajuste a su voz y experiencia personal antes de cualquier grabación. No es copy público aprobado ni confirma que exista una función de audio en el producto.
+**Estado:** El dueño aceptó el sistema y los seis guiones como borradores el 17-11-2026. Cada guion sigue requiriendo que Alan revise y ajuste el texto a su experiencia antes de cualquier grabación. Esta aprobación no elige ni autoriza una voz concreta, ni aprueba el audio final o una función de reproducción en el producto.
 
-> Este documento es una propuesta editorial. No se generó audio, no se modificó código y no se cambió el copy del sitio. Las recomendaciones de interfaz describen un posible comportamiento futuro; no deben presentarse como funciones ya disponibles.
+> Este documento sigue siendo una propuesta editorial y los guiones son borradores. No se generó audio ni se implementó código de audio. Las recomendaciones de interfaz describen un posible comportamiento futuro; no deben presentarse como funciones ya disponibles. El copy público de los recorridos se implementa por separado en la web.
 
 ## Propósito
 

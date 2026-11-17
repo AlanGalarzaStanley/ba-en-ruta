@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { Play, ChevronDown } from "lucide-react"
-import { ITINERARIES, PLACES, RESTAURANTS, type ItineraryId, type PlaceId, type RestaurantId } from "../lib/ba-config"
+import { ITINERARIES, type ItineraryId, type PlaceId, type RestaurantId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
 import { fill } from "../lib/immersive-copy"
-import { buildRoute, routeTotals } from "../lib/route"
+import { buildRoute, routeTotals, type GeoStep } from "../lib/route"
 import { optimizeImage, imageSrcSet } from "../lib/img"
 import { getPackage, type PackageId } from "../lib/packages"
 import { openWhatsAppPackage } from "../lib/whatsapp"
@@ -37,10 +37,10 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
           <p className="text-white/65 text-sm sm:text-base leading-relaxed">{t(lang, "routeSubtitle")}</p>
           <p className="mt-2 text-sm text-gold/90">
             {lang === "en"
-              ? "From USD 50 half day · USD 100 full day · open a card for the real day (food by time of day)."
+              ? "From USD 50 half day · USD 100 full day · open a card for an indicative route; timing and availability are confirmed separately."
               : lang === "pt"
-                ? "A partir de USD 50 meio período · USD 100 dia · abra o card para o dia real (comida conforme a hora)."
-                : "Desde USD 50 media jornada · USD 100 día · abrí la tarjeta y mirá el día real (comida según la hora)."}
+                ? "A partir de USD 50 meio período · USD 100 dia · abra o card para ver uma sequência orientativa; horário e disponibilidade são confirmados à parte."
+                : "Desde USD 50 media jornada · USD 100 día · abrí la tarjeta para ver una secuencia orientativa; horario y disponibilidad se confirman aparte."}
           </p>
           <p className="mt-2 text-xs text-white/55">
             {lang === "en"
@@ -53,9 +53,9 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4">
           {ITINERARIES.map((itin, i) => {
-            const stops = itin.placeIds.map((id) => PLACES.find((p) => p.id === id)).filter(Boolean)
-            const foods = (itin.restaurantIds ?? []).map((id) => RESTAURANTS.find((r) => r.id === id)).filter(Boolean)
-            const totals = routeTotals(buildRoute(itin))
+            const route = buildRoute(itin)
+            const routeStops = route.filter((step): step is GeoStep => step.kind === "place" || step.kind === "food")
+            const totals = routeTotals(route)
             const wide = i < 2
             const pack = getPackage(ITIN_PACKAGE[itin.id])
             const expanded = openId === itin.id
@@ -105,14 +105,11 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
                       <h3 className="font-display text-2xl sm:text-3xl mb-2">{t(lang, itin.nameKey as CopyKey)}</h3>
                       <p className="text-sm text-white/70 leading-relaxed mb-3 max-w-md">{t(lang, itin.descKey as CopyKey)}</p>
                       <ol className="flex flex-wrap gap-x-2 gap-y-1 text-[11px] text-white/60 mb-4">
-                        {stops.map((p, n) => (
-                          <li key={p!.id} className="inline-flex items-center gap-1">
+                        {routeStops.map((stop, n) => (
+                          <li key={stop.key} className="inline-flex items-center gap-1">
                             <span className="w-4 h-4 rounded-full bg-white/15 text-[9px] flex items-center justify-center">{n + 1}</span>
-                            {t(lang, p!.nameKey as CopyKey)}
+                            {stop.kind === "place" ? t(lang, stop.place.nameKey as CopyKey) : stop.rest.name}
                           </li>
-                        ))}
-                        {foods.map((r) => (
-                          <li key={r!.id} className="text-gold/85">· {r!.name}</li>
                         ))}
                       </ol>
                     </>

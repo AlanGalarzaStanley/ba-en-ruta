@@ -104,6 +104,7 @@ export interface Itinerary {
   durationKey: string
   placeIds: PlaceId[]
   restaurantIds?: RestaurantId[]
+  sequence?: ({ kind: "place"; id: PlaceId } | { kind: "restaurant"; id: RestaurantId })[]
   image: string
 }
 
@@ -338,15 +339,51 @@ export const RESTAURANTS: Restaurant[] = RESTAURANTS_BASE.map((r) => {
   return ph ? { ...r, image: commonsUrl(ph.file, 960), imageCredit: ph.credit } : r
 })
 
+export const HERO_IMAGE = "https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1920"
+
 export const ITINERARIES: Itinerary[] = [
-  { id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur", placeIds: ["san-telmo-plaza", "caminito", "puerto-madero"], restaurantIds: ["tortoni", "la-perla"], image: commons("San_Telmo_Plaza_Dorrego.JPG") },
-  { id: "clasica", nameKey: "itinClasicaName", descKey: "itinClasicaDesc", durationKey: "itinClasicaDur", placeIds: ["obelisco-colon", "recoleta", "palermo"], restaurantIds: ["tortoni", "los-galgos"], image: commons("Obelisco_Buenos_Aires.jpg") },
-  { id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur", placeIds: ["san-telmo-plaza", "palermo"], restaurantIds: ["tortoni", "preferido", "cabrera"], image: commons("Don_Julio_Grill_dining_room_Buenos_Aires_Argentina.jpg") },
-  { id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur", placeIds: ["caminito", "bombonera"], restaurantIds: ["tortoni", "gran-paraiso"], image: commons("Estadio_Alberto_J._Armando_field_view.jpg") },
-  { id: "tigre-delta", nameKey: "itinTigreName", descKey: "itinTigreDesc", durationKey: "itinTigreDur", placeIds: ["tigre"], restaurantIds: ["puerto-frutos", "chapaleo"], image: commons("El_maravilloso_Delta_en_Tigre.jpg") },
+  {
+    id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur",
+    placeIds: ["san-telmo-plaza", "caminito"], restaurantIds: ["tortoni"],
+    sequence: [
+      { kind: "restaurant", id: "tortoni" },
+      { kind: "place", id: "san-telmo-plaza" },
+      { kind: "place", id: "caminito" },
+    ],
+    image: commons("San_Telmo_Plaza_Dorrego.JPG"),
+  },
+  {
+    id: "clasica", nameKey: "itinClasicaName", descKey: "itinClasicaDesc", durationKey: "itinClasicaDur",
+    placeIds: ["obelisco-colon", "recoleta", "palermo"], restaurantIds: [],
+    sequence: [
+      { kind: "place", id: "obelisco-colon" },
+      { kind: "place", id: "recoleta" },
+      { kind: "place", id: "palermo" },
+    ],
+    image: commons("Obelisco_Buenos_Aires.jpg"),
+  },
+  {
+    id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur",
+    placeIds: [], restaurantIds: ["los-bohemios"],
+    sequence: [{ kind: "restaurant", id: "los-bohemios" }],
+    image: HERO_IMAGE,
+  },
+  {
+    id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur",
+    placeIds: ["caminito", "bombonera"], restaurantIds: [],
+    sequence: [
+      { kind: "place", id: "caminito" },
+      { kind: "place", id: "bombonera" },
+    ],
+    image: commons("Estadio_Alberto_J._Armando_field_view.jpg"),
+  },
+  {
+    id: "tigre-delta", nameKey: "itinTigreName", descKey: "itinTigreDesc", durationKey: "itinTigreDur",
+    placeIds: ["tigre"], restaurantIds: [], sequence: [{ kind: "place", id: "tigre" }],
+    image: commons("El_maravilloso_Delta_en_Tigre.jpg"),
+  },
 ]
 
-export const HERO_IMAGE = "https://images.pexels.com/photos/22690635/pexels-photo-22690635.jpeg?auto=compress&cs=tinysrgb&w=1920"
 export const EXP_IMAGES = {
   city: commons("Buenos_Aires_Caminito_4.jpg"),
   football: commons("Estadio_Alberto_J._Armando_field_view.jpg"),
