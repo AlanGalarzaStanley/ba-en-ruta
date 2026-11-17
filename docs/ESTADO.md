@@ -4,10 +4,11 @@
 
 ## Producción
 - URL: https://ba-en-ruta.vercel.app (Vercel Free, despliegue automático desde `main`).
-- Último deployment de producción confirmado `READY`: commit `e7cb026d9fed8311af075a6c372d019fde0e9539` (ajuste del runner CI; el código de la home sigue en `315433981812391cf5175df059724ce5dc6f4caf`).
+- Último deployment de producción confirmado por el check de Vercel: commit `582b56bef167660edbc27df91dd9f7abc6d1efc4` (PR #9); estado `Deployment has completed` el 2026-11-17 a las 17:55 UTC. La URL pública respondió HTTP 200.
 - El producto vigente es una página corta orientada a consulta por WhatsApp: hero, manifiesto, cinco recorridos, quién conduce, FAQ y cierre; no muestra la grilla del catálogo de paquetes.
-- En `2026-11-17`, el deployment de producción quedó `READY` y el CI de `main` sobre `e7cb026` pasó typecheck, unitarias, build y E2E en la ejecución `44024025261`.
-- En validación local sobre Ubuntu 24.04, `npm run test:e2e` dio 30/30. La solución fijó el job E2E en `ubuntu-24.04` por incompatibilidad de Playwright 1.59.1 con el runner anterior Ubuntu 26.04.
+- La PR #9 quedó integrada en `main` el 2026-11-17 a las 17:54:52 UTC. Actualiza las cinco experiencias y el orden del simulador sin horarios fijos ni garantías de reserva, y mantiene como opcionales las inclusiones no confirmadas.
+- El CI de `main` sobre `582b56b` pasó typecheck, 25 unitarias, build y E2E 30/30 en la ejecución `44142165161`; la prueba E2E cubre Chromium de escritorio y Android emulado.
+- La solución mantiene el job E2E en `ubuntu-24.04` por incompatibilidad de Playwright 1.59.1 con el runner anterior Ubuntu 26.04.
 - Verificaciones previas de cabeceras de seguridad (CSP, HSTS, nosniff, Referrer/Permissions-Policy, X-Frame-Options) y `og-image.jpg` respondieron correctamente; repetir si se modifican las reglas o los metadatos.
 
 Los resultados Lighthouse y las auditorías de abajo son mediciones históricas de 2026-11-14, no una nueva medición de esta actualización.
@@ -28,10 +29,10 @@ Una sola corrida por versión: los valores varían unos puntos entre ejecuciones
 | Capa | Herramienta | Cobertura | Resultado |
 |---|---|---|---|
 | Tipos | `tsc -b` (strict) | todo `src/` + configs | 0 errores (antes 10) |
-| Unitarias | Vitest, `tests/unit` | motor de rutas, imágenes, paridad ES/EN/PT, ids y enlaces, créditos, mapa de Commons, fotos locales, WhatsApp | 22/22 |
+| Unitarias | Vitest, `tests/unit` | motor de rutas, orden aprobado, imágenes, paridad ES/EN/PT, ids y enlaces, créditos, mapa de Commons, fotos locales, WhatsApp | 25/25 |
 | Enlaces | `npm run test:links` (semanal en CI) | sitios oficiales, entradas y restaurantes | 26/27 desde este entorno; La Biela falla solo aquí por TLS, verificada por otra vía |
-| E2E | Playwright, `tests/e2e` | portada, idiomas por URL, `?recorrido`, `?parada`, avance/pausa, movimiento reducido, WhatsApp, foco, anchors de la página corta, desbordes, axe WCAG A/AA | 13/13 escritorio tras actualizar el contrato de página corta; Android requiere navegador instalado |
-| CI | GitHub Actions `ci.yml` | `npm ci`, audit, typecheck, unit, build, E2E | verde en PR #1 |
+| E2E | Playwright, `tests/e2e` | portada, idiomas por URL, `?recorrido`, `?parada`, cinco recorridos, avance/pausa, movimiento reducido, WhatsApp, foco, anchors de la página corta, desbordes, axe WCAG A/AA | 30/30 escritorio y Android emulado en local y CI |
+| CI | GitHub Actions `ci.yml` | `npm ci`, audit, typecheck, unit, build, E2E | verde en `main`, run `44142165161`, SHA `582b56b` |
 | Dependencias | `npm audit` | todas | 0 vulnerabilidades |
 | Fotos | curl a upload.wikimedia.org | 80 archivos distintos, 1 tamaño c/u | 80/80 OK (Wikimedia limita con 429 si se piden todas las variantes juntas) |
 

@@ -77,9 +77,9 @@ Estas comprobaciones son para una fecha, servicio y grupo concretos; no se resue
 
 ### Fase 3 — Implementar el contenido aprobado
 
-- La rama `feat/approved-route-experiences` actualiza las cinco tarjetas y el orden del simulador, deja las alternativas externas condicionadas y no presenta horarios fijos.
+- La PR #9, integrada en `main`, actualiza las cinco tarjetas y el orden del simulador, deja las alternativas externas condicionadas y no presenta horarios fijos.
 - Se mantuvo paridad semántica ES/EN/PT y se añadieron pruebas de orden y límites; typecheck, 25 unitarias, build y E2E (30/30 en Chromium escritorio/Android emulado) pasan localmente.
-- Pendiente antes de integración: abrir y revisar la PR, checks remotos y validación del Preview Vercel.
+- Los cinco checks remotos de la PR (CI y Vercel Preview) pasaron. CI de `main` pasó en el SHA `582b56bef167660edbc27df91dd9f7abc6d1efc4` (run `44142165161`); Vercel confirmó el deployment de producción y `https://ba-en-ruta.vercel.app/` respondió HTTP 200.
 
 ### Fase 4 — Prototipo de narraciones (opcional)
 

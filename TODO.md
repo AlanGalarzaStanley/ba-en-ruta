@@ -27,7 +27,7 @@ Este plan ejecuta la aprobación del dueño recibida el 17-11-2026 para los camb
 - [x] Añadir pruebas que comprueben la secuencia ordenada de cada itinerario, la separación entre ruta base y opciones y la existencia de textos ES/EN/PT sin horas fijas.
 - [x] Ejecutar `npm run check`: typecheck, 25 pruebas unitarias y build pasan. `npm run test:e2e`: 30/30 pasan en Chromium escritorio y Android emulado. No se cambiaron URLs de proveedores, por lo que `npm run test:links` no es necesario en esta entrega.
 - [x] Revisar mediante E2E el contenido ES/EN/PT, las cinco tarjetas y el simulador en escritorio y móvil emulado; el suite de accesibilidad también pasa.
-- [ ] Abrir PR a `main`; integrar solo con checks verdes y Preview de Vercel aprobado. Verificar que la producción despliegue el SHA esperado.
+- [x] Abrir e integrar la PR #9 a `main` después de que CI y Vercel Preview pasaran. Confirmar CI de `main` en el SHA `582b56bef167660edbc27df91dd9f7abc6d1efc4`, status de Vercel `Deployment has completed` y respuesta HTTP 200 en la URL pública.
 
 ## Pendiente fuera de esta entrega
 
