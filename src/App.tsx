@@ -7,7 +7,7 @@ import {
   type TenantConfig,
 } from "./lib/tenant"
 import { useLang, Header, Hero, Passion } from "./components/HeaderHero"
-import { AboutDriver } from "./components/PackagesSection"
+import { AboutDriver, Packages } from "./components/PackagesSection"
 import { Itineraries } from "./components/Itineraries"
 import { FAQ, Footer } from "./components/FormFaq"
 import { ITINERARIES } from "./lib/ba-config"
@@ -60,7 +60,7 @@ function useScrollReveal() {
   }, [])
 }
 
-/** Página corta: hero + experiencias (+ simulador) + quién + FAQ. El resto era scroll infinito. */
+/** Página: hero + experiencias (+ simulador) + paquetes + quién + FAQ. */
 export default function App() {
   const [lang, setLang] = useLang()
   useScrollReveal()
@@ -157,6 +157,7 @@ export default function App() {
             onPlay={openPlayer}
           />
         )}
+        {f.packages !== false && <Packages lang={lang} />}
         <AboutDriver lang={lang} />
         <FAQ lang={lang} />
       </main>
