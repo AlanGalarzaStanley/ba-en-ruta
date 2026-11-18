@@ -40,6 +40,12 @@ El repositorio conserva un catálogo de nueve paquetes y contenido más amplio (
 
 Las cinco propuestas actuales son `historica`, `clasica`, `gastronomica`, `futbolera` y `tigre-delta`. Deben conservar propósitos distintos; no apilar las mismas postales en cada una ni convertir variantes en recorridos nuevos sin una razón de producto. `docs/INVESTIGACION-RECORRIDOS-2026-11-15.md` contiene el detalle investigado y sus incertidumbres, no una autorización automática para publicar todos sus datos.
 
+### Resultado editorial y de arquitectura — 18-11-2026
+
+`gastronomica` se presenta en el simulador como **un arco narrativo único dentro de Villa Crespo**: llegada/lectura del barrio → una comida principal elegida entre Los Bohemios, La Crespo o Mercat Villa Crespo → Café San Bernardo como pausa opcional. Los Bohemios es la selección inicial. Las otras comidas son alternativas para explorar el mismo recorrido, no paradas que se acumulan. No agregar Palermo, San Telmo o El Tano automáticamente. El horario, el mapa y las distancias siguen siendo ilustrativos; enlaces, menú, apertura y disponibilidad se verifican para la fecha. Ninguna elección constituye reserva, acuerdo o consumo incluido.
+
+La evaluación comparativa recomienda **mantener BA en Ruta y DriverAI como productos separados**: BA en Ruta es la cara editorial/local y el canal actual de consulta por WhatsApp; DriverAI es un copiloto operativo del chofer, no un marketplace, un sistema de reservas ni una app que hoy capture clientes. El repositorio Android describe un motor por reglas, lectura manual/demo y una ruta técnica de accesibilidad/OCR; la lectura de ofertas reales de Uber y la voz TTS en un teléfono real siguen sin validar, y el puente no está sincronizado con la web de BA en Ruta. Como hipótesis futura, se puede probar un canal directo de marca propia para un operador/chofer identificado, con atención y coordinación manual, si hay consultas reales y se resuelven soporte, seguros/regulación, pagos, privacidad y adquisición. Este informe es una recomendación estratégica, no una autorización para lanzar páginas de otros choferes, despacho, pagos, tracking, marketplace o integración técnica con DriverAI. No afirmar “cero comisión” ni ahorro neto sin medir costos completos y demanda.
+
 ## Cómo funciona el servicio y qué significa una consulta
 
 1. El visitante conoce el enfoque y compara recorridos orientativos.
@@ -111,6 +117,8 @@ Usar los documentos por función y fecha; no mezclarlos como si todos fueran ór
 - `docs/POSICIONAMIENTO-VALOR-HUMANO.md`: tesis de diferenciación y experiencia del servicio; contexto estratégico.
 - `docs/INVESTIGACION-RECORRIDOS-2026-11-15.md`: propuesta detallada de recorridos, fuentes y límites; revisar vigencia, permisos y datos antes de publicar.
 - `docs/INVESTIGACION-REFERENTES-INMERSIVOS-TURISMO-2026-11-18.md`: comparación internacional y propuestas de interacción/medios; contexto de inspiración, no decisión de producto ni autorización para incorporar 360°, WebGL, audio, GPS o nuevas funciones.
+- `docs/INVESTIGACION-GASTRONOMIA-Y-BA-TAXI-2026-11-18.md`: fuentes directas para Villa Crespo, locales gastronómicos y BA Taxi; los horarios y condiciones de terceros siguen sujetos a verificación por fecha.
+- `docs/INVESTIGACION-MODELO-MOVILIDAD-Y-DIRECTOS-2026-11-18.md`: comparación de doce modelos y recomendación de no fusionar BA en Ruta y DriverAI; referencia de análisis, no validación de demanda o economía unitaria local.
 - `docs/PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`: dirección editorial de los cinco recorridos aprobada por el dueño el 17-11-2026; es una guía para copy y secuencias, no confirma disponibilidad, reservas, accesos, precios ni operación de terceros.
 - `docs/SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`: formato y seis guiones aceptados como borradores por el dueño; no implica audio o controles implementados, autorización para grabar una voz específica ni aprobación de cada locución final.
 - `docs/OPERACION-Y-ROADMAP-2026-11-17.md`: separación entre precios externos observados, decisiones del dueño y etapas de trabajo; los importes allí citados requieren revalidación antes de usarse. La aprobación editorial no resuelve datos comerciales u operativos pendientes.

@@ -108,7 +108,11 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
                         {routeStops.map((stop, n) => (
                           <li key={stop.key} className="inline-flex items-center gap-1">
                             <span className="w-4 h-4 rounded-full bg-white/15 text-[9px] flex items-center justify-center">{n + 1}</span>
-                            {stop.kind === "place" ? t(lang, stop.place.nameKey as CopyKey) : stop.rest.name}
+                            {stop.kind === "place"
+                              ? t(lang, stop.place.nameKey as CopyKey)
+                              : itin.id === "gastronomica"
+                                ? t(lang, "gastroCardStop")
+                                : stop.rest.name}
                           </li>
                         ))}
                       </ol>

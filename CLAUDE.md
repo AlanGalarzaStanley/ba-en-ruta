@@ -24,15 +24,16 @@ Antes de cualquier tarea, leer completo el [blueprint canónico de agentes](AGEN
 - `src/lib/ba-config.ts`: lugares (8 imperdibles), itinerarios (historica, clasica, gastronomica, futbolera, tigre-delta), restaurantes, enlaces oficiales/entradas, videos ES/EN/PT.
 - `src/lib/gastronomy.ts`: catálogo gastronómico con enlaces verificados, Instagram, notas de estado.
 - `src/lib/media.ts`: fotos de Commons con crédito/licencia obligatorios. `src/lib/img.ts`: convierte a miniaturas directas de tamaño estándar + `srcset` (evita 2 redirecciones y descargas de 1920 px en celulares).
-- `src/lib/route.ts`: motor del simulador (paradas, km y minutos orientativos, horarios, video por idioma).
+- `src/lib/route.ts`: motor del simulador (paradas, km y minutos orientativos, horarios, video por idioma). `src/lib/gastro-route.ts` crea la variante dinámica de Sabores Porteños y valida/serializa `mesa` y `pausa` en la URL.
 - `src/lib/ba-copy.ts` + `copy-*.ts`, `guides-copy.ts`, `experience-copy.ts`, `mood-copy.ts`, `immersive-copy.ts`: textos ES/EN/PT-BR. Las tres tablas deben tener las mismas claves (lo verifica una prueba).
 - `src/lib/whatsapp.ts` / `tenant.ts`: mensajes y número de WhatsApp (5491151448632).
-- `src/components/RoutePlayer.tsx`: simulador con hilo y plan narrativo por ruta, saltos directos entre paradas, contexto completo, inicio pausado por defecto y mapa ilustrativo (no navegación vial). `getGenuineDay` aporta las secuencias ES/EN/PT-BR. `VideoEmbed.tsx`: YouTube nocookie liviano.
+- `src/components/RoutePlayer.tsx`: simulador con hilo y plan narrativo por ruta, saltos directos entre paradas, contexto completo, inicio pausado por defecto y mapa ilustrativo (no navegación vial). En Sabores Porteños, `GastroRouteChooser.tsx` permite escoger una comida y una pausa optativa; la combinación se conserva en URL/consulta, no reserva mesa. `getGenuineDay` aporta las secuencias ES/EN/PT-BR. `VideoEmbed.tsx`: YouTube nocookie liviano.
 - `ExperiencePlayer.tsx` no está montado en la app (código previo conservado).
 
 ## URLs compartibles
 - `?lang=es|en|pt` fija el idioma (tiene prioridad sobre la preferencia guardada). hreflang + sitemap apuntan a estas URLs.
 - `?recorrido=<id>` abre el simulador; `&parada=N` abre en el paso N (0 = punto de encuentro). La URL se actualiza al avanzar y el botón Compartir la copia o usa el menú nativo del teléfono.
+- Sabores Porteños admite `&mesa=los-bohemios|la-crespo|mercat-villa-crespo` (si falta, se usa Los Bohemios) y `&pausa=cafe-san-bernardo`; son propuestas de secuencia, no reservas.
 
 ## Reglas de contenido
 - No inventar enlaces, cuentas de Instagram, horarios, precios ni datos históricos. Si algo no se puede confirmar, marcarlo como pendiente.

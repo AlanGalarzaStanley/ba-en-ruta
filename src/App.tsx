@@ -94,6 +94,8 @@ export default function App() {
     try {
       const u = new URL(window.location.href)
       u.searchParams.set("recorrido", id)
+      u.searchParams.delete("mesa")
+      u.searchParams.delete("pausa")
       window.history.replaceState(null, "", u)
     } catch { /* ignore */ }
   }, [])
@@ -103,6 +105,8 @@ export default function App() {
       const u = new URL(window.location.href)
       u.searchParams.delete("recorrido")
       u.searchParams.delete("parada")
+      u.searchParams.delete("mesa")
+      u.searchParams.delete("pausa")
       window.history.replaceState(null, "", u)
     } catch { /* ignore */ }
   }, [])

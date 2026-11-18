@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { ITINERARIES, PLACES } from "../../src/lib/ba-config"
 import { buildRoute, estimateDrive, formatClock, haversineKm, placeVideo, routeTotals, youtubeId } from "../../src/lib/route"
+import { buildGastroItinerary, readGastroSelection } from "../../src/lib/gastro-route"
 import { getGenuineDay } from "../../src/lib/genuine-day"
 
 describe("motor del simulador de recorrido", () => {
@@ -34,6 +35,27 @@ describe("motor del simulador de recorrido", () => {
     expect(byId.gastronomica.restaurantIds).toEqual(["los-bohemios"])
     expect(byId.futbolera.restaurantIds).toEqual([])
     expect(byId["tigre-delta"].restaurantIds).toEqual([])
+  })
+
+  it("arma la opción elegida con una sola comida y una pausa de café opcional", () => {
+    const mealOnly = buildRoute(buildGastroItinerary({ meal: "la-crespo", includeCafe: false }))
+    expect(mealOnly.filter((step) => step.kind === "food").map((step) => step.key)).toEqual(["food-la-crespo"])
+
+    const withPause = buildRoute(buildGastroItinerary({ meal: "mercat-villa-crespo", includeCafe: true }))
+    expect(withPause.filter((step) => step.kind === "place")).toHaveLength(0)
+    expect(withPause.filter((step) => step.kind === "food").map((step) => step.key)).toEqual([
+      "food-mercat-villa-crespo",
+      "food-cafe-san-bernardo",
+    ])
+    expect(routeTotals(withPause).stops).toBe(2)
+    expect(readGastroSelection("?mesa=mercat-villa-crespo&pausa=cafe-san-bernardo")).toEqual({
+      meal: "mercat-villa-crespo",
+      includeCafe: true,
+    })
+    expect(readGastroSelection("?mesa=palermo&pausa=invalid")).toEqual({
+      meal: "los-bohemios",
+      includeCafe: false,
+    })
   })
 
   it("publica una secuencia en ES/EN/PT sin horas fijas", () => {
