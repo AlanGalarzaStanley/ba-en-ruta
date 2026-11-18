@@ -110,6 +110,7 @@ Usar los documentos por función y fecha; no mezclarlos como si todos fueran ór
 - `docs/DIRECCION-2026-11-17.md`: decisión más reciente sobre la home corta y el criterio editorial actual.
 - `docs/POSICIONAMIENTO-VALOR-HUMANO.md`: tesis de diferenciación y experiencia del servicio; contexto estratégico.
 - `docs/INVESTIGACION-RECORRIDOS-2026-11-15.md`: propuesta detallada de recorridos, fuentes y límites; revisar vigencia, permisos y datos antes de publicar.
+- `docs/INVESTIGACION-REFERENTES-INMERSIVOS-TURISMO-2026-11-18.md`: comparación internacional y propuestas de interacción/medios; contexto de inspiración, no decisión de producto ni autorización para incorporar 360°, WebGL, audio, GPS o nuevas funciones.
 - `docs/PROPUESTA-EXPERIENCIAS-GENUINAS-2026-11-17.md`: dirección editorial de los cinco recorridos aprobada por el dueño el 17-11-2026; es una guía para copy y secuencias, no confirma disponibilidad, reservas, accesos, precios ni operación de terceros.
 - `docs/SISTEMA-NARRACIONES-BA-EN-RUTA-2026-11-17.md`: formato y seis guiones aceptados como borradores por el dueño; no implica audio o controles implementados, autorización para grabar una voz específica ni aprobación de cada locución final.
 - `docs/OPERACION-Y-ROADMAP-2026-11-17.md`: separación entre precios externos observados, decisiones del dueño y etapas de trabajo; los importes allí citados requieren revalidación antes de usarse. La aprobación editorial no resuelve datos comerciales u operativos pendientes.

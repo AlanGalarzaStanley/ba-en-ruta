@@ -18,7 +18,7 @@ const daysEs: Record<ItineraryId, Day> = {
     lead: "Café histórico, memoria cívica y barrios del sur: una secuencia para leer distintas capas de Buenos Aires, ajustada al ritmo y las condiciones del día.",
     beats: [
       { when: "Café histórico", what: "Café Tortoni es la parada de café distintiva de esta experiencia. Puede servir para empezar conversando sobre los cafés porteños y Avenida de Mayo; horarios, acceso y mesa deben comprobarse para la fecha." },
-      { when: "Plaza de Mayo", what: "Observar la Casa Rosada, el Cabildo y la Catedral desde el espacio público, y conversar sobre la historia cívica de la plaza. No se presuponen ingresos a edificios." },
+      { when: "Plaza de Mayo (contexto, no parada base)", what: "Plaza de Mayo, la Casa Rosada, el Cabildo y la Catedral aportan contexto para la historia cívica; este punto no es una parada base independiente del simulador y no presupone ingresos a edificios. Si el recorrido acordado pasa por la zona, la observación es desde el espacio público." },
       { when: "San Telmo", what: "Leer el ritmo de calle y el patrimonio del barrio. Acordar cuánto caminar y si interesa acercarse al Mercado o a Plaza Dorrego; no hace falta sumar ambos por obligación." },
       { when: "Caminito y La Boca", what: "Mirar el paseo como una puerta de entrada a La Boca: arte, historia e inmigración, sin tomar una postal turística como representación de todo el barrio." },
       { when: "Pausa opcional", what: "La Perla de Caminito puede ser una pausa si el pasajero la elige. Confirmar apertura, carta y posibilidad de atención directamente; una recomendación no es una reserva." },
@@ -78,7 +78,7 @@ const daysEn: Record<ItineraryId, Day> = {
     lead: "Historic coffee, civic memory and the southern neighbourhoods: a way to read different layers of Buenos Aires, adapted to the day's pace and conditions.",
     beats: [
       { when: "Historic café", what: "Café Tortoni is the distinctive café stop for this experience. It can open a conversation about porteño cafés and Avenida de Mayo; hours, access and seating must be checked for the date." },
-      { when: "Plaza de Mayo", what: "Look at the Casa Rosada, Cabildo and Cathedral from public space, and discuss the square's civic history. Entry to buildings is not assumed." },
+      { when: "Plaza de Mayo (context, not a base stop)", what: "Plaza de Mayo, the Casa Rosada, Cabildo and Cathedral add context for civic history; this point is not a separate base stop in the simulator and does not imply entry to any building. If the agreed route passes through the area, viewing is from public space." },
       { when: "San Telmo", what: "Read the street rhythm and the neighbourhood's heritage. Agree how much to walk and whether the market or Plaza Dorrego is of interest; there is no need to make both compulsory." },
       { when: "Caminito and La Boca", what: "See the promenade as a gateway to La Boca: art, history and immigration, not a tourist postcard that represents the whole neighbourhood." },
       { when: "Optional pause", what: "La Perla de Caminito can be a stop if the traveller chooses. Check opening, menu and service directly; a recommendation is not a reservation." },
@@ -138,7 +138,7 @@ const daysPt: Record<ItineraryId, Day> = {
     lead: "Café histórico, memória cívica e bairros do sul: uma forma de ler diferentes camadas de Buenos Aires, adaptada ao ritmo e às condições do dia.",
     beats: [
       { when: "Café histórico", what: "O Café Tortoni é a parada de café característica desta experiência. Pode abrir uma conversa sobre cafés porteños e a Avenida de Mayo; horário, acesso e mesa devem ser verificados para a data." },
-      { when: "Plaza de Mayo", what: "Observar a Casa Rosada, o Cabildo e a Catedral a partir do espaço público e conversar sobre a história cívica da praça. Não se presume entrada nos edifícios." },
+      { when: "Plaza de Mayo (contexto, não é parada-base)", what: "A Plaza de Mayo, a Casa Rosada, o Cabildo e a Catedral dão contexto à história cívica; este ponto não é uma parada-base independente do simulador e não pressupõe entrada nos edifícios. Se a rota combinada passar pela área, a observação será a partir do espaço público." },
       { when: "San Telmo", what: "Perceber o ritmo das ruas e o patrimônio do bairro. Combinar quanto caminhar e se há interesse pelo Mercado ou pela Plaza Dorrego; não é preciso tornar ambos obrigatórios." },
       { when: "Caminito e La Boca", what: "Ver o passeio como uma porta de entrada para La Boca: arte, história e imigração, sem tomar o cartão-postal turístico como representação de todo o bairro." },
       { when: "Pausa opcional", what: "A La Perla de Caminito pode ser uma parada se o viajante escolher. Confirmar diretamente funcionamento, cardápio e atendimento; uma recomendação não é uma reserva." },
