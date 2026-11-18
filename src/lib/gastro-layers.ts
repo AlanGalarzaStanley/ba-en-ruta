@@ -9,6 +9,9 @@
 
 export type GastroLayer = "classic" | "driver" | "barrio"
 
+import { GASTRO_PLACES, type GastroPlace } from "./gastronomy"
+import type { ItineraryId } from "./ba-config"
+
 /** IDs del catálogo existente marcados como clásicos */
 export const CLASSIC_IDS = ["don-julio", "cabrera", "preferido", "tortoni"] as const
 
@@ -108,3 +111,20 @@ export const LAYER_LABELS = {
   barrio: { es: "Barrio y clubes", en: "Neighborhood", pt: "Bairro e clubes" },
   all: { es: "Catálogo", en: "Full list", pt: "Catálogo" },
 } as const
+
+/** Gastronomía contextual: no son recorridos nuevos, son módulos que se suman al día elegido. */
+export const ROUTE_GASTRO_IDS: Partial<Record<Exclude<ItineraryId, "gastronomica">, string[]>> = {
+  historica: ["el-federal", "bar-britanico", "la-poesia", "mercado-san-telmo"],
+  clasica: ["la-biela", "el-sanjuanino", "el-cuartito", "las-violetas"],
+  futbolera: ["caminito-tango-show", "el-tano-avellaneda"],
+  "tigre-delta": ["puerto-frutos"],
+}
+
+/** Devuelve sólo opciones vinculadas al recorrido, sin mezclar barrios por defecto. */
+export function gastroForRoute(id: Exclude<ItineraryId, "gastronomica">): Array<GastroPlace | DriverGastroCard> {
+  const explicit = new Set(ROUTE_GASTRO_IDS[id] ?? [])
+  return [
+    ...GASTRO_PLACES.filter((place) => explicit.has(place.id)),
+    ...DRIVER_GASTRO.filter((place) => explicit.has(place.id)),
+  ]
+}

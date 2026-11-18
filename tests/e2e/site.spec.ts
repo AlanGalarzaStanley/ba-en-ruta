@@ -54,8 +54,8 @@ test.describe("simulador de recorrido", () => {
     await expect(dialog.locator('[aria-current="step"]')).toHaveAttribute("aria-label", /^3\//)
   })
 
-  test("los cinco recorridos abren y llegan al final", async ({ page }) => {
-    for (const id of ["historica", "clasica", "gastronomica", "futbolera", "tigre-delta"]) {
+  test("los cuatro recorridos abren y llegan al final", async ({ page }) => {
+    for (const id of ["historica", "clasica", "futbolera", "tigre-delta"]) {
       await page.goto(`/?recorrido=${id}&lang=es`)
       const dialog = page.getByRole("dialog")
       await expect(dialog, id).toBeVisible()
@@ -232,5 +232,13 @@ test.describe("página corta y conversión", () => {
     await expect(page.locator("#quien")).toBeVisible()
     await expect(page.locator("#faq")).toBeVisible()
     await expect(page.locator("#faq")).toContainText(/cancel/i)
+  })
+
+  test("la gastronomía se ofrece dentro de la ruta y no como quinta tarjeta", async ({ page }) => {
+    await page.goto("/?lang=es")
+    await expect(page.locator("#recorridos article")).toHaveCount(4)
+    await page.locator("#recorridos article").first().getByRole("button", { name: /Cómo es el día/i }).click()
+    await expect(page.locator("#recorridos")).toContainText("Sabor local en este recorrido")
+    await expect(page.locator("#recorridos")).not.toContainText("Sabores porteños y Villa Crespo")
   })
 })

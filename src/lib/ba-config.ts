@@ -347,9 +347,8 @@ export const HERO_IMAGE = "https://images.pexels.com/photos/22690635/pexels-phot
 export const ITINERARIES: Itinerary[] = [
   {
     id: "historica", nameKey: "itinHistoricaName", descKey: "itinHistoricaDesc", durationKey: "itinHistoricaDur",
-    placeIds: ["san-telmo-plaza", "caminito"], restaurantIds: ["tortoni"],
+    placeIds: ["san-telmo-plaza", "caminito"], restaurantIds: [],
     sequence: [
-      { kind: "restaurant", id: "tortoni" },
       { kind: "place", id: "san-telmo-plaza" },
       { kind: "place", id: "caminito" },
     ],
@@ -364,12 +363,6 @@ export const ITINERARIES: Itinerary[] = [
       { kind: "place", id: "palermo" },
     ],
     image: commons("Obelisco_Buenos_Aires.jpg"),
-  },
-  {
-    id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur",
-    placeIds: [], restaurantIds: ["los-bohemios"],
-    sequence: [{ kind: "restaurant", id: "los-bohemios" }],
-    image: HERO_IMAGE,
   },
   {
     id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur",

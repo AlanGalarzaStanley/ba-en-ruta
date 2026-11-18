@@ -8,6 +8,7 @@ import { optimizeImage, imageSrcSet } from "../lib/img"
 import { getPackage, type PackageId } from "../lib/packages"
 import { openWhatsAppPackage } from "../lib/whatsapp"
 import { getGenuineDay } from "../lib/genuine-day"
+import { RouteGastroOptions } from "./RouteGastroOptions"
 
 type Props = {
   lang: Lang
@@ -139,6 +140,9 @@ export function Itineraries({ lang, onSelectItinerary, onPlay }: Props) {
                         ))}
                       </ul>
                       <p className="text-xs text-white/45">{day.foodNote}</p>
+                      {itin.id !== "gastronomica" && (
+                        <RouteGastroOptions lang={lang} itineraryId={itin.id as Exclude<ItineraryId, "gastronomica">} />
+                      )}
                     </div>
                   )}
 
