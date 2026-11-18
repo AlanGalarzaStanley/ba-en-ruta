@@ -27,7 +27,7 @@ Antes de cualquier tarea, leer completo el [blueprint canónico de agentes](AGEN
 - `src/lib/route.ts`: motor del simulador (paradas, km y minutos orientativos, horarios, video por idioma).
 - `src/lib/ba-copy.ts` + `copy-*.ts`, `guides-copy.ts`, `experience-copy.ts`, `mood-copy.ts`, `immersive-copy.ts`: textos ES/EN/PT-BR. Las tres tablas deben tener las mismas claves (lo verifica una prueba).
 - `src/lib/whatsapp.ts` / `tenant.ts`: mensajes y número de WhatsApp (5491151448632).
-- `src/components/RoutePlayer.tsx`: simulador "Sentí el recorrido antes de contratarlo". `VideoEmbed.tsx`: YouTube nocookie liviano.
+- `src/components/RoutePlayer.tsx`: simulador con hilo y plan narrativo por ruta, saltos directos entre paradas, contexto completo, inicio pausado por defecto y mapa ilustrativo (no navegación vial). `getGenuineDay` aporta las secuencias ES/EN/PT-BR. `VideoEmbed.tsx`: YouTube nocookie liviano.
 - `ExperiencePlayer.tsx` no está montado en la app (código previo conservado).
 
 ## URLs compartibles

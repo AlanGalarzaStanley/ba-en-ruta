@@ -66,11 +66,68 @@ test.describe("simulador de recorrido", () => {
     }
   })
 
-  test("avance automático cada 12 s, pausa que conserva el tiempo", async ({ page }) => {
+  test("la introducción integra el hilo narrativo y permite saltar a una parada", async ({ page }) => {
+    await page.goto("/?recorrido=historica&lang=es")
+    const dialog = page.getByRole("dialog")
+    await expect(dialog).toContainText("El hilo de este recorrido")
+    await expect(dialog).toContainText("Café Tortoni")
+    await expect(dialog).toContainText("Plaza de Mayo (contexto, no parada base)")
+    await expect(dialog).toContainText("La línea conecta los puntos como secuencia ilustrativa")
+
+    const planSummary = dialog.getByText("Cómo se organiza el día (orientativo)")
+    await planSummary.focus()
+    await page.keyboard.press("Space")
+    await expect(dialog.locator("details").first()).toHaveAttribute("open", "")
+    await expect(dialog.getByRole("button", { name: "Reproducir" })).toBeVisible()
+    await expect(dialog.getByRole("button", { name: "Pausar" })).toHaveCount(0)
+    await expect(dialog).toContainText("El guion incluye contexto y opciones; solo la lista numerada define la ruta base")
+    await expect(dialog.locator(".line-clamp-4")).toHaveCount(0)
+
+    const firstStop = dialog.getByRole("button", { name: "1 Café Tortoni" })
+    await firstStop.focus()
+    await expect(firstStop).toBeFocused()
+    await page.keyboard.press("Enter")
+    await expect(page).toHaveURL(/parada=1/)
+    await expect(dialog.locator("h2, h3").first()).toContainText("Café Tortoni")
+  })
+
+  test("las etiquetas principales del simulador están traducidas en ES/EN/PT", async ({ page }) => {
+    const labels = [
+      { lang: "es", thread: "El hilo de este recorrido", plan: "Cómo se organiza el día (orientativo)", choose: "Elegí una parada para explorar" },
+      { lang: "en", thread: "The thread running through this route", plan: "How the day may unfold (indicative)", choose: "Choose a stop to explore" },
+      { lang: "pt", thread: "O fio condutor deste roteiro", plan: "Como o dia pode se organizar (orientativo)", choose: "Escolha uma parada para explorar" },
+    ]
+    for (const { lang, thread, plan, choose } of labels) {
+      await page.goto(`/?recorrido=clasica&lang=${lang}`)
+      const dialog = page.getByRole("dialog")
+      await expect(dialog).toContainText(thread)
+      await expect(dialog).toContainText(choose)
+      await expect(dialog.getByText(plan)).toBeVisible()
+    }
+  })
+
+  test("los controles táctiles conservan 44px y no desbordan a 320px", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 740 })
+    await page.goto("/?recorrido=historica&lang=es")
+    const dialog = page.getByRole("dialog")
+    const previous = await dialog.getByRole("button", { name: "Anterior", exact: true }).boundingBox()
+    const next = await dialog.getByRole("button", { name: "Siguiente", exact: true }).boundingBox()
+    const cta = await dialog.getByRole("button", { name: "Consultar este recorrido", exact: true }).boundingBox()
+    expect(previous?.width).toBeGreaterThanOrEqual(44)
+    expect(next?.width).toBeGreaterThanOrEqual(44)
+    expect(cta && cta.x + cta.width).toBeLessThanOrEqual(320)
+    const dimensions = await dialog.evaluate((element) => ({ scrollWidth: element.scrollWidth, clientWidth: element.clientWidth }))
+    expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1)
+  })
+
+  test("el avance es manual por defecto; reproducir y pausar son acciones explícitas", async ({ page }) => {
     await page.clock.install()
     await page.goto("/?recorrido=clasica&lang=es")
     const dialog = page.getByRole("dialog")
     await expect(dialog).toBeVisible()
+    await page.clock.runFor(12_500)
+    await expect(page).not.toHaveURL(/parada=/)
+    await dialog.getByRole("button", { name: "Reproducir" }).click()
     await page.clock.runFor(12_500)
     await expect(page).toHaveURL(/parada=1/)
     await page.clock.runFor(6_000)

@@ -33,6 +33,7 @@ import {
 import { buildTourWhatsAppMessage, openWhatsApp } from "../lib/whatsapp"
 import { VideoEmbed } from "./VideoEmbed"
 import { optimizeImage, imageSrcSet } from "../lib/img"
+import { getGenuineDay } from "../lib/genuine-day"
 
 const STEP_MS = 12000
 const PHOTO_MS = 4000
@@ -182,11 +183,14 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
   }, [current, geo])
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-navy" role="region" aria-label={t(lang, "playerMap")}>
-      <div ref={elRef} className="ba-dark-map h-44 sm:h-56 w-full" />
-      <p className="absolute top-2 left-3 z-[500] text-[10px] uppercase tracking-[0.2em] text-white/70 pointer-events-none">
-        {t(lang, "playerMap")}
-      </p>
+    <div className="rounded-2xl overflow-hidden border border-white/10 bg-navy" role="region" aria-label={t(lang, "playerMap")}>
+      <div className="relative">
+        <div ref={elRef} className="ba-dark-map h-44 sm:h-56 w-full" />
+        <p className="absolute top-2 left-3 z-[500] text-[10px] uppercase tracking-[0.2em] text-white/70 pointer-events-none">
+          {t(lang, "playerMap")}
+        </p>
+      </div>
+      <p className="px-3 py-2 text-[10px] leading-relaxed text-white/65">{t(lang, "playerMapNote")}</p>
     </div>
   )
 }
@@ -195,16 +199,15 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
 
 export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialStep = 0, onStepChange }: Props) {
   const itin = getItinerary(itineraryId)!
+  const day = useMemo(() => getGenuineDay(lang, itin.id), [itin.id, lang])
   const steps = useMemo(() => buildRoute(itin), [itin])
   const geo = useMemo(() => steps.filter((s): s is GeoStep => s.kind === "place" || s.kind === "food"), [steps])
   const totals = useMemo(() => routeTotals(steps), [steps])
   const [idx, setIdx] = useState(() => Math.max(0, Math.min(steps.length - 1, Math.floor(initialStep) || 0)))
   const [shared, setShared] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
-  // Con "reducir movimiento" activado no hay avance automático: la persona avanza a su ritmo.
-  const [playing, setPlaying] = useState(
-    () => !(typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches),
-  )
+  // La persona explora a su ritmo; solo se automatiza si activa Reproducir.
+  const [playing, setPlaying] = useState(false)
   const remainingRef = useRef(STEP_MS)
   const [showVideo, setShowVideo] = useState(false)
   const [photoIdx, setPhotoIdx] = useState(0)
@@ -216,7 +219,10 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
   )
 
   const step = steps[idx]
-  const images = stepImages(step)
+  const images = useMemo(
+    () => (step.kind === "pickup" ? stepImages(geo[0] ?? step) : stepImages(step)),
+    [geo, step],
+  )
   const geoIndex = step.kind === "place" || step.kind === "food" ? geo.indexOf(step) : step.kind === "end" ? geo.length - 1 : -1
   const isLast = idx === steps.length - 1
   const video = step.kind === "place" ? placeVideo(step.place, lang) : null
@@ -294,7 +300,12 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
       if (e.key === "Escape") onClose()
       else if (e.key === "ArrowRight") go(1)
       else if (e.key === "ArrowLeft") go(-1)
-      else if (e.key === " " && (e.target as HTMLElement)?.tagName !== "BUTTON") {
+      else if (e.key === " ") {
+        const target = e.target
+        if (
+          target instanceof HTMLElement &&
+          target.closest("button, summary, a[href], input, select, textarea, [role='button'], [contenteditable='true']")
+        ) return
         e.preventDefault()
         setPlaying((p) => !p)
       }
@@ -452,10 +463,49 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
                 <h2 className="font-display text-4xl sm:text-6xl leading-[1.05] mb-4">{t(lang, "playerPickup")}</h2>
                 <p className="text-white/80 text-base sm:text-lg leading-relaxed max-w-xl">{t(lang, "playerPickupBody")}</p>
                 <p className="mt-4 text-white/60 text-sm">{t(lang, itin.descKey as CopyKey)}</p>
+                <div className="mt-4 rounded-xl border border-gold/20 bg-white/[0.04] p-4">
+                  <p className="text-gold text-[11px] tracking-[0.2em] uppercase mb-2">{t(lang, "playerRouteThread")}</p>
+                  <p className="text-white/80 text-sm leading-relaxed">{day.lead}</p>
+                </div>
+                <details className="mt-3 rounded-xl border border-white/10 bg-white/[0.03]">
+                  <summary className="cursor-pointer px-4 py-3 min-h-11 text-sm text-white/90 hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold">
+                    {t(lang, "playerDayPlan")}
+                  </summary>
+                  <div className="px-4 pb-4">
+                    <p className="mb-4 text-xs leading-relaxed text-white/55">{t(lang, "playerPlanNote")}</p>
+                    <ol className="space-y-3">
+                      {day.beats.map((beat, index) => (
+                        <li key={`${itin.id}-${beat.when}`} className="border-l-2 border-gold/35 pl-3">
+                          <p className="text-gold text-[11px] tracking-wide uppercase mb-0.5">{index + 1}. {beat.when}</p>
+                          <p className="text-sm text-white/70 leading-relaxed">{beat.what}</p>
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="mt-4 text-xs leading-relaxed text-white/50">{day.foodNote}</p>
+                  </div>
+                </details>
                 <div className="mt-6 flex flex-wrap gap-2 text-xs text-white/70">
                   <span className="px-3 py-1.5 rounded-full bg-white/10">{fill(t(lang, "routeStops"), { n: totals.stops })}</span>
                   <span className="px-3 py-1.5 rounded-full bg-white/10">{fill(t(lang, "routeHours"), { h: String(totals.hours).replace(".", lang === "en" ? "." : ",") })}</span>
                   <span className="px-3 py-1.5 rounded-full bg-white/10">{totals.km} km</span>
+                </div>
+                <div className="mt-5">
+                  <p className="mb-2 text-xs text-white/60">{t(lang, "playerChooseStop")}</p>
+                  <ol className="grid sm:grid-cols-2 gap-2">
+                    {geo.map((stop, index) => (
+                      <li key={stop.key}>
+                        <button
+                          type="button"
+                          onClick={() => jump(steps.indexOf(stop))}
+                          className="group inline-flex w-full min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-left text-sm text-white/85 hover:border-gold/40 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+                        >
+                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs tabular-nums text-gold">{index + 1}</span>
+                          <span className="min-w-0 flex-1">{stepTitle(lang, stop)}</span>
+                          <ChevronRight className="h-4 w-4 shrink-0 text-gold/80" aria-hidden />
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
                 <button
                   type="button"
@@ -494,14 +544,14 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
                     <div className="mt-4 grid sm:grid-cols-2 gap-4 text-sm text-white/70 leading-relaxed">
                       <div>
                         <p className="text-white/90 font-medium mb-1">{t(lang, "playerHistory")}</p>
-                        <p className="line-clamp-4 sm:line-clamp-5">{t(lang, step.place.historyKey as CopyKey)}</p>
+                        <p>{t(lang, step.place.historyKey as CopyKey)}</p>
                       </div>
                       <div>
                         {step.place.seeDoKeys && step.place.seeDoKeys.length > 0 && (
                           <>
                             <p className="text-white/90 font-medium mb-1">{t(lang, "playerSee")}</p>
                             <ul className="space-y-0.5 mb-3">
-                              {step.place.seeDoKeys.slice(0, 3).map((k) => (
+                              {step.place.seeDoKeys.map((k) => (
                                 <li key={k} className="flex gap-2">
                                   <span className="text-gold" aria-hidden>·</span>
                                   {t(lang, k as CopyKey)}
@@ -643,40 +693,42 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
 
       {/* Controles */}
       <div className="relative z-10 border-t border-white/10 bg-[#070B16]/80 backdrop-blur px-3 sm:px-8 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="max-w-6xl mx-auto flex items-center gap-1.5 sm:gap-2">
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            disabled={idx === 0}
-            className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 flex items-center justify-center"
-            aria-label={t(lang, "playerPrev")}
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            disabled={isLast}
-            className="inline-flex items-center gap-2 h-11 px-4 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 text-sm"
-            aria-label={playing ? t(lang, "playerPause") : t(lang, "playerAuto")}
-          >
-            {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            <span className="hidden sm:inline">{playing ? t(lang, "playerPause") : t(lang, "playerAuto")}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            disabled={isLast}
-            className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 flex items-center justify-center"
-            aria-label={t(lang, "playerNext")}
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-          <p className="hidden md:block text-xs text-white/55 ml-3">{t(lang, "playerSwipe")}</p>
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              disabled={idx === 0}
+              className="shrink-0 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 flex items-center justify-center"
+              aria-label={t(lang, "playerPrev")}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setPlaying((p) => !p)}
+              disabled={isLast}
+              className="shrink-0 inline-flex items-center gap-2 h-11 px-4 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 text-sm"
+              aria-label={playing ? t(lang, "playerPause") : t(lang, "playerAuto")}
+            >
+              {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              <span className="hidden sm:inline">{playing ? t(lang, "playerPause") : t(lang, "playerAuto")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              disabled={isLast}
+              className="shrink-0 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 flex items-center justify-center"
+              aria-label={t(lang, "playerNext")}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <p className="hidden md:block text-xs text-white/55 ml-3">{t(lang, "playerSwipe")}</p>
+          </div>
           <button
             type="button"
             onClick={book}
-            className="ml-auto inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium text-[13px] sm:text-sm px-3.5 sm:px-5 h-11 rounded-full whitespace-nowrap"
+            className="inline-flex basis-full sm:basis-auto sm:ml-auto min-w-0 items-center justify-center gap-2 bg-gold hover:bg-gold-light text-navy font-medium text-[13px] sm:text-sm px-3.5 sm:px-5 h-11 rounded-full"
           >
             <MessageCircle className="w-4 h-4 shrink-0" />
             <span>{t(lang, "playerBook")}</span>
