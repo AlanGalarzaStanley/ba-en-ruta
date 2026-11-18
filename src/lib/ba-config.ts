@@ -1,6 +1,6 @@
 /**
  * Configuración central de BA en Ruta
- * Official links verified 2026-10-17
+ * Official links: revisar fechas en docs; nuevas páginas de Villa Crespo verificadas 2026-11-18
  * YouTube videos restored from prior catalog (no invented links)
  * Fotos: auditoría Wikimedia Commons 2026-10-17 (ver src/lib/media.ts)
  */
@@ -328,6 +328,9 @@ const RESTAURANTS_BASE: Restaurant[] = [
   { id: "preferido", name: "El Preferido de Palermo", categoryKey: "restCatClassic", address: "Jorge Luis Borges 2108, Palermo, CABA", descKey: "restPreferidoDesc", whyKey: "restPreferidoWhy", placeIds: ["palermo"], itineraryIds: ["clasica", "gastronomica"], instagramUrl: "https://www.instagram.com/elpreferidodepalermo/", lat: -34.5857, lng: -58.4306 },
   { id: "cabrera", name: "La Cabrera", categoryKey: "restCatParrilla", address: "José Antonio Cabrera 5099, Palermo, CABA", descKey: "restCabreraDesc", whyKey: "restCabreraWhy", placeIds: ["palermo"], itineraryIds: ["gastronomica", "clasica"], url: "https://www.lacabrera.com.ar/", instagramUrl: "https://www.instagram.com/lacabrera_bsas/", lat: -34.5871, lng: -58.4373 },
   { id: "los-bohemios", name: "Los Bohemios", categoryKey: "restCatClassic", address: "Humboldt 538, Villa Crespo, CABA", descKey: "restBohemiosDesc", whyKey: "restBohemiosWhy", placeIds: [], itineraryIds: ["gastronomica"], url: "https://caatlanta.com.ar/los-bohemios-restaurante/", instagramUrl: "https://www.instagram.com/losbohemios.bodegon/", lat: -34.5989, lng: -58.4392 },
+  { id: "la-crespo", name: "La Crespo", categoryKey: "restCatJewish", address: "Vera 1001, Villa Crespo, CABA", descKey: "restLaCrespoDesc", whyKey: "restLaCrespoWhy", placeIds: [], itineraryIds: ["gastronomica"], url: "https://www.lacrespo.com/", lat: -34.599526, lng: -58.437116 },
+  { id: "mercat-villa-crespo", name: "Mercat Villa Crespo", categoryKey: "restCatFoodhall", address: "Thames 747, Villa Crespo, CABA", descKey: "restMercatDesc", whyKey: "restMercatWhy", placeIds: [], itineraryIds: ["gastronomica"], url: "https://mercatmercado.com/", lat: -34.5937991, lng: -58.4403214 },
+  { id: "cafe-san-bernardo", name: "Café San Bernardo", categoryKey: "restCatCafe", address: "Av. Corrientes 5436, Villa Crespo, CABA", descKey: "restSanBernardoDesc", whyKey: "restSanBernardoWhy", placeIds: [], itineraryIds: ["gastronomica"], url: "https://cafesanbernardo.com.ar/", instagramUrl: "https://www.instagram.com/cafesanbernardo/", lat: -34.5978135, lng: -58.4410985 },
   { id: "los-galgos", name: "Bar Los Galgos", categoryKey: "restCatClassic", address: "Callao 501, San Nicolás, CABA", descKey: "restLosGalgosDesc", whyKey: "restLosGalgosWhy", placeIds: ["obelisco-colon"], itineraryIds: ["clasica"], url: "https://www.losgalgos.com.ar/menu/", lat: -34.6045, lng: -58.3945 },
   { id: "el-tano", name: "Parrilla El Tano", categoryKey: "restCatParrilla", address: "Casella Piñero 187, Sarandí, Avellaneda", descKey: "restElTanoDesc", whyKey: "restElTanoWhy", placeIds: [], itineraryIds: ["futbolera"], url: "https://www.instagram.com/el_tano_debenedetti/", lat: -34.6794, lng: -58.3415 },
   { id: "puerto-frutos", name: "Puerto de Frutos", categoryKey: "restCatMarket", address: "Sarmiento 160, Tigre", descKey: "restFrutosDesc", whyKey: "restFrutosWhy", placeIds: ["tigre"], itineraryIds: ["tigre-delta"], url: "https://vivitigre.gob.ar/actividades/puerto-de-frutos/", instagramUrl: "https://www.instagram.com/puertodefrutosok/", lat: -34.4183, lng: -58.5806 },

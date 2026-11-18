@@ -17,6 +17,7 @@ import {
   Instagram,
   Share2,
   Check,
+  ExternalLink,
 } from "lucide-react"
 import { HERO_IMAGE, type ItineraryId, type PlaceId } from "../lib/ba-config"
 import { t, type Lang, type CopyKey } from "../lib/ba-copy"
@@ -34,6 +35,14 @@ import { buildTourWhatsAppMessage, openWhatsApp } from "../lib/whatsapp"
 import { VideoEmbed } from "./VideoEmbed"
 import { optimizeImage, imageSrcSet } from "../lib/img"
 import { getGenuineDay } from "../lib/genuine-day"
+import { GastroRouteChooser } from "./GastroRouteChooser"
+import {
+  buildGastroItinerary,
+  readGastroSelection,
+  syncGastroSelectionToUrl,
+  type GastroMealId,
+  type GastroRouteSelection,
+} from "../lib/gastro-route"
 
 const STEP_MS = 12000
 const PHOTO_MS = 4000
@@ -198,7 +207,12 @@ function RouteMap({ geo, current, lang }: { geo: GeoStep[]; current: number; lan
 /* -------------------------------- Reproductor ------------------------------- */
 
 export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialStep = 0, onStepChange }: Props) {
-  const itin = getItinerary(itineraryId)!
+  const baseItin = getItinerary(itineraryId)!
+  const [gastroSelection, setGastroSelection] = useState(() => readGastroSelection())
+  const itin = useMemo(
+    () => itineraryId === "gastronomica" ? buildGastroItinerary(gastroSelection) : baseItin,
+    [baseItin, gastroSelection, itineraryId],
+  )
   const day = useMemo(() => getGenuineDay(lang, itin.id), [itin.id, lang])
   const steps = useMemo(() => buildRoute(itin), [itin])
   const geo = useMemo(() => steps.filter((s): s is GeoStep => s.kind === "place" || s.kind === "food"), [steps])
@@ -217,6 +231,19 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
     () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
     [],
   )
+
+  const updateGastroSelection = (next: GastroRouteSelection) => {
+    setGastroSelection(next)
+    const url = new URL(window.location.href)
+    url.searchParams.set("recorrido", "gastronomica")
+    syncGastroSelectionToUrl(url, next)
+    url.searchParams.delete("parada")
+    window.history.replaceState(null, "", url)
+    setIdx(0)
+    setPlaying(false)
+    setShowVideo(false)
+    setPhotoIdx(0)
+  }
 
   const step = steps[idx]
   const images = useMemo(
@@ -260,6 +287,11 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
   const share = async () => {
     const url = new URL(window.location.href)
     url.searchParams.set("recorrido", itin.id)
+    if (itin.id === "gastronomica") syncGastroSelectionToUrl(url, gastroSelection)
+    else {
+      url.searchParams.delete("mesa")
+      url.searchParams.delete("pausa")
+    }
     if (idx > 0) url.searchParams.set("parada", String(idx))
     else url.searchParams.delete("parada")
     url.searchParams.set("lang", lang)
@@ -467,6 +499,15 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
                   <p className="text-gold text-[11px] tracking-[0.2em] uppercase mb-2">{t(lang, "playerRouteThread")}</p>
                   <p className="text-white/80 text-sm leading-relaxed">{day.lead}</p>
                 </div>
+                {itin.id === "gastronomica" && (
+                  <GastroRouteChooser
+                    lang={lang}
+                    selectedMeal={gastroSelection.meal}
+                    includeCafe={gastroSelection.includeCafe}
+                    onMealChange={(meal: GastroMealId) => updateGastroSelection({ ...gastroSelection, meal })}
+                    onCafeChange={(includeCafe) => updateGastroSelection({ ...gastroSelection, includeCafe })}
+                  />
+                )}
                 <details className="mt-3 rounded-xl border border-white/10 bg-white/[0.03]">
                   <summary className="cursor-pointer px-4 py-3 min-h-11 text-sm text-white/90 hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold">
                     {t(lang, "playerDayPlan")}
@@ -569,20 +610,33 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
                   <>
                     <p className="text-white/85 text-base sm:text-lg leading-relaxed">{t(lang, step.rest.descKey as CopyKey)}</p>
                     <p className="mt-3 text-sm text-white/70">{t(lang, step.rest.whyKey as CopyKey)}</p>
-                    <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-white/60">
-                      <MapPin className="w-4 h-4 text-gold" aria-hidden />
-                      {step.rest.address}
-                    </p>
-                    {step.rest.instagramUrl && (
-                      <a
-                        href={step.rest.instagramUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-4 inline-flex items-center gap-1.5 text-sm text-white/75 hover:text-white min-h-10"
-                      >
-                        <Instagram className="w-4 h-4" aria-hidden /> Instagram
-                      </a>
-                    )}
+                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                      <p className="inline-flex items-center gap-1.5 text-white/60">
+                        <MapPin className="w-4 h-4 text-gold" aria-hidden />
+                        {step.rest.address}
+                      </p>
+                      {step.rest.url && (
+                        <a
+                          href={step.rest.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${t(lang, "playerOfficialSite")}: ${step.rest.name}`}
+                          className="inline-flex items-center gap-1.5 text-sm text-gold hover:text-gold-light min-h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+                        >
+                          <ExternalLink className="w-4 h-4" aria-hidden /> {t(lang, "playerOfficialSite")}
+                        </a>
+                      )}
+                      {step.rest.instagramUrl && (
+                        <a
+                          href={step.rest.instagramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-white/75 hover:text-white min-h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+                        >
+                          <Instagram className="w-4 h-4" aria-hidden /> Instagram
+                        </a>
+                      )}
+                    </div>
                   </>
                 )}
                 <p className="mt-4 text-xs text-white/55">{fill(t(lang, "playerVisit"), { min: step.visitMin })}</p>
@@ -651,7 +705,7 @@ export function RoutePlayer({ itineraryId, lang, onClose, onCustomize, initialSt
             {showVideo && video && step.kind === "place" ? (
               <VideoEmbed url={video} lang={lang} title={t(lang, step.place.nameKey as CopyKey)} autoplay />
             ) : (
-              <RouteMap geo={geo} current={geoIndex} lang={lang} />
+              <RouteMap key={`${itin.id}-${geo.map((g) => g.key).join("|")}`} geo={geo} current={geoIndex} lang={lang} />
             )}
             <div className="flex flex-wrap items-center gap-2">
               {video && (

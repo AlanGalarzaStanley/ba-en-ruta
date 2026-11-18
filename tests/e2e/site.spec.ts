@@ -155,6 +155,47 @@ test.describe("simulador de recorrido", () => {
     await expect(page.getByRole("dialog")).toHaveCount(0)
   })
 
+  test("Sabores Porteños permite elegir una mesa, sumar una pausa y consultar esa selección", async ({ page }) => {
+    const opened = await trapWindowOpen(page)
+    await page.goto("/?recorrido=gastronomica&lang=es")
+    const dialog = page.getByRole("dialog")
+    const laCrespo = dialog.getByRole("radio", { name: "Elegir como comida principal: La Crespo" })
+    await laCrespo.check()
+    await expect(page).toHaveURL(/mesa=la-crespo/)
+
+    const cafe = dialog.getByRole("checkbox", { name: "Sumar una pausa en Café San Bernardo: Café San Bernardo" })
+    await cafe.check()
+    await expect(page).toHaveURL(/pausa=cafe-san-bernardo/)
+    await expect(dialog.getByRole("button", { name: /1 La Crespo/ })).toBeVisible()
+    await expect(dialog.getByRole("button", { name: /2 Café San Bernardo/ })).toBeVisible()
+
+    await dialog.getByRole("button", { name: "Consultar este recorrido" }).last().click()
+    const urls = await opened()
+    const message = new URL(urls.at(-1)!).searchParams.get("text") ?? ""
+    expect(message).toContain("La Crespo")
+    expect(message).toContain("Café San Bernardo")
+  })
+
+  test("un enlace de Sabores Porteños restaura la mesa y la pausa elegidas", async ({ page }) => {
+    await page.goto("/?recorrido=gastronomica&mesa=mercat-villa-crespo&pausa=cafe-san-bernardo&lang=es")
+    const dialog = page.getByRole("dialog")
+    await expect(dialog.getByRole("radio", { name: "Elegir como comida principal: Mercat Villa Crespo" })).toBeChecked()
+    await expect(dialog.getByRole("checkbox", { name: "Sumar una pausa en Café San Bernardo: Café San Bernardo" })).toBeChecked()
+  })
+
+  test("el selector gastronómico conserva sus traducciones en inglés y portugués", async ({ page }) => {
+    const locales = [
+      { lang: "en", title: "Choose your food story", mealLabel: "Choose as the main meal: La Crespo" },
+      { lang: "pt", title: "Escolha o fio gastronômico", mealLabel: "Escolher como refeição principal: La Crespo" },
+    ]
+    for (const locale of locales) {
+      await page.goto(`/?recorrido=gastronomica&lang=${locale.lang}`)
+      const dialog = page.getByRole("dialog")
+      await expect(dialog.getByText(locale.title, { exact: true })).toBeVisible()
+      await expect(dialog.getByRole("radio", { name: locale.mealLabel })).toBeVisible()
+    }
+  })
+
   test("consultar desde el simulador abre WhatsApp con el mensaje", async ({ page }) => {
     const opened = await trapWindowOpen(page)
     await page.goto("/?recorrido=futbolera&lang=es")

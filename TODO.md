@@ -2,6 +2,8 @@
 
 Este plan ejecuta la aprobación del dueño recibida el 17-11-2026 para los cambios documentales de la PR #8 y la continuidad indicada. La PR #8 quedó integrada. Este TODO registra la implementación de la dirección editorial aprobada, sin inferir condiciones comerciales que no se confirmaron.
 
+Los resultados 6 y 7 de esta continuación están completados y verificados en `research/local-driver-business-models-2026-11-18`; todavía no están integrados en `main` ni desplegados. `[x]` indica evidencia de implementación/investigación en esta rama, no validación de demanda ni aprobación de una oferta comercial.
+
 ## Resultado 1 — Actualizar las cinco experiencias públicas
 
 - [x] Reflejar en las tarjetas de recorridos las identidades aprobadas para `historica`, `clasica`, `gastronomica`, `futbolera` y `tigre-delta`.
@@ -44,6 +46,22 @@ Este plan ejecuta la aprobación del dueño recibida el 17-11-2026 para los camb
 ## Resultado 5 — Preservar la investigación como contexto, no como autorización
 
 - [x] Incluir `docs/INVESTIGACION-REFERENTES-INMERSIVOS-TURISMO-2026-11-18.md` con los diez referentes y la verificación de Claude Fable 5.2, y enlazarlo desde el mapa documental de `AGENTS.md` como investigación de inspiración, no como decisión de producto ni autorización para incorporar 360°, WebGL, audio, GPS o nuevas funciones.
+
+## Resultado 6 — Completar Sabores Porteños como experiencia de Villa Crespo
+
+- [x] Presentar una secuencia narrativa centrada en Villa Crespo, con lectura del barrio, una única elección de comida principal y un cierre opcional; no enviar automáticamente la ruta a Palermo o San Telmo ni mezclar paradas del sur.
+- [x] Permitir elegir como foco de comida uno de estos tres formatos verificados: bodegón de club en Los Bohemios, cocina judía porteña en La Crespo o variedad de cocinas en Mercat Villa Crespo. Mantener Los Bohemios como selección inicial y describir todas las opciones como propuestas, no como reservas o acuerdos.
+- [x] Ofrecer Café San Bernardo como pausa optativa o alternativa de cierre, nunca como cuarta compra obligatoria; evitar fijar el año de apertura mientras las fuentes disponibles discrepan.
+- [x] Mostrar direcciones y enlaces directos verificados de cada proveedor; confirmar menú, apertura, horarios, mesa y disponibilidad antes de cada salida, sin inventar precios ni incluir consumos, entradas, esperas o reservas en la tarifa del chofer.
+- [x] Hacer que la elección del simulador se refleje en la secuencia y el mapa ilustrativo, pueda compartirse en la URL y llegue al mensaje de consulta; no presentarla como reserva confirmada.
+- [x] Mantener la misma intención comercial en español, inglés y portugués de Brasil, y conservar accesibilidad, controles manuales y avisos de que tiempos/distancias son ilustrativos.
+
+## Resultado 7 — Recomendar una arquitectura prudente para DriverAI y movilidad local
+
+- [x] Sintetizar la comparación de 12 modelos de movilidad local con fuentes primarias, separar plataformas de taxis habilitados de servicios privados/turísticos y tomar BA Taxi como alternativa municipal existente para taxis.
+- [x] Recomendar mantener DriverAI y BA en Ruta separados, con colaboración experimental limitada a consultas directas y coordinación manual. Como hipótesis futura y no implementada, documentar un storefront sencillo de marca del operador con enlace/WhatsApp para cultivar clientela repetida con consentimiento; distinguirlo de un SaaS, una cooperativa y un marketplace, y no prometer ahorro neto de comisiones sin medir adquisición, pagos, soporte y cumplimiento.
+- [x] No activar páginas para otros choferes, captación comercial, cargos, marketplace, despacho, GPS, pagos ni lectura automatizada de apps de viaje sin aprobación explícita y definición operativa/legal del dueño.
+- [x] Actualizar el blueprint con la dirección editorial de Sabores Porteños y con los límites de integración de DriverAI, y distinguir los cambios de código que están verificados de las hipótesis comerciales pendientes.
 
 ## Pendiente fuera de esta entrega
 

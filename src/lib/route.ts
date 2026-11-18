@@ -45,7 +45,7 @@ export type GeoStep = Extract<RouteStep, { kind: "place" | "food" }>
 const START_MIN: Record<ItineraryId, number> = {
   historica: 9 * 60 + 30,
   clasica: 9 * 60 + 30,
-  gastronomica: 10 * 60 + 30,
+  gastronomica: 12 * 60,
   futbolera: 10 * 60,
   "tigre-delta": 9 * 60,
 }
