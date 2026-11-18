@@ -39,7 +39,7 @@ Este plan ejecuta la aprobación del dueño recibida el 17-11-2026 para los camb
 - [x] Aclarar que las líneas del mapa unen puntos para ilustrar una secuencia y no son navegación vial en vivo; conservar tiempos/distancias como estimaciones simuladas, no como horario o duración del servicio.
 - [x] Mantener créditos de foto, atribución de video externo, soporte ES/EN/PT-BR, contraste, navegación por teclado, diseño móvil y alternativa textual si un medio no carga.
 - [x] Reutilizar estructura y activos ya presentes; no incorporar una escena 3D ficticia, un origen externo nuevo, GPS, audio publicado, seguimiento, tarifas, reservas o inclusiones no confirmadas.
-- [x] `npm run check` pasa (typecheck, 25 unitarias y build); `npm run test:e2e` pasa 36/36 en desktop y Android emulado, incluidos teclado Space/Enter, tres idiomas, viewport 320px y checks de accesibilidad. PR remota y deployment quedan pendientes.
+- [x] `npm run check` pasa (typecheck, 25 unitarias y build); `npm run test:e2e` pasa 36/36 en desktop y Android emulado, incluidos teclado Space/Enter, tres idiomas, viewport 320px y checks de accesibilidad. PR #12 quedó integrada en `main` (`0e38a194ef049c9c2d4639ac3e4479af5cf1cfb5`); CI `44343608234` pasó 36/36, Vercel confirmó `Deployment has completed` y la producción respondió HTTP 200 con los nuevos textos ES/EN/PT en el bundle.
 
 ## Resultado 5 — Preservar la investigación como contexto, no como autorización
 
