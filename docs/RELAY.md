@@ -33,7 +33,7 @@ Llevar BA en Ruta a un **sistema óptimo**:
 ## Estado actual (2026-11-18)
 
 ### Bloqueante activo
-- **CI en main**: verde. Confirmado tras merge de PR #12 (story-led route preview, run 44343608234).
+- **CI en main**: verde. Confirmado tras merge de PR #13 (docs update, run 44346351589) y post-#12.
 - No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
@@ -70,21 +70,21 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- PR #12 (feat: story-led, user-paced route preview) CI success y mergeado a main (commit 0e38a19). ESTADO.md actualizado. Producción desplegada.
+- PR #13 (docs: record immersive route release) CI success (run 44346351589) y mergeado a main.
 - Branch feat/surface-packages-catalog listo (App.tsx incluye <Packages />).
-- Formulario de creación de PR para packages mostrado nuevamente (card_id B9nWP). Título: feat: surface packages catalog on homepage. CI en main verde post-merge #12.
+- Formulario de creación de PR para packages mostrado (card_id JU3Ze). Título: feat: surface packages catalog on homepage. CI en main verde.
 
 **Next Action**:
-Submit el PR de feat/surface-packages-catalog usando el formulario interactivo (card_id B9nWP). Una vez creado, verificar CI verde, luego mergear y actualizar docs/ESTADO.md con paquetes visibles en homepage.
+Submit el PR de feat/surface-packages-catalog usando el formulario interactivo (card_id JU3Ze). Una vez creado, verificar CI verde, luego mergear y actualizar docs/ESTADO.md con paquetes visibles en homepage.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Main CI post-merge: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44343608234
+- Latest CI: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44346351589
 - Branch packages: feat/surface-packages-catalog
 - Producción: https://ba-en-ruta.vercel.app
 - Paquetes listos: src/components/PackagesSection.tsx exporta Packages, datos en src/lib/packages.ts
 - WhatsApp: 5491151448632
-- PR form card_id: B9nWP
+- PR form card_id: JU3Ze
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -102,4 +102,4 @@ Submit el PR de feat/surface-packages-catalog usando el formulario interactivo (
 
 ---
 
-*Última actualización del handoff: 2026-11-18 (packages PR form re-shown, CI green on main)*
+*Última actualización del handoff: 2026-11-18 (packages PR form shown with JU3Ze, CI green on PR #13)*
