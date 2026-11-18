@@ -70,22 +70,21 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- PR #12 (feat: story-led, user-paced route preview) CI success (run 44342325664) y mergeado a main (commit 0e38a19). ESTADO.md actualizado. Producción desplegada.
+- PR #12 (feat: story-led, user-paced route preview) CI success y mergeado a main (commit 0e38a19). ESTADO.md actualizado. Producción desplegada.
 - Branch feat/surface-packages-catalog listo (App.tsx incluye <Packages />).
-- Formulario de creación de PR para packages mostrado (card_id nIKQ7). Título: feat: surface packages catalog on homepage.
+- Formulario de creación de PR para packages mostrado nuevamente (card_id B9nWP). Título: feat: surface packages catalog on homepage. CI en main verde post-merge #12.
 
 **Next Action**:
-Submit el PR de feat/surface-packages-catalog (usar el form interactivo). Verificar CI verde. Luego mergear y actualizar docs/ESTADO.md con paquetes visibles en homepage.
+Submit el PR de feat/surface-packages-catalog usando el formulario interactivo (card_id B9nWP). Una vez creado, verificar CI verde, luego mergear y actualizar docs/ESTADO.md con paquetes visibles en homepage.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- Story-led CI: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44342325664
 - Main CI post-merge: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44343608234
 - Branch packages: feat/surface-packages-catalog
 - Producción: https://ba-en-ruta.vercel.app
 - Paquetes listos: src/components/PackagesSection.tsx exporta Packages, datos en src/lib/packages.ts
 - WhatsApp: 5491151448632
-- PR form card_id: nIKQ7
+- PR form card_id: B9nWP
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -103,4 +102,4 @@ Submit el PR de feat/surface-packages-catalog (usar el form interactivo). Verifi
 
 ---
 
-*Última actualización del handoff: 2026-11-18 (story-led merged, packages PR form ready)*
+*Última actualización del handoff: 2026-11-18 (packages PR form re-shown, CI green on main)*
