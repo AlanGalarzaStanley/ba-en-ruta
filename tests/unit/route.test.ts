@@ -28,9 +28,9 @@ describe("motor del simulador de recorrido", () => {
     }
   })
 
-  it("mantiene diferenciadas las paradas gastronómicas de las cinco experiencias", () => {
+  it("mantiene la gastronomía fuera de las rutas base y disponible como capa opcional", () => {
     const byId = Object.fromEntries(ITINERARIES.map((itin) => [itin.id, itin]))
-    expect(byId.historica.restaurantIds).toEqual(["tortoni"])
+    expect(byId.historica.restaurantIds).toEqual([])
     expect(byId.clasica.restaurantIds).toEqual([])
     expect(byId.gastronomica.restaurantIds).toEqual(["los-bohemios"])
     expect(byId.futbolera.restaurantIds).toEqual([])

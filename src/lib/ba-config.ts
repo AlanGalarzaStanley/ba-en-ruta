@@ -365,6 +365,13 @@ export const ITINERARIES: Itinerary[] = [
     image: commons("Obelisco_Buenos_Aires.jpg"),
   },
   {
+    // Compatibilidad del selector gastronómico: no se muestra como tarjeta pública.
+    id: "gastronomica", nameKey: "itinGastroName", descKey: "itinGastroDesc", durationKey: "itinGastroDur",
+    placeIds: [], restaurantIds: ["los-bohemios"],
+    sequence: [{ kind: "restaurant", id: "los-bohemios" }],
+    image: HERO_IMAGE,
+  },
+  {
     id: "futbolera", nameKey: "itinFutbolName", descKey: "itinFutbolDesc", durationKey: "itinFutbolDur",
     placeIds: ["caminito", "bombonera"], restaurantIds: [],
     sequence: [

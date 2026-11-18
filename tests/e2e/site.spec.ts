@@ -70,7 +70,7 @@ test.describe("simulador de recorrido", () => {
     await page.goto("/?recorrido=historica&lang=es")
     const dialog = page.getByRole("dialog")
     await expect(dialog).toContainText("El hilo de este recorrido")
-    await expect(dialog).toContainText("Café Tortoni")
+    await expect(dialog).toContainText("San Telmo y Plaza de Mayo")
     await expect(dialog).toContainText("Plaza de Mayo (contexto, no parada base)")
     await expect(dialog).toContainText("La línea conecta los puntos como secuencia ilustrativa")
 
@@ -83,12 +83,12 @@ test.describe("simulador de recorrido", () => {
     await expect(dialog).toContainText("El guion incluye contexto y opciones; solo la lista numerada define la ruta base")
     await expect(dialog.locator(".line-clamp-4")).toHaveCount(0)
 
-    const firstStop = dialog.getByRole("button", { name: "1 Café Tortoni" })
+    const firstStop = dialog.getByRole("button", { name: "1 San Telmo y Plaza de Mayo" })
     await firstStop.focus()
     await expect(firstStop).toBeFocused()
     await page.keyboard.press("Enter")
     await expect(page).toHaveURL(/parada=1/)
-    await expect(dialog.locator("h2, h3").first()).toContainText("Café Tortoni")
+    await expect(dialog.locator("h2, h3").first()).toContainText("San Telmo y Plaza de Mayo")
   })
 
   test("las etiquetas principales del simulador están traducidas en ES/EN/PT", async ({ page }) => {
