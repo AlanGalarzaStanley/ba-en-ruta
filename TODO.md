@@ -2,7 +2,7 @@
 
 Este plan ejecuta la aprobación del dueño recibida el 17-11-2026 para los cambios documentales de la PR #8 y la continuidad indicada. La PR #8 quedó integrada. Este TODO registra la implementación de la dirección editorial aprobada, sin inferir condiciones comerciales que no se confirmaron.
 
-Los resultados 6 y 7 de esta continuación están completados y verificados en `research/local-driver-business-models-2026-11-18`; todavía no están integrados en `main` ni desplegados. `[x]` indica evidencia de implementación/investigación en esta rama, no validación de demanda ni aprobación de una oferta comercial.
+Los resultados 6 y 7 de esta continuación quedaron integrados mediante PR #14 (`63b4790bc6dafcfac12a5fabe038b016be95957a`) el 18-11-2026. Vercel Production terminó en `success` (deployment de GitHub `7891390898`) y las pruebas E2E sobre el dominio público dieron 6/6. `[x]` indica evidencia de implementación/investigación, no validación de demanda ni aprobación de una oferta comercial.
 
 ## Resultado 1 — Actualizar las cinco experiencias públicas
 

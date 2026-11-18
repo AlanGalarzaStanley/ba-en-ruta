@@ -5,12 +5,12 @@
 ## Producción
 
 - URL: https://ba-en-ruta.vercel.app (Vercel Free, despliegue automático desde `main`).
-- Último cambio de código de la aplicación en producción: PR #12, merge commit `0e38a194ef049c9c2d4639ac3e4479af5cf1cfb5`, integrado el 2026-11-18 a las 16:07:51 UTC. Actualiza el simulador para presentar el hilo narrativo y el plan orientativo de cada recorrido, lista numerada de paradas con salto directo, contenido completo y reproducción manual. No añade activos, dependencias, tarifas, reservas, audio, GPS ni promesas operativas.
-- Vercel marcó el deployment asociado al commit como `Deployment has completed`: [ver deployment](https://vercel.com/galarzaalang-3494/ba-en-ruta/gVW61FbEsjqyP5LX9kQ7DDp1f5qp). La URL pública respondió HTTP 200 y el bundle servido contiene las etiquetas nuevas en español, inglés y portugués de Brasil.
-- El deployment más reciente de `main` es `ac703d7fe6381059370754e91372d3b21461f1f3` (`docs: update relay handoff - PR form for packages catalog ready`), que solo modifica `docs/RELAY.md`; GitHub deployment `7890015731` finalizó en `success` el 2026-11-18 a las 16:51:54 UTC. `https://ba-en-ruta.vercel.app` respondió HTTP 200; el último cambio de código de aplicación sigue siendo PR #12.
+- Último cambio de código de la aplicación en producción: PR #14, merge commit `63b4790bc6dafcfac12a5fabe038b016be95957a`, integrado el 2026-11-18 a las 17:45:27 UTC. Completa Sabores Porteños como arco de Villa Crespo, con una comida principal elegible y una pausa opcional; no añade reservas, consumos incluidos ni condiciones comerciales nuevas.
+- Vercel Production confirmó `Deployment has completed` para GitHub deployment `7891390898` a las 17:45:48 UTC. `https://ba-en-ruta.vercel.app` respondió HTTP 200.
+- Prueba de humo E2E sobre el dominio público: 6/6 en Chromium escritorio y Android emulado; verifica selección de comida, pausa, enlace compartible y textos de ES/EN/PT.
 - El producto conserva una home corta orientada a consulta por WhatsApp: hero, manifiesto, cinco recorridos, quién conduce, FAQ y cierre; no muestra la grilla del catálogo de paquetes. El simulador apoya la imaginación del recorrido, no confirma reserva ni reemplaza al chofer.
 - La PR #9 (2026-11-17) diferenció las cinco experiencias y ordenó el simulador; la PR #12 suma una exploración narrativa a ritmo de la persona. Se mantienen los precios públicos existentes sin cambios, sin validación nueva de su vigencia o aplicación a cada secuencia.
-- Vercel Preview de la PR #12 terminó correctamente. CI de la rama (`44342325664`) y CI de `main` (`44343608234`) terminaron en verde. La ejecución de `main` comprobó `npm ci`, audit de producción, typecheck, unitarias, build y E2E 36/36; [workflow de main](https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44343608234).
+- Vercel Preview y CI de PR #14 terminaron correctamente: checks `CI/check`, `CI/e2e` y Preview en verde; el E2E completo pasó 42/42 en escritorio y Android emulado. El CI de `main` para `63b4790` también terminó en verde (workflow `44362193726`); [ver workflow](https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44362193726). El smoke test de producción pasó 6/6.
 - El job E2E permanece fijado a `ubuntu-24.04` por compatibilidad de Playwright/Chromium. GitHub emitió anotaciones no bloqueantes sobre las acciones `actions/checkout@v4` y `actions/setup-node@v4` (runtime Node 20 forzado a Node 24) y la migración de `ubuntu-latest` a Ubuntu 26; ambos jobs pasaron. Revisar esas advertencias en una tarea separada de mantenimiento de CI.
 - Verificaciones previas de cabeceras de seguridad (CSP, HSTS, nosniff, Referrer/Permissions-Policy, X-Frame-Options) y `og-image.jpg` respondieron correctamente; repetir si se modifican las reglas o los metadatos.
 
@@ -35,10 +35,10 @@ Una sola corrida por versión: los valores varían unos puntos entre ejecuciones
 | Capa | Herramienta | Cobertura | Resultado |
 |---|---|---|---|
 | Tipos | `tsc -b` (strict) | todo `src/` + configs | 0 errores |
-| Unitarias | Vitest, `tests/unit` | motor de rutas, orden aprobado, imágenes, paridad ES/EN/PT, ids y enlaces, créditos, mapa de Commons, fotos locales, WhatsApp | 25/25 |
-| Enlaces | `npm run test:links` (semanal en CI) | sitios oficiales, entradas y restaurantes | 26/27 desde este entorno; La Biela falla solo aquí por TLS, verificada por otra vía. No se cambiaron URLs en PR #12. |
-| E2E | Playwright, `tests/e2e` | portada, idiomas, enlaces `?recorrido`/`?parada`, cinco recorridos, avance/pausa manual, movimiento reducido, hilo narrativo, plan orientativo, salto a paradas, mapa ilustrativo, WhatsApp, foco, teclado, viewport de 320px, desbordes y axe WCAG A/AA | 36/36 en Chromium escritorio y Android emulado, local y en CI (`44343608234`) |
-| CI | GitHub Actions `ci.yml` | `npm ci`, audit de producción, typecheck, unit, build, E2E | Verde en PR #12 y en `main`; workflow de `main` `44343608234` |
+| Unitarias | Vitest, `tests/unit` | motor de rutas, selección gastronómica, orden aprobado, imágenes, paridad ES/EN/PT, ids y enlaces, créditos, mapa de Commons, fotos locales, WhatsApp | 26/26 |
+| Enlaces | `npm run test:links` (semanal en CI) | sitios oficiales, entradas y restaurantes | 33/33 en la última ejecución local; incluye los enlaces oficiales agregados para Villa Crespo. |
+| E2E | Playwright, `tests/e2e` | portada, idiomas, enlaces `?recorrido`/`?parada`/`mesa`/`pausa`, cinco recorridos, selección gastronómica, avance/pausa manual, movimiento reducido, hilo narrativo, mapa ilustrativo, WhatsApp, foco, teclado, viewport de 320px, desbordes y axe WCAG A/AA | 42/42 en Chromium escritorio y Android emulado, local y en CI de PR #14; 6/6 en el smoke E2E de producción |
+| CI | GitHub Actions `ci.yml` | `npm ci`, audit de producción, typecheck, unit, build, E2E | CI de PR #14 y `main` en verde; workflow de `main` `44362193726`, con E2E 42/42 sobre SHA `63b4790` |
 | Dependencias | `npm audit` | todas (auditoría anterior) | 0 vulnerabilidades reportadas en la última auditoría completa |
 | Fotos | curl a upload.wikimedia.org | 80 archivos distintos, 1 tamaño c/u | 80/80 OK (Wikimedia limita con 429 si se piden todas las variantes juntas) |
 
