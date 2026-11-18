@@ -30,14 +30,14 @@ Llevar BA en Ruta a un **sistema óptimo**:
 - Calidad técnica alta (tests, a11y, performance, SEO)
 - Deuda conocida, priorizada y controlada
 
-## Estado actual (2026-11-17)
+## Estado actual (2026-11-18)
 
 ### Bloqueante activo
-- **CI en main**: verde. Confirmado en run 44026747416 (commit bc5be41 docs update RELAY).
+- **CI en main**: verde. Confirmado tras merge de PR #12 (story-led route preview, run 44343608234).
 - No hay bloqueantes de CI conocidos.
 
 ### Frentes prioritarios (orden de impacto)
-1. **CI reliability** — desbloqueado (pin OS)
+1. **CI reliability** — desbloqueado
 2. **Producto comercial** — tarifas visibles (paquetes), dominio, videos
 3. **Calidad técnica** — mantener y subir la vara
 4. **Contenido & assets** — fotos/licencias, multi-idioma, datos verificados
@@ -70,21 +70,22 @@ Llevar BA en Ruta a un **sistema óptimo**:
 **Status**: partial
 
 **Progress**:
-- CI main verde confirmado en run 44026747416 (commit bc5be41).
-- Branch feat/surface-packages-catalog verificado (commit a525f65): App.tsx renderiza Packages después de itinerarios.
-- Formulario de creación de PR preparado (card interactivo listo para submit). Título: feat: surface packages catalog on homepage. Head: feat/surface-packages-catalog.
+- PR #12 (feat: story-led, user-paced route preview) CI success (run 44342325664) y mergeado a main (commit 0e38a19). ESTADO.md actualizado. Producción desplegada.
+- Branch feat/surface-packages-catalog listo (App.tsx incluye <Packages />).
+- Formulario de creación de PR para packages mostrado (card_id nIKQ7). Título: feat: surface packages catalog on homepage.
 
 **Next Action**:
-Confirmar/submit el PR de feat/surface-packages-catalog (o verificar si se creó). Esperar CI verde en el PR. Luego mergear y actualizar docs/ESTADO.md + roadmap.md con paquetes visibles.
+Submit el PR de feat/surface-packages-catalog (usar el form interactivo). Verificar CI verde. Luego mergear y actualizar docs/ESTADO.md con paquetes visibles en homepage.
 
 **Context**:
 - Repo: AlanGalarzaStanley/ba-en-ruta
-- CI success: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44026747416
-- Branch: feat/surface-packages-catalog @ a525f65a8b909ddf0948cfca833b924676625162
+- Story-led CI: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44342325664
+- Main CI post-merge: https://github.com/AlanGalarzaStanley/ba-en-ruta/actions/runs/44343608234
+- Branch packages: feat/surface-packages-catalog
 - Producción: https://ba-en-ruta.vercel.app
-- Paquetes: src/lib/packages.ts (TOUR-4 USD50, TOUR-8 USD100), src/components/PackagesSection.tsx
-- WhatsApp: 5491151448632 ya configurado
-- PR form card_id: yLTQ0 (si aplica)
+- Paquetes listos: src/components/PackagesSection.tsx exporta Packages, datos en src/lib/packages.ts
+- WhatsApp: 5491151448632
+- PR form card_id: nIKQ7
 
 **Constraints**:
 - Una acción de alto impacto por turno
@@ -102,4 +103,4 @@ Confirmar/submit el PR de feat/surface-packages-catalog (o verificar si se creó
 
 ---
 
-*Última actualización del handoff: 2026-11-17 (CI green, PR form for packages ready)*
+*Última actualización del handoff: 2026-11-18 (story-led merged, packages PR form ready)*
